@@ -76,7 +76,12 @@ function HiringManagers() {
               {currentRole.scope}
             </p>
             <ul className="mt-4 space-y-2">
-              {currentRole.contributions.map((item) => (
+              {[
+                "Java service development and integration changes",
+                "AWS infrastructure with CDK and CloudFormation",
+                "Event-driven integrations and reliability work",
+                "Observability and production troubleshooting",
+              ].map((item) => (
                 <li key={item} className="flex gap-2 text-[14px] text-text-secondary">
                   <span className="text-terra" aria-hidden="true">
                     ·

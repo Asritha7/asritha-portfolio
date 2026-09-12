@@ -475,7 +475,7 @@ function Portfolio() {
           </aside>
         </section>
 
-        {/* Tech marquee */}
+        {/* Tech marquee - visual only; screen readers get the single semantic list below */}
         {(() => {
           const MARQUEE = [
             "Java", "TypeScript", "Python", "REST APIs", "PostgreSQL",
@@ -484,25 +484,33 @@ function Portfolio() {
             "GitLab CI/CD", "Prometheus", "Grafana", "CloudWatch", "SLOs",
           ];
           return (
-            <div
-              className="marquee-strip full-bleed overflow-hidden border-y border-hairline"
-              style={{ background: "var(--marquee-bg)" }}
-            >
-              <div className="marquee-track flex gap-10 py-4 whitespace-nowrap">
-                {MARQUEE.map((t, i) => (
-                  <span key={i} className="mono-label !text-[12px]">
-                    {t} <span className="opacity-50">·</span>
-                  </span>
-                ))}
-                <span aria-hidden="true" className="flex gap-10">
+            <>
+              <div
+                aria-hidden="true"
+                className="marquee-strip full-bleed overflow-hidden border-y border-hairline"
+                style={{ background: "var(--marquee-bg)" }}
+              >
+                <div className="marquee-track flex gap-10 py-4 whitespace-nowrap">
                   {MARQUEE.map((t, i) => (
                     <span key={i} className="mono-label !text-[12px]">
                       {t} <span className="opacity-50">·</span>
                     </span>
                   ))}
-                </span>
+                  <span aria-hidden="true" className="flex gap-10">
+                    {MARQUEE.map((t, i) => (
+                      <span key={i} className="mono-label !text-[12px]">
+                        {t} <span className="opacity-50">·</span>
+                      </span>
+                    ))}
+                  </span>
+                </div>
               </div>
-            </div>
+              <ul aria-label="Technologies" className="sr-only">
+                {MARQUEE.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+            </>
           );
         })()}
 
@@ -982,8 +990,8 @@ function ContactForm() {
       {/* honeypot - removed from sight, keyboard tab order, and the accessibility tree */}
       <div aria-hidden="true" hidden style={{ display: "none" }} role="none">
         <input
-          id="cf-website"
-          name="website"
+          id="cf-hp"
+          name="cf-hp"
           type="text"
           tabIndex={-1}
           autoComplete="off"
