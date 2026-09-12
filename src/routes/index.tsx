@@ -270,7 +270,7 @@ function Portfolio() {
         {(() => {
           const MARQUEE = [
             "Python", "Java", "SQL", "REST APIs", "Kafka", "Kubernetes", "Strimzi",
-            "Docker", "Linux", "AWS", "OCI", "Keycloak", "OAuth2 / OIDC",
+            "Linux", "AWS", "Keycloak", "OAuth2 / OIDC",
             "Prometheus", "Grafana", "Jenkins", "GitLab CI", "Git",
           ];
           const row = [...MARQUEE, ...MARQUEE];
@@ -301,7 +301,7 @@ function Portfolio() {
                 Featured Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Selected professional engineering work. Each item is labelled by type and links to a sanitized
+                Selected professional engineering work. Each item is labelled by type and links to a
                 case study that distinguishes what the wider team owned from what I personally contributed.
               </p>
             </div>
@@ -329,9 +329,6 @@ function Portfolio() {
                         <li key={t} className="!text-[11px]">· {t}</li>
                       ))}
                     </ul>
-                    {c.confidential ? (
-                      <p className="mono-label mt-3 !text-[11px]">Sanitized · confidential professional work</p>
-                    ) : null}
                     <span className="mono-label mt-5 inline-flex items-center gap-1 group-hover:!text-terra">
                       {projectCtaLabel(c)} →
                     </span>
@@ -341,15 +338,15 @@ function Portfolio() {
             </ul>
           </div>
 
-          {/* Additional Engineering and Research */}
+          {/* Additional Engineering */}
           <div className="mt-16 grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">Additional Engineering and Research</span>
+              <span className="mono-label">Additional Engineering Work</span>
               <h3 className="font-serif-display mt-4 text-[clamp(22px,2.4vw,26px)]">
-                Additional engineering and <em className="italic" style={{ color: "var(--accent-terra)" }}>research</em>.
+                Additional engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>work</em>.
               </h3>
               <p className="mt-3 text-[14.5px] text-text-secondary">
-                Shorter writeups across engineering implementation and published research.
+                Shorter writeups across engineering implementation work.
               </p>
             </div>
             <ul className="reveal grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -486,12 +483,12 @@ function Portfolio() {
         <section id="public-work" aria-labelledby="public-heading" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">05 - Public code</span>
+              <span className="mono-label">05 - Earlier public projects</span>
               <h2 id="public-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Public <em className="italic" style={{ color: "var(--accent-terra)" }}>Projects</em>.
+                Earlier Public <em className="italic" style={{ color: "var(--accent-terra)" }}>Projects</em>.
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Earlier projects and technical experiments available publicly on GitHub.
+                Earlier learning projects and technical experiments available publicly on GitHub.
               </p>
               <a
                 href={LINKS.github}
@@ -607,7 +604,7 @@ function Portfolio() {
                 Let's talk about <em className="italic" style={{ color: "var(--accent-terra)" }}>software</em>.
               </h2>
               <p className="mt-6 max-w-[42ch] text-[17px] text-dark-foreground/70">
-                Open to software engineering roles and collaborations. Reach out about a project, a role, or anything you're building.
+                Open to engineering conversations, collaborations, and interesting software problems. Reach out about a project, a role, or anything you're building.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href={LINKS.email} className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
