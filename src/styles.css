@@ -66,6 +66,24 @@
   --radius: 3px;
 }
 
+:root[data-theme="dark"] {
+  --background: #1F1B17;
+  --foreground: #F8F0E8;
+  --dark-background: #15120F;
+  --dark-foreground: #F8F0E8;
+  --card: #27211C;
+  --panel: #27211C;
+  --warm-fill: #342C25;
+  --warm-fill-2: #3B3129;
+  --hairline: #4B4037;
+  --border-contrast: #6A5B4E;
+  --text-secondary: #D9CABA;
+  --text-muted: #A99A8D;
+  --accent-terra: #E07852;
+  --accent-terra-dark: #C75A37;
+  --status-green: #72C18A;
+}
+
 @layer base {
   * {
     border-color: var(--hairline);

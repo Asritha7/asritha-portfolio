@@ -1,14 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react";
 import portraitAsset from "@/assets/portrait.jpg.asset.json";
+import resumeAsset from "@/assets/resume.pdf.asset.json";
 const portrait = portraitAsset.url;
+const resume = resumeAsset.url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Asritha Nibhanupudi — Software Engineer" },
+      { title: "Asritha Nibhanupudi - Software Engineer" },
       { name: "description", content: "Software engineer working across cloud platform engineering, API gateway infrastructure, and observability. Currently at Goldman Sachs." },
-      { property: "og:title", content: "Asritha Nibhanupudi — Software Engineer" },
+      { property: "og:title", content: "Asritha Nibhanupudi - Software Engineer" },
       { property: "og:description", content: "Cloud platform engineering, distributed systems, and observability." },
     ],
   }),
@@ -30,8 +33,7 @@ const work = [
   { n: "04", title: "Cypress Automation Framework", desc: "150+ modular tests, ~60% less regression effort, integrated into GitLab CI.", tags: ["Cypress", "GitLab CI"], year: "2025" },
   { n: "05", title: "GitLab CI/CD Pipeline Optimisation", desc: "~30% faster deployments, improved release consistency.", tags: ["GitLab", "CI/CD"], year: "2025" },
   { n: "06", title: "Keycloak / OpenSearch Automation", desc: "Identity flows via REST APIs + shell scripting, ~50% less manual ops.", tags: ["Keycloak", "OpenSearch", "Bash"], year: "2025" },
-  { n: "07", title: "AI-assisted Legacy Test Automation (UIM)", desc: "Automated high-volume legacy regression suites.", tags: ["AI", "QA"], year: "2025" },
-  { n: "08", title: "RFID + PIN Multi-level Authentication", desc: "Published research, IEEE ICMACC 2024 — microcontroller-based secure access.", tags: ["IEEE", "Embedded"], year: "2024" },
+  { n: "07", title: "RFID + PIN Multi-level Authentication", desc: "Published research, IEEE ICMACC 2024 - microcontroller-based secure access.", tags: ["IEEE", "Embedded"], year: "2024" },
 ];
 
 const earlier = [
@@ -41,38 +43,34 @@ const earlier = [
   "YouTube Comment Analysis (Python)",
   "Website Blocker (Python)",
   "PCB Design & Fabrication (KiCad)",
-  "CodeCademy landing-page clone",
-  "Temperature Converter",
-  "Digital Clock",
-  "Dark / Light toggle",
 ];
 
 const experience = [
   {
     role: "Analyst, Systems Engineering",
     org: "Goldman Sachs",
-    date: "May 2026 — Present",
+    date: "May 2026 - Present",
     place: "Bengaluru · On-site",
     body: "Subledger Technology platform for Asset & Wealth Management. Cloud platform engineering across hybrid API gateway infra and AWS-native microservices (CDK, Fargate, Aurora, Lambda). Onboarding Prometheus + Grafana observability for Java microservices.",
   },
   {
-    role: "Software Engineer — QA Automation & Infrastructure",
+    role: "Software Engineer - Automation & Infrastructure",
     org: "Oracle",
-    date: "Aug 2024 — Apr 2026",
+    date: "Aug 2024 - Apr 2026",
     place: "Hyderabad",
-    body: "CI/CD & release engineering on GitLab (~30% faster deploys). 150+ Cypress tests (~60% less regression). Kafka/Strimzi test strategy across version upgrades. Kubernetes deployments. Keycloak/OpenSearch automation. AI-assisted legacy test automation. \"Best Efforts\" nominee; mentored juniors on CI/CD & K8s debugging.",
+    body: "CI/CD & release engineering on GitLab (~30% faster deploys). 150+ Cypress tests (~60% less regression). Kafka/Strimzi test strategy across version upgrades. Kubernetes deployments. Keycloak/OpenSearch automation. \"Best Efforts\" nominee; mentored juniors on CI/CD & K8s debugging.",
   },
   {
     role: "Project Intern",
     org: "Oracle",
-    date: "Jan 2024 — Jul 2024",
+    date: "Jan 2024 - Jul 2024",
     place: "Hyderabad",
     body: "Modular Cypress components for enterprise pipelines; root-cause analysis reducing bug leakage by ~20%.",
   },
   {
-    role: "Web Developer — Intern",
+    role: "Web Developer - Intern",
     org: "Oasis Infobyte",
-    date: "Jul 2023 — Aug 2023",
+    date: "Jul 2023 - Aug 2023",
     place: "Remote",
     body: "Responsive front-end components & landing pages (HTML/CSS/JS); shipped projects to GitHub.",
   },
@@ -81,7 +79,7 @@ const experience = [
 const skills = [
   { label: "Cloud & Platform", items: ["AWS", "CDK", "ECS Fargate", "Aurora PostgreSQL", "Lambda", "Nginx"] },
   { label: "Distributed & Infra", items: ["Kubernetes", "Apache Kafka", "Strimzi", "Linux"] },
-  { label: "CI/CD & QA", items: ["GitLab CI/CD", "Cypress", "Keycloak", "OpenSearch"] },
+  { label: "CI/CD & Automation", items: ["GitLab CI/CD", "Cypress", "Keycloak", "OpenSearch"] },
   { label: "Observability", items: ["Prometheus", "Grafana"] },
   { label: "Languages", items: ["TypeScript", "Python", "Java", "C++", "REST APIs"] },
 ];
@@ -90,8 +88,34 @@ const links = {
   github: "https://github.com/Asritha7",
   linkedin: "https://linkedin.com/in/asritha-nibhanupudi",
   research: "https://ieeexplore.ieee.org/document/10893942",
-  email: "mailto:asritha.nibhanupudi@example.com",
+  email: "mailto:nibhanupudiasritha@gmail.com",
 };
+
+type ThemeMode = "light" | "dark";
+
+function useThemePreference() {
+  const [theme, setTheme] = useState<ThemeMode>("light");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("portfolio-theme");
+    const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    setTheme(saved === "dark" || saved === "light" ? saved : preferred);
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    window.localStorage.setItem("portfolio-theme", theme);
+  }, [ready, theme]);
+
+  return {
+    theme,
+    toggleTheme: () => setTheme((current) => (current === "dark" ? "light" : "dark")),
+  };
+}
 
 function useReveal() {
   useEffect(() => {
@@ -133,13 +157,15 @@ function useParallax() {
 function Portfolio() {
   useReveal();
   useParallax();
+  const { theme, toggleTheme } = useThemePreference();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Top bar */}
       <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-[46px]">
-          <a href="#top" className="mono-label !text-text-primary">Asritha Nibhanupudi</a>
+          <a href="#top" className="mono-label !font-bold !text-text-primary">Asritha Nibhanupudi</a>
           <nav className="hidden items-center gap-7 md:flex">
             {nav.map((n) => (
               <a key={n.id} href={`#${n.id}`} className="mono-label transition-colors hover:!text-terra">
@@ -153,9 +179,51 @@ function Portfolio() {
               </span>
               <span className="mono-label !text-text-primary !text-[11px]">Available</span>
             </span>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary transition-colors hover:text-terra hover:bg-warm-fill"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
           </nav>
-          <a href="#contact" className="mono-label md:hidden">Menu</a>
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary transition-colors hover:text-terra hover:bg-warm-fill"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-1.5"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
+            >
+              Menu
+            </button>
+          </div>
         </div>
+        {menuOpen ? (
+          <nav id="mobile-nav" className="border-t border-hairline bg-background px-6 py-4 md:hidden">
+            <div className="grid grid-cols-2 gap-3">
+              {nav.map((n) => (
+                <a
+                  key={n.id}
+                  href={`#${n.id}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 transition-colors hover:!text-terra hover:bg-warm-fill"
+                >
+                  {n.label}
+                </a>
+              ))}
+            </div>
+          </nav>
+        ) : null}
       </header>
 
       <main id="top" className="mx-auto max-w-[1280px] px-6 md:px-[46px]">
@@ -169,13 +237,13 @@ function Portfolio() {
               systems behind asset &amp; wealth management.
             </h1>
             <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">
-              I'm a software engineer working across cloud platform engineering, API gateway infrastructure, and observability — building on AWS and on-prem systems that stay quiet under pressure.
+              I'm a software engineer working across cloud platform engineering, API gateway infrastructure, and observability - building on AWS and on-prem systems that stay quiet under pressure.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <a href="#work" className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark">
                 View selected work →
               </a>
-              <a href="/resume.pdf" download className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill">
+              <a href={resume} download className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill">
                 Download résumé
               </a>
             </div>
@@ -210,7 +278,7 @@ function Portfolio() {
                   className="aspect-[4/5] h-auto w-full object-cover"
                 />
               </div>
-              <p className="mono-label mt-3">B.Tech ECE — VNR VJIET · Bengaluru, India</p>
+              <p className="mono-label mt-3">B.Tech ECE - VNR VJIET · Bengaluru, India</p>
             </div>
           </aside>
         </section>
@@ -219,7 +287,7 @@ function Portfolio() {
         <section id="now" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label" style={{ color: "var(--accent-terra-dark)" }}>Now —</span>
+              <span className="mono-label" style={{ color: "var(--accent-terra-dark)" }}>Now -</span>
             </div>
             <div className="reveal">
               <p className="font-serif-display text-[clamp(24px,3.4vw,34px)] italic">
@@ -247,7 +315,7 @@ function Portfolio() {
         <section id="work" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">01 — Work</span>
+              <span className="mono-label">01 - Work</span>
               <h2 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
                 Selected <em className="italic" style={{ color: "var(--accent-terra)" }}>work</em>.
               </h2>
@@ -255,17 +323,17 @@ function Portfolio() {
             <ul className="reveal">
               {work.map((w) => (
                 <li key={w.n} className="group border-t border-hairline first:border-t-0">
-                  <a href="#contact" className="grid grid-cols-[40px_1fr_auto] items-baseline gap-6 py-6 transition-colors group-hover:bg-[#F4E9DA]">
+                    <div className="grid grid-cols-[40px_1fr_auto] items-baseline gap-6 py-6 transition-colors group-hover:bg-warm-fill">
                     <span className="mono-label">{w.n}</span>
                     <div className="min-w-0">
                       <h3 className="font-serif-display text-[22px] md:text-[26px]">{w.title}</h3>
                       <p className="mt-2 text-[16px] text-text-secondary">{w.desc}</p>
                       <p className="mono-label mt-3">{w.tags.join(" · ")}</p>
                     </div>
-                    <span className="mono-label whitespace-nowrap transition-transform group-hover:-translate-x-1 group-hover:!text-terra">
-                      {w.year} →
+                    <span className="mono-label whitespace-nowrap">
+                      {w.year}
                     </span>
-                  </a>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -284,7 +352,7 @@ function Portfolio() {
         <section id="experience" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">02 — Experience</span>
+              <span className="mono-label">02 - Experience</span>
               <h2 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
                 A short <em className="italic" style={{ color: "var(--accent-terra)" }}>timeline</em>.
               </h2>
@@ -295,7 +363,7 @@ function Portfolio() {
                   <span className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full" style={{ background: "var(--accent-terra)" }} />
                   <p className="mono-label">{e.date} · {e.place}</p>
                   <h3 className="font-serif-display mt-2 text-[22px] md:text-[26px]">
-                    {e.role} <span className="text-text-secondary"> — {e.org}</span>
+                    {e.role} <span className="text-text-secondary"> - {e.org}</span>
                   </h3>
                   <p className="mt-3 max-w-[62ch] text-[16.5px] text-text-secondary">{e.body}</p>
                 </li>
@@ -308,7 +376,7 @@ function Portfolio() {
         <section className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">03 — Toolkit</span>
+              <span className="mono-label">03 - Toolkit</span>
               <h2 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
                 Tools I <em className="italic" style={{ color: "var(--accent-terra)" }}>reach for</em>.
               </h2>
@@ -336,11 +404,11 @@ function Portfolio() {
             <div className="reveal">
               <span className="mono-label">About</span>
               <h2 className="font-serif-display mt-4 text-[clamp(28px,3.6vw,38px)]">
-                I build the quiet infrastructure that keeps financial platforms running — and I care about doing it well.
+                I build the quiet infrastructure that keeps financial platforms running - and I care about doing it well.
               </h2>
               <div className="mt-8 max-w-[58ch] space-y-5 text-[18px] text-text-secondary">
                 <p>
-                  I'm a software engineer at Goldman Sachs on the AWM Subledger Technology team, working across cloud platform engineering, API gateway infrastructure, and observability. Previously at Oracle, I focused on automation, CI/CD, and infrastructure reliability — building modular Cypress frameworks, tuning GitLab pipelines, and designing test strategies for Apache Kafka and the Strimzi Operator that caught regressions before they reached production.
+                  I'm a software engineer at Goldman Sachs on the AWM Subledger Technology team, working across cloud platform engineering, API gateway infrastructure, and observability. Previously at Oracle, I focused on automation, CI/CD, and infrastructure reliability - building modular Cypress frameworks, tuning GitLab pipelines, and designing test strategies for Apache Kafka and the Strimzi Operator that caught regressions before they reached production.
                 </p>
                 <p>
                   My background is in Electronics &amp; Communications Engineering (B.Tech, VNR VJIET). I'm always eager to connect with engineers and industry leaders about backend development, cloud-native platforms, and the future of engineering.
@@ -352,14 +420,14 @@ function Portfolio() {
                 href={links.research}
                 target="_blank"
                 rel="noreferrer"
-                className="group block rounded-[3px] bg-terra p-6 text-[#F8F0E8] transition-colors hover:bg-terra-dark md:p-7"
+                className="group block rounded-[3px] bg-terra p-6 text-dark-foreground transition-colors hover:bg-terra-dark md:p-7"
               >
-                <p className="mono-label !text-[#F8F0E8]/80">Published Research</p>
+                <p className="mono-label !text-dark-foreground/80">Published Research</p>
                 <h3 className="font-serif-display mt-4 text-[22px] leading-snug">
                   Multi-level authentication combining RFID and PIN-based access control
                 </h3>
                 <p className="mt-4 text-[14px] opacity-90">IEEE ICMACC 2024 · Co-authored</p>
-                <span className="mono-label mt-5 inline-flex items-center gap-1 !text-[#F8F0E8] group-hover:underline">
+                <span className="mono-label mt-5 inline-flex items-center gap-1 !text-dark-foreground group-hover:underline">
                   Read paper →
                 </span>
               </a>
@@ -391,7 +459,7 @@ function Portfolio() {
               <a href={links.email} className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark">
                 Email me →
               </a>
-              <a href="/resume.pdf" download className="rounded-[3px] border border-dark-foreground/30 bg-dark-background px-5 py-3 text-[15px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
+              <a href={resume} download className="rounded-[3px] border border-dark-foreground/30 bg-dark-background px-5 py-3 text-[15px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
                 Résumé
               </a>
             </div>
