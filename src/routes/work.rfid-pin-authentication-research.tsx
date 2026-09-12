@@ -214,7 +214,7 @@ function FlowDiagram() {
                 textAnchor="middle"
                 fontFamily="JetBrains Mono, monospace"
                 fontSize="13"
-                fill="var(--text-primary)"
+                fill="var(--foreground)"
               >
                 {s.label}
               </text>

@@ -66,7 +66,7 @@ export const Route = createFileRoute("/api/public/contact")({
               "X-Connection-Api-Key": RESEND_API_KEY,
             },
             body: JSON.stringify({
-              from: "Portfolio Contact <onboarding@resend.dev>",
+              from: "Portfolio Contact <contact@asritha.dev>",
               to: [TO_EMAIL],
               reply_to: email,
               subject,
