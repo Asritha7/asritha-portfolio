@@ -536,6 +536,14 @@ export function coverVariantForSlug(slug: string): CoverVariant {
     case "kubernetes-cicd-reliability":
     case "rfid-pin-authentication-research":
       return slug;
+    case "java-application-service-engineering":
+      return "aws-integration";
+    case "reliability-multi-region-infrastructure":
+      return "kubernetes-cicd-reliability";
+    case "observability-and-slos":
+      return "kafka-strimzi-upgrade";
+    case "iac-zero-downtime-migrations":
+      return "aws-microservices-cdk-ecs";
     default:
       return "public";
   }

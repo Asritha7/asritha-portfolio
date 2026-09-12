@@ -7,7 +7,13 @@ const entries = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/work", changefreq: "weekly", priority: "0.9" },
   { path: "/notes", changefreq: "monthly", priority: "0.6" },
+  { path: "/hiring-managers", changefreq: "monthly", priority: "0.7" },
+
+  { path: "/work/java-application-service-engineering", changefreq: "monthly", priority: "0.8" },
   { path: "/work/aws-microservices-cdk-ecs", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/reliability-multi-region-infrastructure", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/observability-and-slos", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/iac-zero-downtime-migrations", changefreq: "monthly", priority: "0.8" },
   { path: "/work/automation-framework", changefreq: "monthly", priority: "0.8" },
   { path: "/work/keycloak-identity-flow", changefreq: "monthly", priority: "0.8" },
   { path: "/work/kafka-strimzi-upgrade", changefreq: "monthly", priority: "0.8" },

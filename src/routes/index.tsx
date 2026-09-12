@@ -61,8 +61,10 @@ const nav = [
   { id: "principles", label: "Principles" },
   { id: "capabilities", label: "Capabilities" },
   { id: "notes", label: "Notes", route: "/notes" as const },
+  { id: "hiring", label: "Hiring managers", route: "/hiring-managers" as const },
   { id: "contact", label: "Contact" },
 ];
+
 
 
 type ThemeMode = "light" | "amber" | "dark";
@@ -414,7 +416,7 @@ function Portfolio() {
           <div className="reveal">
             <p className="mono-label">{HERO.eyebrow}</p>
             <h1 id="hero-heading" className="font-serif-display mt-6 text-[clamp(36px,6.4vw,68px)]">
-              I build <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em> software systems that scale.
+              I build <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em> software systems across application, cloud, and platform layers.
             </h1>
             <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">{HERO.description}</p>
             <p className="mt-4 max-w-[58ch] text-[16.5px] italic text-text-secondary">
@@ -477,9 +479,10 @@ function Portfolio() {
         {/* Tech marquee */}
         {(() => {
           const MARQUEE = [
-            "Python", "Java", "SQL", "REST APIs", "Kafka", "Kubernetes", "Strimzi",
-            "Linux", "AWS", "Keycloak", "OAuth2 / OIDC",
-            "Prometheus", "Grafana", "Jenkins", "GitLab CI", "Git",
+            "Java", "TypeScript", "Python", "C++", "REST APIs", "PostgreSQL",
+            "AWS", "CDK", "CloudFormation", "ECS Fargate", "Lambda", "API Gateway",
+            "Kafka / MSK", "Debezium", "EventBridge", "SQS", "Kubernetes", "Docker",
+            "GitLab CI/CD", "Prometheus", "Grafana", "CloudWatch", "SLOs", "AWS FIS",
           ];
           return (
             <div
@@ -514,12 +517,12 @@ function Portfolio() {
                 Featured Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Selected work across cloud systems, automation, authentication and reliability-with clear context on what I personally contributed.
+                Current work across Java services, AWS platform engineering, event-driven systems, reliability, and observability - with clear context on what I personally contributed.
               </p>
 
             </div>
             <ul className="reveal grid grid-cols-1 gap-5">
-              {CASE_STUDIES.slice(0, 3).map((c, i) => {
+              {CASE_STUDIES.map((c, i) => {
                 const contribution = c.cardContribution ?? c.myContribution;
                 const result = c.cardResult ?? firstSentence(c.outcome);
                 const tags = c.tags.slice(0, 5);
@@ -586,12 +589,12 @@ function Portfolio() {
           >
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
               <div className="reveal">
-                <span className="mono-label">01b - Additional Engineering Work</span>
+                <span className="mono-label">01b - Earlier Professional Work</span>
                 <h2 id="additional-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                  Additional Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
+                  Earlier Professional <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
                 </h2>
                 <p className="mt-3 text-[15px] text-text-secondary">
-                  Further professional case studies. Each links to a sanitized write-up.
+                  Earlier automation, identity, and platform work that supports my current profile. Each links to a write-up.
                 </p>
               </div>
               <ul className="reveal grid grid-cols-1 gap-4">

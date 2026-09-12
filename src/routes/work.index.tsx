@@ -57,7 +57,7 @@ export const Route = createFileRoute("/work/")({
 
 function WorkIndex() {
   const { category } = Route.useSearch();
-  const navigate = useNavigate({ from: "/work" });
+  const navigate = useNavigate({ from: "/work/" });
   const current = categoryFromSlug(category);
 
   const filtered = useMemo(

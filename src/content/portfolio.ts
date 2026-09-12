@@ -16,13 +16,14 @@ export const LINKS = {
 };
 
 export const HERO = {
-  eyebrow: "SOFTWARE ENGINEER · DISTRIBUTED SYSTEMS · CLOUD",
-  headline: "I build reliable software systems that scale.",
+  eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD · PLATFORM ENGINEERING · JAVA · AWS · DISTRIBUTED SYSTEMS",
+  headline: "I build reliable software systems across application, cloud, and platform layers.",
   description:
-    "Software engineer experienced in building backend services, API infrastructure, cloud systems, automation, and observability across AWS and Kubernetes.",
+    "I work across the full lifecycle of a service: application changes and integrations, deployment and infrastructure, monitoring, failure recovery, and production troubleshooting.",
   primaryCta: { label: "View my work", href: "/work" },
   secondaryCta: { label: "Download résumé", href: "" }, // wired in component
 };
+
 
 export const CONFIDENTIALITY_NOTICE =
   "This case study is a sanitized explanation of my contribution. Internal names, architecture details, and business information have been omitted or generalized.";
@@ -136,95 +137,428 @@ export type Project = {
 export const PROJECTS: Project[] = [
   // ---------------- FEATURED ----------------
   {
-    slug: "aws-microservices-cdk-ecs",
-    title: "AWS Microservice Infrastructure and Integration",
+    slug: "java-application-service-engineering",
+    title: "Java Application and Service Engineering",
     projectType: "Professional Work",
     year: "2026",
     shortDescription:
-      "Contributed to a defined AWS-native microservice scope using TypeScript CDK, ECS Fargate, Aurora PostgreSQL, and Lambda, including infrastructure definitions, routing, authentication, and integration validation.",
+      "Contributing to Java service development on a subledger platform - application changes, configuration and dependency updates, integration work, and merge-request review in GitLab.",
     myContribution:
-      "Implemented and contributed to defined service infrastructure and integration components using TypeScript CDK, ECS Fargate, Aurora PostgreSQL and Lambda.",
+      "Developing Java application and configuration changes, integrating services with platform components, and taking changes through GitLab merge-request review, build, and deployment.",
     cardContribution:
-      "Contributed to service infrastructure and integration components using TypeScript CDK, ECS Fargate, Aurora PostgreSQL, and Lambda.",
+      "Developing Java application, configuration, build, and dependency changes, and integrating services with surrounding platform components.",
     cardResult:
-      "Moved key routing, authentication, and deployment configuration into version-controlled infrastructure definitions.",
+      "Changes move through GitLab merge-request review with build and integration checks before deployment.",
     ownershipWording: "Contributed to",
-    summaryProblem: "New services needed a repeatable AWS deployment pattern.",
-    summaryRole: "Contributed to defined service infrastructure and integration components.",
-    summaryResult: "Moved selected deployment configuration into version-controlled infrastructure definitions.",
+    summaryProblem: "Service changes had to land safely in a platform with many integration points.",
+    summaryRole: "Developing Java application, configuration, and integration changes within a defined service scope.",
+    summaryResult: "Changes ship through reviewed merge requests with build and integration validation.",
     scopeNote:
-      "This case study covers my contribution to a defined service and infrastructure scope rather than ownership of the wider platform.",
+      "This case study covers my contribution to defined services rather than ownership of the wider platform.",
     professionalContext:
-      "Subledger Technology platform inside Asset & Wealth Management. The wider platform spans on-prem and multi-region AWS; this work focused on the AWS-native microservices slice and its supporting infrastructure-as-code, not on owning the broader platform.",
+      "Subledger Technology platform inside Asset & Wealth Management. The platform spans on-prem and multi-region AWS; my work sits on the service layer and its integrations.",
     problem:
-      "New services needed a consistent, repeatable way to ship on AWS - networking, container runtime, database access, auth, and tests - without each team re-inventing the deployment shape per service.",
+      "Application changes in a platform with many integration points can fail late - at build, dependency resolution, or integration time - rather than in the change itself.",
     constraints: [
-      "Everything provisioned through code review, not the AWS console",
-      "Services had to fit a hybrid model that spans on-prem and multi-region AWS",
-      "Database access patterns had to suit a financial workload (durability, predictable failover)",
-      "Integration tests had to run in CI against a representative environment, not against mocks only",
+      "Every change goes through merge-request review before it can be deployed",
+      "Services must stay compatible with existing consumers and upstream data contracts",
+      "Dependency and build changes must not alter runtime behaviour silently",
     ],
     approach: [
-      "Defined service infrastructure in TypeScript CDK so reviewers could read the deployment shape in the same pull request as the code",
-      "Ran services on ECS Fargate to avoid managing EC2 capacity and to keep deployments declarative",
-      "Used Aurora PostgreSQL as the system of record, with schema and access patterns expressed through migrations",
-      "Used Lambda for event-driven and asynchronous edges where running a long-lived container was overkill",
-      "Wired routing and auth into the gateway layer as IaC rather than per-service ad-hoc configuration",
-      "Added integration tests that exercise real AWS resources from CI to catch wiring mistakes before promotion",
+      "Developing Java application and configuration changes within a defined service scope",
+      "Updating build and dependency configuration when versions or transitive conflicts require it",
+      "Integrating services with platform components such as messaging, storage, and relational data",
+      "Raising, reviewing, and revising changes through GitLab merge requests",
+      "Adding or extending tests so integration behaviour is checked before deployment",
+      "Troubleshooting behaviour reported in higher environments and production",
     ],
     decision: {
       decision:
-        "Express routing, auth, and integration-test scaffolding as part of the service's CDK stack instead of treating them as separate, hand-managed environment config.",
-      why: "When routing and auth were managed outside the service, drift between environments was easy and reviewers could not see in one place what a service actually exposed. Putting it in CDK made the exposed surface reviewable in the same diff as the code.",
+        "Keep integration behaviour covered by tests that run in the pipeline rather than relying on manual verification after deployment.",
+      why: "Integration mistakes - a changed contract, a missing configuration value, an unexpected dependency version - were the failures most likely to surface late and cost the most time to trace.",
       tradeoff:
-        "Service authors had to learn the CDK conventions used by the platform, and small routing tweaks now went through code review instead of a console change - slower per change, but auditable.",
+        "Pipelines take longer and the tests need maintenance when contracts change, but failures are attributed before promotion instead of after.",
     },
     alternatives: [
-      "Console-driven networking, gateway routing, and auth configuration (faster initially, but invisible to source control and prone to drift between environments)",
-      "Plain CloudFormation YAML instead of CDK (works, but loses the type-checking and shared abstractions that make TypeScript CDK reviewable across teams)",
-      "Running services on EC2 instead of ECS Fargate (more control, but adds capacity management without a clear benefit for this workload)",
+      "Relying on manual verification in a shared environment after deployment (faster per change, but failures surface later and are harder to attribute)",
+      "Pinning every dependency indefinitely to avoid build churn (stable short-term, but accumulates upgrade risk)",
     ],
     edgeCases: [
-      "Cold-start behaviour for Lambda paths on the asynchronous edges",
-      "Aurora failover behaviour during planned maintenance windows",
-      "Integration tests that passed in CI but pointed at a misconfigured environment resource",
-      "Gateway routes that worked in one region but not another because of a region-scoped IaC parameter",
+      "Transitive dependency upgrades that compile cleanly but change runtime behaviour",
+      "Configuration values present in one environment and absent in another",
+      "Changes that pass in isolation but break a consumer's expectations",
     ],
-    technologies: ["AWS", "AWS CDK (TypeScript)", "ECS Fargate", "Aurora PostgreSQL", "AWS Lambda", "API Gateway"],
+    technologies: ["Java", "REST APIs", "PostgreSQL", "GitLab", "GitLab CI"],
     challenges: [
-      "Keeping the AWS-native slice consistent with on-prem services in the hybrid model",
-      "Making integration tests against real AWS resources reliable enough to gate releases",
-      "Encoding routing and auth as IaC without making service authors' day-to-day changes painful",
+      "Keeping integration contracts stable while services evolve",
+      "Diagnosing failures that originate in configuration or dependency changes rather than application logic",
     ],
     outcome:
-      "Services in the scope I contributed to landed with a consistent, reviewable deployment shape on AWS, and routing, auth, and integration tests lived alongside the service code in version control rather than in console configuration.",
+      "Application, configuration, and integration changes in my scope ship through reviewed merge requests with build and integration checks, so integration problems are caught before deployment rather than in a shared environment.",
     learned:
-      "Infrastructure that is reviewable in the same diff as the code is easier to reason about than infrastructure managed in a console, particularly when the same change has to ship across regions.",
+      "Most of the time I spent on failing changes traced back to configuration or dependency differences rather than application logic, which is why I now check those first.",
     wouldImprove:
-      "I would invest more in a shared CDK construct library that captures the routing, auth, and integration-test scaffolding as one reusable unit, so a new service can opt into the platform defaults with a few lines instead of copying patterns across stacks.",
+      "I would push more contract-level checks into the pipeline so a change that breaks a consumer fails in review rather than in a shared environment.",
     ownership: {
-      team: ["The wider Subledger Technology platform spanning on-prem and multi-region AWS is owned by the broader team, not by me"],
+      team: ["The wider platform, its architecture, and its release process are owned by the broader team"],
       implemented: [
-        "Service infrastructure-as-code in TypeScript CDK within my scope",
-        "Containerised services on ECS Fargate backed by Aurora PostgreSQL within my scope",
-        "Lambda-based handlers for event-driven and asynchronous edges within my scope",
-        "Integration tests running against real AWS resources from CI for the services I worked on",
+        "Java application and configuration changes within my service scope",
+        "Build and dependency updates for the services I worked on",
+        "Tests covering integration behaviour for those services",
       ],
-      contributedTo: [
-        "Conventions for routing and auth expressed as IaC",
-      ],
-      integrated: [
-        "The hybrid API gateway layer that spans on-prem and multi-region AWS, from the service side",
-      ],
-      investigated: ["Aurora failover and Lambda cold-start behaviour on critical paths within my scope"],
-      validated: ["Service behaviour end-to-end via integration tests gated in CI for the services I worked on"],
+      contributedTo: ["Service integration design within my scope", "Merge-request review of related changes"],
+      investigated: ["Build, dependency, and integration failures on the services I worked on"],
+      validated: ["Service behaviour through pipeline builds and integration tests"],
     },
     confidential: true,
     featured: true,
-    categories: ["Cloud", "Backend", "APIs"],
-    tags: ["AWS", "CDK", "ECS Fargate", "Aurora PostgreSQL", "Lambda", "TypeScript"],
+    categories: ["Backend", "APIs"],
+    tags: ["Java", "REST APIs", "PostgreSQL", "GitLab CI", "Integration"],
   },
   {
+    slug: "aws-microservices-cdk-ecs",
+    title: "AWS Platform and Event-Driven Systems",
+    projectType: "Professional Work",
+    year: "2026",
+    shortDescription:
+      "Building and maintaining AWS-native services with CDK and CloudFormation - ECS Fargate, Lambda, API Gateway, Aurora PostgreSQL - and event-driven integrations over Kafka/MSK, Debezium CDC, EventBridge, and SQS.",
+    myContribution:
+      "Building and maintaining service infrastructure with AWS CDK and CloudFormation, and developing event-driven integrations using Kafka/MSK, Debezium CDC, EventBridge, SQS with dead-letter queues, and S3.",
+    cardContribution:
+      "Building AWS service infrastructure with CDK and CloudFormation, and developing event-driven integrations over Kafka/MSK, Debezium CDC, EventBridge, and SQS.",
+    cardResult:
+      "Routing, authentication, database access, and event wiring live in version-controlled infrastructure definitions rather than console configuration.",
+    ownershipWording: "Contributed to",
+    summaryProblem: "New services needed a repeatable AWS deployment and event-integration pattern.",
+    summaryRole: "Building service infrastructure and event-driven integrations within a defined scope.",
+    summaryResult: "Deployment and event wiring moved into version-controlled infrastructure definitions.",
+    scopeNote:
+      "This case study covers my contribution to a defined service and infrastructure scope rather than ownership of the wider platform.",
+    professionalContext:
+      "Subledger Technology platform inside Asset & Wealth Management. The wider platform spans on-prem and multi-region AWS; this work focused on the AWS-native services slice, its infrastructure-as-code, and its event-driven integrations.",
+    problem:
+      "New services needed a consistent way to ship on AWS - private networking, container runtime, database access, auth - and a consistent way to move data between services asynchronously without each team inventing its own pattern.",
+    constraints: [
+      "Everything provisioned through code review, not the AWS console",
+      "Services had to fit a hybrid model spanning on-prem and multi-region AWS",
+      "Traffic had to stay on private networking paths",
+      "Event delivery needed explicit failure handling rather than best-effort retries",
+    ],
+    approach: [
+      "Defining service infrastructure in CDK and CloudFormation so the deployment shape is reviewable alongside the code",
+      "Running services on ECS Fargate, with Lambda for event-driven and asynchronous edges",
+      "Using Aurora PostgreSQL as the system of record, with schema changes applied through Flyway migrations",
+      "Exposing services through API Gateway with routing and authentication expressed as infrastructure code",
+      "Keeping traffic on private networking paths using VPC endpoints, PrivateLink, and hybrid connectivity",
+      "Developing event-driven integrations over Kafka/MSK and Debezium change data capture, with EventBridge routing, SQS queues, dead-letter queues for poison messages, and S3 for durable payloads",
+    ],
+    decision: {
+      decision:
+        "Give every asynchronous consumer an explicit dead-letter path instead of relying on retries alone.",
+      why: "A single unprocessable message can otherwise stall a consumer or be silently dropped; a dead-letter queue keeps the failure visible and the stream moving.",
+      tradeoff:
+        "Dead-letter queues need monitoring and a replay path, which is extra operational surface per consumer.",
+    },
+    alternatives: [
+      "Console-driven networking, routing, and auth configuration (faster initially, but invisible to source control and prone to drift)",
+      "Synchronous service-to-service calls instead of events (simpler to trace, but couples availability of the two services)",
+      "Application-level polling instead of change data capture (fewer moving parts, but higher latency and more load on the database)",
+    ],
+    edgeCases: [
+      "Duplicate event delivery requiring idempotent consumers",
+      "Change-data-capture connector restarts replaying from an earlier offset",
+      "Messages landing in a dead-letter queue with no owner watching it",
+      "Cold-start behaviour on Lambda paths at the asynchronous edges",
+    ],
+    technologies: [
+      "AWS",
+      "AWS CDK",
+      "CloudFormation",
+      "ECS Fargate",
+      "AWS Lambda",
+      "API Gateway",
+      "Aurora PostgreSQL",
+      "Flyway",
+      "Kafka / MSK",
+      "Debezium",
+      "EventBridge",
+      "SQS",
+      "S3",
+    ],
+    challenges: [
+      "Keeping the AWS-native slice consistent with on-prem services in the hybrid model",
+      "Making asynchronous integrations safe to retry without duplicating effects",
+      "Encoding routing and auth as infrastructure code without slowing routine changes",
+    ],
+    outcome:
+      "Services in my scope ship with a consistent, reviewable deployment shape on AWS, and their event integrations have explicit retry and dead-letter behaviour instead of implicit best-effort delivery.",
+    learned:
+      "Infrastructure that is reviewable in the same diff as the code is easier to reason about than console configuration, especially when the same change has to ship across regions.",
+    wouldImprove:
+      "I would invest more in a shared construct library so a new service can adopt the platform defaults for networking, routing, and event wiring in a few lines.",
+    ownership: {
+      team: ["The wider platform spanning on-prem and multi-region AWS is owned by the broader team"],
+      implemented: [
+        "Service infrastructure-as-code in CDK within my scope",
+        "Containerised services on ECS Fargate backed by Aurora PostgreSQL within my scope",
+        "Lambda handlers and queue consumers for asynchronous edges within my scope",
+      ],
+      contributedTo: ["Conventions for routing and authentication expressed as infrastructure code"],
+      integrated: [
+        "Kafka/MSK topics, Debezium change data capture, EventBridge rules, SQS queues and dead-letter queues, and S3, from the service side",
+        "The hybrid API gateway layer spanning on-prem and multi-region AWS, from the service side",
+      ],
+      investigated: ["Event replay, duplicate delivery, and Lambda cold-start behaviour within my scope"],
+      validated: ["Service and event-flow behaviour through integration tests gated in CI"],
+    },
+    confidential: true,
+    featured: true,
+    categories: ["Cloud", "Distributed Systems", "Backend"],
+    tags: ["AWS CDK", "ECS Fargate", "Lambda", "Kafka / MSK", "Debezium", "EventBridge"],
+  },
+  {
+    slug: "reliability-multi-region-infrastructure",
+    title: "Reliability and Multi-Region Infrastructure",
+    projectType: "Professional Work",
+    year: "2026",
+    shortDescription:
+      "Strengthening deployment and recovery behaviour with blue-green releases, ECS Auto Scaling, multi-region disaster recovery on Aurora Global Database, and fault-injection exercises using AWS FIS.",
+    myContribution:
+      "Contributing to blue-green deployment and auto-scaling configuration, and executing multi-region disaster-recovery and fault-injection exercises to check recovery behaviour.",
+    cardContribution:
+      "Contributing to blue-green deployment and ECS Auto Scaling configuration, and executing multi-region disaster-recovery exercises.",
+    cardResult:
+      "Recovery behaviour is exercised deliberately with AWS FIS rather than discovered during an incident.",
+    ownershipWording: "Contributed to",
+    summaryProblem: "Recovery behaviour was assumed rather than exercised.",
+    summaryRole: "Contributing to deployment and scaling configuration and running recovery exercises.",
+    summaryResult: "Failover and rollback paths are rehearsed and their behaviour recorded.",
+    scopeNote:
+      "This case study covers my contribution to reliability work on defined services rather than ownership of the platform's resilience strategy.",
+    professionalContext:
+      "Multi-region AWS services on a financial platform where an unavailable service and a wrong result both matter.",
+    problem:
+      "Deployments and regional failure paths existed, but their behaviour under load and during failover was largely assumed rather than observed.",
+    constraints: [
+      "Exercises had to run without risking production data",
+      "Rollback had to be possible at any point during a release",
+      "Cross-region replication lag had to be accounted for in recovery expectations",
+    ],
+    approach: [
+      "Contributing to blue-green deployment configuration so a release can be shifted back without redeploying",
+      "Tuning ECS Auto Scaling policies against observed load rather than fixed capacity guesses",
+      "Configuring and exercising multi-region disaster recovery on Aurora Global Database",
+      "Executing fault-injection experiments with AWS FIS to observe how services behave when a dependency degrades",
+      "Recording what each exercise showed, including the cases where recovery was slower than expected",
+    ],
+    decision: {
+      decision:
+        "Exercise failure paths deliberately with fault injection instead of waiting for a real incident to reveal them.",
+      why: "Recovery configuration that is never exercised tends to be correct only on paper; scaling and failover assumptions are easiest to check while nobody is paged.",
+      tradeoff:
+        "Experiments cost time and need careful scoping so they do not affect real traffic or data.",
+    },
+    alternatives: [
+      "Relying on documented runbooks alone (cheap, but does not verify the system behaves as the runbook assumes)",
+      "In-place rolling deployments only (simpler, but rollback is slower than shifting traffic back)",
+    ],
+    edgeCases: [
+      "Failover completing while replication lag left recent writes behind",
+      "Auto Scaling reacting after the load spike had already caused errors",
+      "Health checks reporting healthy while a downstream dependency was degraded",
+    ],
+    technologies: [
+      "AWS",
+      "ECS Fargate",
+      "ECS Auto Scaling",
+      "Aurora Global Database",
+      "AWS FIS",
+      "CloudFormation",
+    ],
+    challenges: [
+      "Designing experiments that are informative without being risky",
+      "Setting recovery expectations that account for replication lag",
+    ],
+    outcome:
+      "Failover and rollback paths for the services in my scope are rehearsed rather than assumed, and the observed behaviour - including slower-than-expected cases - is written down.",
+    learned:
+      "A recovery path that has never been exercised is an assumption. Running the experiment is usually cheaper than discovering the gap during an incident.",
+    wouldImprove:
+      "I would run fault-injection experiments on a regular schedule rather than around specific changes, so drift in recovery behaviour is noticed early.",
+    ownership: {
+      team: ["The platform's overall resilience strategy is owned by the wider team"],
+      contributedTo: [
+        "Blue-green deployment configuration for services in my scope",
+        "ECS Auto Scaling policies for those services",
+      ],
+      integrated: ["Aurora Global Database replication into the recovery path for my scope"],
+      investigated: ["Failover, scaling, and degradation behaviour observed during exercises"],
+      validated: ["Recovery behaviour through disaster-recovery and AWS FIS exercises"],
+    },
+    confidential: true,
+    featured: true,
+    categories: ["Cloud", "Observability"],
+    tags: ["Blue-green", "ECS Auto Scaling", "Aurora Global Database", "AWS FIS", "DR"],
+  },
+  {
+    slug: "observability-and-slos",
+    title: "Observability and SLOs",
+    projectType: "Professional Work",
+    year: "2026",
+    shortDescription:
+      "Building service dashboards and SLO-based monitoring with Prometheus, Grafana, and CloudWatch, and using them during production troubleshooting.",
+    myContribution:
+      "Developing and integrating service metrics, dashboards, and SLO-based alerts across Prometheus, Grafana, and CloudWatch, and using them to troubleshoot production behaviour.",
+    cardContribution:
+      "Building service metrics, dashboards, and SLO-based alerts with Prometheus, Grafana, and CloudWatch.",
+    cardResult:
+      "Alerts are tied to service-level objectives, so a page reflects user-visible impact rather than an isolated resource metric.",
+    ownershipWording: "Contributed to",
+    summaryProblem: "Alerts fired on resource metrics that did not always mean user-visible impact.",
+    summaryRole: "Building metrics, dashboards, and SLO-based alerting for services in my scope.",
+    summaryResult: "Monitoring reflects service-level objectives and supports faster troubleshooting.",
+    scopeNote:
+      "This case study covers monitoring work on defined services rather than ownership of the platform's observability stack.",
+    professionalContext:
+      "Multi-region AWS and on-prem services where operational signals come from both Prometheus/Grafana and CloudWatch.",
+    problem:
+      "Monitoring was resource-centric: alerts fired on CPU, memory, or queue depth, which did not reliably indicate whether the service was actually failing its consumers.",
+    constraints: [
+      "Signals had to work across both AWS-native and on-prem service paths",
+      "Alerts had to be actionable enough to page on",
+      "Dashboards had to be usable by someone unfamiliar with the service internals",
+    ],
+    approach: [
+      "Instrumenting services with request, latency, error, and queue-processing metrics",
+      "Defining service-level objectives for availability and latency on the paths consumers depend on",
+      "Building Grafana dashboards that show the objective first and the supporting resource metrics second",
+      "Wiring CloudWatch metrics, logs, and alarms for AWS-managed components such as queues, databases, and Lambda paths",
+      "Alerting on objective burn and on dead-letter growth rather than on raw resource thresholds",
+      "Using these signals during production troubleshooting to narrow a symptom to a layer",
+    ],
+    decision: {
+      decision:
+        "Alert on service-level objective burn and dead-letter growth rather than on raw CPU or memory thresholds.",
+      why: "Resource thresholds produced pages nobody could act on, while real consumer-visible failures could stay invisible; objective-based alerts describe impact.",
+      tradeoff:
+        "Objectives need agreement and periodic revision, and a burn-rate alert is less immediately obvious than 'CPU is high'.",
+    },
+    alternatives: [
+      "Keeping threshold alerts on resource metrics (simple to configure, but weak signal-to-noise)",
+      "Relying on log searches during incidents only (flexible, but slow and dependent on knowing what to search for)",
+    ],
+    edgeCases: [
+      "Metrics missing for a short window after a deployment, briefly resembling an outage",
+      "Objectives satisfied in aggregate while one consumer path was failing",
+      "Alerts that fired correctly but pointed at a symptom one layer below the cause",
+    ],
+    technologies: ["Prometheus", "Grafana", "CloudWatch", "SLOs", "AWS"],
+    challenges: [
+      "Choosing objectives that reflect consumer expectations rather than convenient numbers",
+      "Keeping dashboards readable as the number of services grew",
+    ],
+    outcome:
+      "Services in my scope have dashboards and alerts tied to service-level objectives, and production investigations start from a signal that indicates consumer impact rather than a resource metric.",
+    learned:
+      "An alert is only useful if someone can act on it. Tying alerts to objectives made it clearer which pages needed a response and which needed a fix in the monitoring itself.",
+    wouldImprove:
+      "I would connect dashboards more directly to trace data so moving from an objective breach to the failing request path takes fewer steps.",
+    ownership: {
+      team: ["The platform-wide observability stack is operated by the wider team"],
+      implemented: [
+        "Service instrumentation and dashboards for services in my scope",
+        "SLO-based alert rules for those services",
+      ],
+      contributedTo: ["Definition of availability and latency objectives for my scope"],
+      integrated: ["CloudWatch metrics, logs, and alarms for AWS-managed components"],
+      investigated: ["Production issues using metrics, logs, and dashboards"],
+      validated: ["Alert behaviour against real incidents and exercises"],
+    },
+    confidential: true,
+    featured: true,
+    categories: ["Observability", "Cloud"],
+    tags: ["Prometheus", "Grafana", "CloudWatch", "SLOs", "Troubleshooting"],
+  },
+  {
+    slug: "iac-zero-downtime-migrations",
+    title: "Infrastructure as Code and Zero-Downtime Migrations",
+    projectType: "Professional Work",
+    year: "2026",
+    shortDescription:
+      "Executing CloudFormation and database migrations on running services without downtime, using staged changes, Flyway migrations, and reviewable infrastructure definitions.",
+    myContribution:
+      "Executed CloudFormation stack and schema migrations on live services in stages, and onboarded services onto the reviewed infrastructure-as-code workflow.",
+    cardContribution:
+      "Executed staged CloudFormation and Flyway schema migrations on running services, keeping changes reviewable in code.",
+    cardResult:
+      "Stack and schema changes were applied without taking services offline, with a rollback position at each stage.",
+    ownershipWording: "Implemented and contributed to",
+    summaryProblem: "Stack and schema changes risked downtime or resource replacement on live services.",
+    summaryRole: "Executed staged infrastructure and schema migrations on running services.",
+    summaryResult: "Migrations completed without downtime, with a rollback position at each stage.",
+    scopeNote:
+      "This case study covers migrations I executed on defined services rather than a platform-wide migration programme.",
+    professionalContext:
+      "Long-lived CloudFormation stacks and Aurora PostgreSQL databases behind services that consumers depend on during business hours.",
+    problem:
+      "Some infrastructure changes replace resources rather than update them, and some schema changes break running application versions - both can cause downtime if applied in one step.",
+    constraints: [
+      "Services had to stay available while the change was applied",
+      "Every change had to be reviewable in source control before it ran",
+      "Old and new application versions had to work against the same schema during a rollout",
+    ],
+    approach: [
+      "Reading change sets before applying them, to see which resources would be replaced rather than updated",
+      "Splitting risky changes into stages that are each safe on their own",
+      "Making schema changes backwards-compatible first with Flyway migrations - add, backfill, switch reads, then remove",
+      "Pairing infrastructure changes with blue-green traffic shifts where a resource had to be replaced",
+      "Onboarding services onto the reviewed infrastructure-as-code workflow so future changes follow the same path",
+      "Verifying behaviour with metrics and dashboards during and after each stage",
+    ],
+    decision: {
+      decision:
+        "Make every schema change backwards-compatible for one release before removing anything.",
+      why: "During a rollout both the old and new application versions run at once, so a destructive change in the same step breaks whichever version is not yet updated.",
+      tradeoff:
+        "A single logical change becomes several releases, which is slower but leaves a safe rollback position at each stage.",
+    },
+    alternatives: [
+      "Applying the full change in one deployment window (fewer steps, but no safe rollback and risk of downtime)",
+      "Taking a short maintenance window (predictable, but unnecessary once changes are staged properly)",
+    ],
+    edgeCases: [
+      "CloudFormation updates that quietly replace a resource and change its endpoint",
+      "Migrations that lock a table long enough to time out requests",
+      "Backfills that must run in batches to avoid replication lag",
+    ],
+    technologies: ["CloudFormation", "AWS CDK", "Aurora PostgreSQL", "Flyway", "GitLab CI"],
+    challenges: [
+      "Predicting which infrastructure changes cause replacement",
+      "Sequencing schema changes so both application versions keep working",
+    ],
+    outcome:
+      "Stack and schema migrations in my scope were applied to running services without downtime, and each stage left a position the change could be rolled back from.",
+    learned:
+      "Reading the change set before applying it is the cheapest step in the whole migration, and it is the one that most often changes the plan.",
+    wouldImprove:
+      "I would automate a pre-apply report that flags replacement-causing changes and long-locking migrations before a reviewer approves them.",
+    ownership: {
+      team: ["The wider platform's infrastructure standards are owned by the broader team"],
+      implemented: [
+        "Staged CloudFormation and schema migrations on services in my scope",
+        "Flyway migration sequences for backwards-compatible schema changes",
+      ],
+      contributedTo: ["The reviewed infrastructure-as-code workflow used by those services"],
+      investigated: ["Change-set behaviour and migration locking before applying changes"],
+      validated: ["Service availability during and after each migration stage"],
+    },
+    confidential: true,
+    featured: true,
+    categories: ["Cloud", "Backend"],
+    tags: ["CloudFormation", "Flyway", "Aurora PostgreSQL", "Zero downtime", "IaC"],
+  },
+  {
+
     slug: "automation-framework",
     title: "Automation Framework and Release Workflow",
     projectType: "Professional Work",
@@ -299,7 +633,7 @@ export const PROJECTS: Project[] = [
       validated: ["Workflow coverage across release candidates"],
     },
     confidential: true,
-    featured: true,
+    featured: false,
     categories: ["Automation", "Backend"],
     tags: ["Cypress", "REST APIs", "Shell", "CI/CD", "GitLab CI"],
   },
@@ -375,7 +709,7 @@ export const PROJECTS: Project[] = [
       validated: ["Authentication flows across releases"],
     },
     confidential: true,
-    featured: true,
+    featured: false,
     categories: ["Security", "Automation", "APIs"],
     tags: ["Keycloak", "REST APIs", "OIDC", "Cypress", "Shell"],
   },
@@ -592,17 +926,21 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
 
 export const EXPERIENCE = [
   {
-    role: "Analyst, Systems Engineering",
+    role: "Analyst, Software Engineering (SWE I)",
     org: "Goldman Sachs",
     date: "May 2026 - Present",
     place: "Bengaluru · On-site",
     scope:
-      "Software engineering on the Subledger Technology platform for Asset & Wealth Management - cloud platform, API infrastructure, and observability.",
+      "Software engineering on the Subledger Technology platform for Asset & Wealth Management - Java services, AWS platform engineering, event-driven integrations, reliability, and observability.",
     contributions: [
-      "Contributed to a hybrid API gateway layer spanning on-prem and multi-region AWS",
-      "Contributed to AWS-native microservices using CDK (TypeScript), ECS Fargate, Aurora PostgreSQL, and Lambda",
+      "Contributing to Java service development, including application, configuration, build, dependency, and integration changes reviewed through GitLab merge requests",
+      "Building and maintaining AWS infrastructure with CDK and CloudFormation - ECS Fargate, Lambda, API Gateway, Aurora PostgreSQL with Flyway migrations, and private networking with hybrid connectivity",
+      "Developing and integrating event-driven flows over Kafka/MSK, Debezium change data capture, EventBridge, SQS with dead-letter queues, and S3",
+      "Strengthening reliability through blue-green deployments, ECS Auto Scaling, multi-region disaster recovery on Aurora Global Database, and fault-injection exercises with AWS FIS",
+      "Executed zero-downtime CloudFormation and schema migrations, and onboarded services onto the reviewed infrastructure-as-code workflow",
+      "Built Prometheus, Grafana, and CloudWatch dashboards with SLO-based monitoring, and used them during production troubleshooting",
     ],
-    stack: ["AWS", "TypeScript", "Java", "Observability"],
+    stack: ["Java", "AWS", "CDK", "Kafka / MSK", "Prometheus", "Grafana"],
   },
   {
     role: "Associate Quality Analyst",
@@ -669,19 +1007,39 @@ export const PRINCIPLES = [
 export const CAPABILITIES: { label: string; items: string[] }[] = [
   {
     label: "Software Development",
-    items: ["TypeScript", "JavaScript", "Python", "Java", "SQL", "Bash"],
+    items: ["Java", "TypeScript", "Python", "C++", "REST APIs", "PostgreSQL"],
   },
   {
-    label: "Cloud and Service Infrastructure",
-    items: ["AWS", "AWS CDK", "ECS Fargate", "Kubernetes", "Docker", "Linux"],
+    label: "Cloud and Infrastructure",
+    items: [
+      "AWS",
+      "AWS CDK",
+      "CloudFormation",
+      "ECS Fargate",
+      "Lambda",
+      "API Gateway",
+      "Aurora PostgreSQL",
+      "VPC / PrivateLink",
+      "Kubernetes",
+      "Docker",
+    ],
   },
   {
-    label: "Distributed Systems and Integrations",
-    items: ["Kafka", "REST APIs", "Authentication", "Authorization", "Service integration", "Asynchronous processing"],
+    label: "Distributed Systems",
+    items: ["Kafka / MSK", "Debezium CDC", "EventBridge", "SQS / DLQ"],
   },
   {
-    label: "Delivery and Reliability",
-    items: ["GitLab CI", "GitHub", "Cypress", "Prometheus", "Grafana", "Logging", "Deployment debugging"],
+    label: "Reliability and Delivery",
+    items: [
+      "GitLab CI/CD",
+      "Prometheus",
+      "Grafana",
+      "CloudWatch",
+      "SLOs",
+      "Disaster recovery",
+      "Blue-green deployments",
+      "AWS FIS",
+    ],
   },
 ];
 
@@ -959,7 +1317,11 @@ export const TESTIMONIALS: Testimonial[] = [];
 
 // Map slug to typed route path for type-safe <Link to=...>
 export const PROJECT_ROUTE: Record<string, string> = {
+  "java-application-service-engineering": "/work/java-application-service-engineering",
   "aws-microservices-cdk-ecs": "/work/aws-microservices-cdk-ecs",
+  "reliability-multi-region-infrastructure": "/work/reliability-multi-region-infrastructure",
+  "observability-and-slos": "/work/observability-and-slos",
+  "iac-zero-downtime-migrations": "/work/iac-zero-downtime-migrations",
   "automation-framework": "/work/automation-framework",
   "keycloak-identity-flow": "/work/keycloak-identity-flow",
   "kafka-strimzi-upgrade": "/work/kafka-strimzi-upgrade",

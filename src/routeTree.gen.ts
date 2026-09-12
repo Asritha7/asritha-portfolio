@@ -11,13 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NotesRouteImport } from './routes/notes'
+import { Route as HiringManagersRouteImport } from './routes/hiring-managers'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as NotesIndexRouteImport } from './routes/notes.index'
 import { Route as WorkRfidPinAuthenticationResearchRouteImport } from './routes/work.rfid-pin-authentication-research'
+import { Route as WorkReliabilityMultiRegionInfrastructureRouteImport } from './routes/work.reliability-multi-region-infrastructure'
+import { Route as WorkObservabilityAndSlosRouteImport } from './routes/work.observability-and-slos'
 import { Route as WorkKubernetesCicdReliabilityRouteImport } from './routes/work.kubernetes-cicd-reliability'
 import { Route as WorkKeycloakIdentityFlowRouteImport } from './routes/work.keycloak-identity-flow'
 import { Route as WorkKafkaStrimziUpgradeRouteImport } from './routes/work.kafka-strimzi-upgrade'
+import { Route as WorkJavaApplicationServiceEngineeringRouteImport } from './routes/work.java-application-service-engineering'
+import { Route as WorkIacZeroDowntimeMigrationsRouteImport } from './routes/work.iac-zero-downtime-migrations'
 import { Route as WorkAwsMicroservicesCdkEcsRouteImport } from './routes/work.aws-microservices-cdk-ecs'
 import { Route as WorkAutomationFrameworkRouteImport } from './routes/work.automation-framework'
 import { Route as NotesKubernetesDeploymentDebuggingRouteImport } from './routes/notes.kubernetes-deployment-debugging'
@@ -33,6 +38,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const NotesRoute = NotesRouteImport.update({
   id: '/notes',
   path: '/notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HiringManagersRoute = HiringManagersRouteImport.update({
+  id: '/hiring-managers',
+  path: '/hiring-managers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -56,6 +66,18 @@ const WorkRfidPinAuthenticationResearchRoute =
     path: '/work/rfid-pin-authentication-research',
     getParentRoute: () => rootRouteImport,
   } as any)
+const WorkReliabilityMultiRegionInfrastructureRoute =
+  WorkReliabilityMultiRegionInfrastructureRouteImport.update({
+    id: '/work/reliability-multi-region-infrastructure',
+    path: '/work/reliability-multi-region-infrastructure',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkObservabilityAndSlosRoute =
+  WorkObservabilityAndSlosRouteImport.update({
+    id: '/work/observability-and-slos',
+    path: '/work/observability-and-slos',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkKubernetesCicdReliabilityRoute =
   WorkKubernetesCicdReliabilityRouteImport.update({
     id: '/work/kubernetes-cicd-reliability',
@@ -73,6 +95,18 @@ const WorkKafkaStrimziUpgradeRoute = WorkKafkaStrimziUpgradeRouteImport.update({
   path: '/work/kafka-strimzi-upgrade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkJavaApplicationServiceEngineeringRoute =
+  WorkJavaApplicationServiceEngineeringRouteImport.update({
+    id: '/work/java-application-service-engineering',
+    path: '/work/java-application-service-engineering',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkIacZeroDowntimeMigrationsRoute =
+  WorkIacZeroDowntimeMigrationsRouteImport.update({
+    id: '/work/iac-zero-downtime-migrations',
+    path: '/work/iac-zero-downtime-migrations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkAwsMicroservicesCdkEcsRoute =
   WorkAwsMicroservicesCdkEcsRouteImport.update({
     id: '/work/aws-microservices-cdk-ecs',
@@ -110,6 +144,7 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/hiring-managers': typeof HiringManagersRoute
   '/notes': typeof NotesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/notes/kafka-strimzi-upgrade-checklist': typeof NotesKafkaStrimziUpgradeChecklistRoute
@@ -117,9 +152,13 @@ export interface FileRoutesByFullPath {
   '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
+  '/work/iac-zero-downtime-migrations': typeof WorkIacZeroDowntimeMigrationsRoute
+  '/work/java-application-service-engineering': typeof WorkJavaApplicationServiceEngineeringRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
+  '/work/observability-and-slos': typeof WorkObservabilityAndSlosRoute
+  '/work/reliability-multi-region-infrastructure': typeof WorkReliabilityMultiRegionInfrastructureRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
   '/notes/': typeof NotesIndexRoute
   '/work/': typeof WorkIndexRoute
@@ -127,15 +166,20 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/hiring-managers': typeof HiringManagersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/notes/kafka-strimzi-upgrade-checklist': typeof NotesKafkaStrimziUpgradeChecklistRoute
   '/notes/keycloak-configuration-drift': typeof NotesKeycloakConfigurationDriftRoute
   '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
+  '/work/iac-zero-downtime-migrations': typeof WorkIacZeroDowntimeMigrationsRoute
+  '/work/java-application-service-engineering': typeof WorkJavaApplicationServiceEngineeringRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
+  '/work/observability-and-slos': typeof WorkObservabilityAndSlosRoute
+  '/work/reliability-multi-region-infrastructure': typeof WorkReliabilityMultiRegionInfrastructureRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
   '/notes': typeof NotesIndexRoute
   '/work': typeof WorkIndexRoute
@@ -144,6 +188,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/hiring-managers': typeof HiringManagersRoute
   '/notes': typeof NotesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/notes/kafka-strimzi-upgrade-checklist': typeof NotesKafkaStrimziUpgradeChecklistRoute
@@ -151,9 +196,13 @@ export interface FileRoutesById {
   '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
+  '/work/iac-zero-downtime-migrations': typeof WorkIacZeroDowntimeMigrationsRoute
+  '/work/java-application-service-engineering': typeof WorkJavaApplicationServiceEngineeringRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
+  '/work/observability-and-slos': typeof WorkObservabilityAndSlosRoute
+  '/work/reliability-multi-region-infrastructure': typeof WorkReliabilityMultiRegionInfrastructureRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
   '/notes/': typeof NotesIndexRoute
   '/work/': typeof WorkIndexRoute
@@ -163,6 +212,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/hiring-managers'
     | '/notes'
     | '/sitemap.xml'
     | '/notes/kafka-strimzi-upgrade-checklist'
@@ -170,9 +220,13 @@ export interface FileRouteTypes {
     | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
+    | '/work/iac-zero-downtime-migrations'
+    | '/work/java-application-service-engineering'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
+    | '/work/observability-and-slos'
+    | '/work/reliability-multi-region-infrastructure'
     | '/work/rfid-pin-authentication-research'
     | '/notes/'
     | '/work/'
@@ -180,15 +234,20 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/hiring-managers'
     | '/sitemap.xml'
     | '/notes/kafka-strimzi-upgrade-checklist'
     | '/notes/keycloak-configuration-drift'
     | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
+    | '/work/iac-zero-downtime-migrations'
+    | '/work/java-application-service-engineering'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
+    | '/work/observability-and-slos'
+    | '/work/reliability-multi-region-infrastructure'
     | '/work/rfid-pin-authentication-research'
     | '/notes'
     | '/work'
@@ -196,6 +255,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/hiring-managers'
     | '/notes'
     | '/sitemap.xml'
     | '/notes/kafka-strimzi-upgrade-checklist'
@@ -203,9 +263,13 @@ export interface FileRouteTypes {
     | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
+    | '/work/iac-zero-downtime-migrations'
+    | '/work/java-application-service-engineering'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
+    | '/work/observability-and-slos'
+    | '/work/reliability-multi-region-infrastructure'
     | '/work/rfid-pin-authentication-research'
     | '/notes/'
     | '/work/'
@@ -214,13 +278,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HiringManagersRoute: typeof HiringManagersRoute
   NotesRoute: typeof NotesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WorkAutomationFrameworkRoute: typeof WorkAutomationFrameworkRoute
   WorkAwsMicroservicesCdkEcsRoute: typeof WorkAwsMicroservicesCdkEcsRoute
+  WorkIacZeroDowntimeMigrationsRoute: typeof WorkIacZeroDowntimeMigrationsRoute
+  WorkJavaApplicationServiceEngineeringRoute: typeof WorkJavaApplicationServiceEngineeringRoute
   WorkKafkaStrimziUpgradeRoute: typeof WorkKafkaStrimziUpgradeRoute
   WorkKeycloakIdentityFlowRoute: typeof WorkKeycloakIdentityFlowRoute
   WorkKubernetesCicdReliabilityRoute: typeof WorkKubernetesCicdReliabilityRoute
+  WorkObservabilityAndSlosRoute: typeof WorkObservabilityAndSlosRoute
+  WorkReliabilityMultiRegionInfrastructureRoute: typeof WorkReliabilityMultiRegionInfrastructureRoute
   WorkRfidPinAuthenticationResearchRoute: typeof WorkRfidPinAuthenticationResearchRoute
   WorkIndexRoute: typeof WorkIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
@@ -240,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/notes'
       fullPath: '/notes'
       preLoaderRoute: typeof NotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hiring-managers': {
+      id: '/hiring-managers'
+      path: '/hiring-managers'
+      fullPath: '/hiring-managers'
+      preLoaderRoute: typeof HiringManagersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -270,6 +346,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkRfidPinAuthenticationResearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/reliability-multi-region-infrastructure': {
+      id: '/work/reliability-multi-region-infrastructure'
+      path: '/work/reliability-multi-region-infrastructure'
+      fullPath: '/work/reliability-multi-region-infrastructure'
+      preLoaderRoute: typeof WorkReliabilityMultiRegionInfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/observability-and-slos': {
+      id: '/work/observability-and-slos'
+      path: '/work/observability-and-slos'
+      fullPath: '/work/observability-and-slos'
+      preLoaderRoute: typeof WorkObservabilityAndSlosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work/kubernetes-cicd-reliability': {
       id: '/work/kubernetes-cicd-reliability'
       path: '/work/kubernetes-cicd-reliability'
@@ -289,6 +379,20 @@ declare module '@tanstack/react-router' {
       path: '/work/kafka-strimzi-upgrade'
       fullPath: '/work/kafka-strimzi-upgrade'
       preLoaderRoute: typeof WorkKafkaStrimziUpgradeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/java-application-service-engineering': {
+      id: '/work/java-application-service-engineering'
+      path: '/work/java-application-service-engineering'
+      fullPath: '/work/java-application-service-engineering'
+      preLoaderRoute: typeof WorkJavaApplicationServiceEngineeringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/iac-zero-downtime-migrations': {
+      id: '/work/iac-zero-downtime-migrations'
+      path: '/work/iac-zero-downtime-migrations'
+      fullPath: '/work/iac-zero-downtime-migrations'
+      preLoaderRoute: typeof WorkIacZeroDowntimeMigrationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/work/aws-microservices-cdk-ecs': {
@@ -356,13 +460,20 @@ const NotesRouteWithChildren = NotesRoute._addFileChildren(NotesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HiringManagersRoute: HiringManagersRoute,
   NotesRoute: NotesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WorkAutomationFrameworkRoute: WorkAutomationFrameworkRoute,
   WorkAwsMicroservicesCdkEcsRoute: WorkAwsMicroservicesCdkEcsRoute,
+  WorkIacZeroDowntimeMigrationsRoute: WorkIacZeroDowntimeMigrationsRoute,
+  WorkJavaApplicationServiceEngineeringRoute:
+    WorkJavaApplicationServiceEngineeringRoute,
   WorkKafkaStrimziUpgradeRoute: WorkKafkaStrimziUpgradeRoute,
   WorkKeycloakIdentityFlowRoute: WorkKeycloakIdentityFlowRoute,
   WorkKubernetesCicdReliabilityRoute: WorkKubernetesCicdReliabilityRoute,
+  WorkObservabilityAndSlosRoute: WorkObservabilityAndSlosRoute,
+  WorkReliabilityMultiRegionInfrastructureRoute:
+    WorkReliabilityMultiRegionInfrastructureRoute,
   WorkRfidPinAuthenticationResearchRoute:
     WorkRfidPinAuthenticationResearchRoute,
   WorkIndexRoute: WorkIndexRoute,
@@ -371,3 +482,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
