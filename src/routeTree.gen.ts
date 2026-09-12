@@ -9,38 +9,101 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkObservabilityRouteImport } from './routes/work.observability'
+import { Route as WorkKafkaKubernetesRouteImport } from './routes/work.kafka-kubernetes'
+import { Route as WorkApiInfrastructureRouteImport } from './routes/work.api-infrastructure'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkObservabilityRoute = WorkObservabilityRouteImport.update({
+  id: '/work/observability',
+  path: '/work/observability',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkKafkaKubernetesRoute = WorkKafkaKubernetesRouteImport.update({
+  id: '/work/kafka-kubernetes',
+  path: '/work/kafka-kubernetes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkApiInfrastructureRoute = WorkApiInfrastructureRouteImport.update({
+  id: '/work/api-infrastructure',
+  path: '/work/api-infrastructure',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/work/api-infrastructure': typeof WorkApiInfrastructureRoute
+  '/work/kafka-kubernetes': typeof WorkKafkaKubernetesRoute
+  '/work/observability': typeof WorkObservabilityRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/work/api-infrastructure': typeof WorkApiInfrastructureRoute
+  '/work/kafka-kubernetes': typeof WorkKafkaKubernetesRoute
+  '/work/observability': typeof WorkObservabilityRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/work/api-infrastructure': typeof WorkApiInfrastructureRoute
+  '/work/kafka-kubernetes': typeof WorkKafkaKubernetesRoute
+  '/work/observability': typeof WorkObservabilityRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/sitemap.xml'
+    | '/work/api-infrastructure'
+    | '/work/kafka-kubernetes'
+    | '/work/observability'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/sitemap.xml'
+    | '/work/api-infrastructure'
+    | '/work/kafka-kubernetes'
+    | '/work/observability'
+  id:
+    | '__root__'
+    | '/'
+    | '/sitemap.xml'
+    | '/work/api-infrastructure'
+    | '/work/kafka-kubernetes'
+    | '/work/observability'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  WorkApiInfrastructureRoute: typeof WorkApiInfrastructureRoute
+  WorkKafkaKubernetesRoute: typeof WorkKafkaKubernetesRoute
+  WorkObservabilityRoute: typeof WorkObservabilityRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +111,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/observability': {
+      id: '/work/observability'
+      path: '/work/observability'
+      fullPath: '/work/observability'
+      preLoaderRoute: typeof WorkObservabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/kafka-kubernetes': {
+      id: '/work/kafka-kubernetes'
+      path: '/work/kafka-kubernetes'
+      fullPath: '/work/kafka-kubernetes'
+      preLoaderRoute: typeof WorkKafkaKubernetesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/api-infrastructure': {
+      id: '/work/api-infrastructure'
+      path: '/work/api-infrastructure'
+      fullPath: '/work/api-infrastructure'
+      preLoaderRoute: typeof WorkApiInfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  WorkApiInfrastructureRoute: WorkApiInfrastructureRoute,
+  WorkKafkaKubernetesRoute: WorkKafkaKubernetesRoute,
+  WorkObservabilityRoute: WorkObservabilityRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

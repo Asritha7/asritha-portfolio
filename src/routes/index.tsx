@@ -1,113 +1,60 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 import portraitAsset from "@/assets/portrait.jpg.asset.json";
 import resumeAsset from "@/assets/resume.pdf.asset.json";
+import {
+  SITE,
+  LINKS,
+  HERO,
+  CASE_STUDIES,
+  EXPERIENCE,
+  PRINCIPLES,
+  CAPABILITIES,
+  RESEARCH,
+  PUBLIC_REPOS,
+  EARLIER_PROJECTS,
+} from "@/content/portfolio";
+
 const portrait = portraitAsset.url;
 const resume = resumeAsset.url;
 
-const INDEX_DESC =
-  "Software engineer at Goldman Sachs building API gateway infrastructure, cloud tooling, and observability for distributed systems.";
-const INDEX_URL = "https://asritha.dev";
-const INDEX_OG_IMAGE = "https://asritha.dev/og-image.jpg";
+const TITLE = "Asritha Nibhanupudi | Software Engineer";
+const DESC =
+  "Software engineer experienced in backend systems, distributed systems, APIs, AWS, Kubernetes, automation, and observability.";
+const URL = "https://asritha.dev";
+const OG_IMAGE = "https://asritha.dev/og-image.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Asritha Nibhanupudi - Software Engineer" },
-      { name: "description", content: INDEX_DESC },
-      { property: "og:url", content: INDEX_URL },
-      { property: "og:title", content: "Asritha Nibhanupudi - Software Engineer" },
-      { property: "og:description", content: INDEX_DESC },
-      { property: "og:image", content: INDEX_OG_IMAGE },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:url", content: URL },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:image", content: OG_IMAGE },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Asritha Nibhanupudi - Software Engineer at Goldman Sachs" },
+      { property: "og:image:alt", content: "Asritha Nibhanupudi — Software Engineer" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Asritha Nibhanupudi - Software Engineer" },
-      { name: "twitter:description", content: INDEX_DESC },
-      { name: "twitter:image", content: INDEX_OG_IMAGE },
-      { name: "twitter:image:alt", content: "Asritha Nibhanupudi - Software Engineer at Goldman Sachs" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESC },
+      { name: "twitter:image", content: OG_IMAGE },
+      { name: "twitter:image:alt", content: "Asritha Nibhanupudi — Software Engineer" },
     ],
     links: [{ rel: "canonical", href: "https://asritha.dev/" }],
   }),
   component: Portfolio,
 });
 
-
-
 const nav = [
   { id: "work", label: "Work" },
-  { id: "now", label: "Now" },
   { id: "experience", label: "Experience" },
-  { id: "about", label: "About" },
+  { id: "principles", label: "Principles" },
+  { id: "capabilities", label: "Capabilities" },
   { id: "contact", label: "Contact" },
 ];
-
-const work = [
-  { n: "01", title: "API Gateway Infrastructure", desc: "Hybrid on-prem + multi-region AWS routing layer.", tags: ["CDK", "ECS Fargate", "Nginx"], year: "2026" },
-  { n: "02", title: "Observability Onboarding", desc: "Prometheus + Grafana for Java microservices across environments.", tags: ["Prometheus", "Grafana", "Java"], year: "2026" },
-  { n: "03", title: "Kafka / Strimzi Test Strategy", desc: "Zero regression across major version upgrades on Kubernetes-native event streaming.", tags: ["Kafka", "Strimzi", "K8s"], year: "2025" },
-  { n: "04", title: "Cypress Automation Framework", desc: "150+ modular tests, ~60% less regression effort, integrated into GitLab CI.", tags: ["Cypress", "GitLab CI"], year: "2025" },
-  { n: "05", title: "GitLab CI/CD Pipeline Optimisation", desc: "~30% faster deployments, improved release consistency.", tags: ["GitLab", "CI/CD"], year: "2025" },
-  { n: "06", title: "Keycloak / OpenSearch Automation", desc: "Identity flows via REST APIs + shell scripting, ~50% less manual ops.", tags: ["Keycloak", "OpenSearch", "Bash"], year: "2025" },
-  { n: "07", title: "RFID + PIN Multi-level Authentication", desc: "Published research, IEEE ICMACC 2024 - microcontroller-based secure access.", tags: ["IEEE", "Embedded"], year: "2024" },
-];
-
-const earlier = [
-  { label: "SONAR Rock vs Mine (Python/ML)", href: "https://github.com/Asritha7" },
-  { label: "Soil Moisture Monitoring (ESP32)", href: "" },
-  { label: "Audio Transmission via Li-Fi", href: "" },
-  { label: "YouTube Comment Analysis (Python)", href: "https://github.com/Asritha7" },
-  { label: "Website Blocker (Python)", href: "" },
-  { label: "PCB Design & Fabrication (KiCad)", href: "" },
-];
-
-const experience = [
-  {
-    role: "Analyst, Systems Engineering",
-    org: "Goldman Sachs",
-    date: "May 2026 - Present",
-    place: "Bengaluru · On-site",
-    body: "Subledger Technology platform for Asset & Wealth Management. Cloud platform engineering across hybrid API gateway infra and AWS-native microservices (CDK, Fargate, Aurora, Lambda). Onboarding Prometheus + Grafana observability for Java microservices.",
-  },
-  {
-    role: "Software Engineer - Automation & Infrastructure",
-    org: "Oracle",
-    date: "Aug 2024 - Apr 2026",
-    place: "Hyderabad",
-    body: "CI/CD & release engineering on GitLab (~30% faster deploys). 150+ Cypress tests (~60% less regression). Kafka/Strimzi test strategy across version upgrades. Kubernetes deployments. Keycloak/OpenSearch automation. \"Best Efforts\" nominee; mentored juniors on CI/CD & K8s debugging.",
-  },
-  {
-    role: "Project Intern",
-    org: "Oracle",
-    date: "Jan 2024 - Jul 2024",
-    place: "Hyderabad",
-    body: "Modular Cypress components for enterprise pipelines; root-cause analysis reducing bug leakage by ~20%.",
-  },
-  {
-    role: "Web Developer - Intern",
-    org: "Oasis Infobyte",
-    date: "Jul 2023 - Aug 2023",
-    place: "Remote",
-    body: "Responsive front-end components & landing pages (HTML/CSS/JS); shipped projects to GitHub.",
-  },
-];
-
-const skills = [
-  { label: "Cloud & Platform", items: ["AWS", "CDK", "ECS Fargate", "Aurora PostgreSQL", "Lambda", "Nginx"] },
-  { label: "Distributed & Infra", items: ["Kubernetes", "Apache Kafka", "Strimzi", "REST APIs", "Linux"] },
-  { label: "CI/CD & Automation", items: ["GitLab CI/CD", "Cypress", "Keycloak", "OpenSearch"] },
-  { label: "Observability", items: ["Prometheus", "Grafana"] },
-  { label: "Languages", items: ["TypeScript", "Python", "Java", "SQL", "C++"] },
-];
-
-const links = {
-  github: "https://github.com/Asritha7",
-  linkedin: "https://linkedin.com/in/asritha-nibhanupudi",
-  research: "https://ieeexplore.ieee.org/document/10893942",
-  email: "mailto:nibhanupudiasritha@gmail.com",
-};
 
 type ThemeMode = "light" | "dark";
 
@@ -131,7 +78,7 @@ function useThemePreference() {
 
   return {
     theme,
-    toggleTheme: () => setTheme((current) => (current === "dark" ? "light" : "dark")),
+    toggleTheme: () => setTheme((c) => (c === "dark" ? "light" : "dark")),
   };
 }
 
@@ -147,60 +94,40 @@ function useReveal() {
           }
         });
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 }
 
-function useParallax() {
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const el = document.getElementById("portrait-wrap");
-    if (!el) return;
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        el.style.transform = `translateY(${Math.min(y * 0.06, 40)}px)`;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-}
-
 function Portfolio() {
   useReveal();
-  useParallax();
   const { theme, toggleTheme } = useThemePreference();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
-      {/* Top bar */}
+      {/* skip link */}
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-[3px] focus:bg-terra focus:px-3 focus:py-2 focus:text-panel">
+        Skip to content
+      </a>
+
       <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-[46px]">
-          <a href="#top" className="mono-label !font-bold !text-text-primary !text-xl">Asritha Nibhanupudi</a>
-          <nav className="hidden items-center gap-7 md:flex">
+          <a href="#top" className="mono-label !font-bold !text-text-primary !text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra rounded-[3px]">
+            {SITE.name}
+          </a>
+          <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
             {nav.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className="mono-label transition-colors hover:!text-terra">
+              <a key={n.id} href={`#${n.id}`} className="mono-label transition-colors hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra">
                 {n.label}
               </a>
             ))}
-            <span className="flex items-center gap-2 rounded-[3px] border border-hairline bg-panel px-3 py-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ background: "var(--status-green)" }} />
-                <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "var(--status-green)" }} />
-              </span>
-              <span className="mono-label !text-text-primary !text-[11px]">Available</span>
-            </span>
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary transition-colors hover:text-terra hover:bg-warm-fill"
+              className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary transition-colors hover:text-terra hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra"
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -210,14 +137,14 @@ function Portfolio() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary transition-colors hover:text-terra hover:bg-warm-fill"
+              className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary"
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
               type="button"
-              onClick={() => setMenuOpen((open) => !open)}
+              onClick={() => setMenuOpen((o) => !o)}
               className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-1.5"
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
@@ -227,15 +154,10 @@ function Portfolio() {
           </div>
         </div>
         {menuOpen ? (
-          <nav id="mobile-nav" className="border-t border-hairline bg-background px-6 py-4 md:hidden">
+          <nav id="mobile-nav" aria-label="Mobile" className="border-t border-hairline bg-background px-6 py-4 md:hidden">
             <div className="grid grid-cols-2 gap-3">
               {nav.map((n) => (
-                <a
-                  key={n.id}
-                  href={`#${n.id}`}
-                  onClick={() => setMenuOpen(false)}
-                  className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 transition-colors hover:!text-terra hover:bg-warm-fill"
-                >
+                <a key={n.id} href={`#${n.id}`} onClick={() => setMenuOpen(false)} className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 hover:!text-terra hover:bg-warm-fill">
                   {n.label}
                 </a>
               ))}
@@ -244,42 +166,46 @@ function Portfolio() {
         ) : null}
       </header>
 
-
-      <main id="top" className="mx-auto max-w-[1280px] px-6 md:px-[46px]">
+      <main id="main" className="mx-auto max-w-[1280px] px-6 md:px-[46px]">
+        <a id="top" />
 
         {/* Hero */}
-        <section className="grid grid-cols-1 gap-12 pt-16 pb-24 md:grid-cols-[1fr_360px] md:gap-16 md:pt-24 md:pb-32">
+        <section aria-labelledby="hero-heading" className="grid grid-cols-1 gap-12 pt-16 pb-20 md:grid-cols-[1fr_360px] md:gap-16 md:pt-24 md:pb-28">
           <div className="reveal">
-            <p className="mono-label">Analyst · Systems Engineering · Goldman Sachs</p>
-            <h1 className="font-serif-display mt-6 text-[clamp(38px,7vw,72px)]">
-              Engineering calm,{" "}
-              <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em>{" "}
-              systems behind asset &amp; wealth management.
+            <p className="mono-label">{HERO.eyebrow}</p>
+            <h1 id="hero-heading" className="font-serif-display mt-6 text-[clamp(36px,6.4vw,68px)]">
+              I build <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em> software systems that scale.
             </h1>
-            <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">
-              I'm a software engineer working across cloud platform engineering, API gateway infrastructure, and observability - building on AWS and on-prem systems that stay quiet under pressure.
-            </p>
+            <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">{HERO.description}</p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <a href="#work" className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark">
-                View selected work →
+              <a href="#work" className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+                View my work →
               </a>
-              <a href={resume} download className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill">
+              <a href={resume} download className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
                 Download résumé
               </a>
             </div>
-            <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3">
+            <ul className="mt-8 flex flex-wrap gap-2">
+              <li className="rounded-[3px] border border-hairline bg-panel px-3 py-1.5 mono-label !text-text-primary !text-[11px]">
+                Based in {SITE.location}
+              </li>
+              <li className="rounded-[3px] border border-hairline bg-panel px-3 py-1.5 mono-label !text-text-primary !text-[11px]">
+                {SITE.education}
+              </li>
+            </ul>
+            <ul className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
               {[
-                { href: links.github, label: "GitHub" },
-                { href: links.linkedin, label: "LinkedIn" },
-                { href: links.research, label: "Research" },
-                { href: links.email, label: "Email" },
+                { href: LINKS.github, label: "GitHub" },
+                { href: LINKS.linkedin, label: "LinkedIn" },
+                { href: LINKS.research, label: "Research" },
+                { href: LINKS.email, label: "Email" },
               ].map((l) => (
                 <li key={l.label}>
                   <a
                     href={l.href}
                     target={l.href.startsWith("mailto") ? undefined : "_blank"}
-                    rel="noreferrer"
-                    className="mono-label inline-flex items-center gap-1 border-b border-transparent !text-text-secondary transition-colors hover:!text-terra hover:border-terra"
+                    rel="noopener noreferrer"
+                    className="mono-label inline-flex items-center gap-1 border-b border-transparent !text-text-secondary transition-colors hover:!text-terra hover:border-terra focus-visible:!text-terra"
                   >
                     {l.label} ↗
                   </a>
@@ -288,163 +214,142 @@ function Portfolio() {
             </ul>
           </div>
           <aside className="reveal">
-            <div id="portrait-wrap" className="will-change-transform">
-              <div className="overflow-hidden rounded-[3px] border border-hairline bg-warm-fill">
-                <img
-                  src={portrait}
-                  alt="Portrait of Asritha Nibhanupudi"
-                  width={1200}
-                  height={1600}
-                  className="aspect-[4/5] h-auto w-full object-cover"
-                />
-              </div>
-              <p className="mono-label mt-3">B.Tech ECE - VNR VJIET · Bengaluru, India</p>
+            <div className="overflow-hidden rounded-[3px] border border-hairline bg-warm-fill">
+              <img
+                src={portrait}
+                alt={`Portrait of ${SITE.name}`}
+                width={1200}
+                height={1600}
+                className="aspect-[4/5] h-auto w-full object-cover"
+                loading="eager"
+                decoding="async"
+              />
             </div>
           </aside>
         </section>
 
-        <div
-          className="marquee-strip relative left-1/2 -translate-x-1/2 w-screen overflow-hidden border-y border-hairline bg-[var(--marquee-bg)] py-4"
-          aria-label="Technologies"
-        >
-          <div className="marquee-track">
-            {[0, 1].map((i) => (
-              <div
-                key={i}
-                aria-hidden={i === 1 ? true : undefined}
-                className="flex shrink-0 items-center whitespace-nowrap pr-12"
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 13,
-                  letterSpacing: "0.06em",
-                  color: "var(--text-muted)",
-                }}
-              >
-                {["AWS","CDK","ECS Fargate","Aurora PostgreSQL","Lambda","Kubernetes","Apache Kafka","Strimzi","Nginx","GitLab CI","Cypress","Prometheus","Grafana","TypeScript","Python","Java","SQL","C++","Linux"].map((t, j, arr) => (
-                  <span key={t} className="flex items-center">
-                    <span>{t}</span>
-                    <span className="px-4 opacity-60">·</span>
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Now */}
-        <section id="now" className="border-t border-hairline py-20">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
+        {/* Featured case studies */}
+        <section id="work" aria-labelledby="work-heading" className="border-t border-hairline py-20">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label" style={{ color: "var(--accent-terra-dark)" }}>Now -</span>
-            </div>
-            <div className="reveal">
-              <p className="font-serif-display text-[clamp(24px,3.4vw,34px)] italic">
-                Cloud platform engineering on hybrid API gateways &amp; AWS-native microservices.
-              </p>
-              <ul className="mt-8 space-y-4 text-[18px] text-text-secondary">
-                <li className="flex gap-4">
-                  <span className="mono-label pt-1.5">01</span>
-                  <span>Hybrid API gateway infrastructure spanning on-prem and multi-region AWS.</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="mono-label pt-1.5">02</span>
-                  <span>AWS-native microservices using <strong className="text-text-primary font-medium">CDK (TypeScript), ECS Fargate, Aurora PostgreSQL, Lambda</strong>.</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="mono-label pt-1.5">03</span>
-                  <span>Onboarding <strong className="text-text-primary font-medium">Prometheus + Grafana</strong> observability for Java microservices.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Work */}
-        <section id="work" className="border-t border-hairline py-20">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
-            <div className="reveal">
-              <span className="mono-label">01 - Work</span>
-              <h2 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Selected <em className="italic" style={{ color: "var(--accent-terra)" }}>work</em>.
+              <span className="mono-label">01 — Case studies</span>
+              <h2 id="work-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                Featured <em className="italic" style={{ color: "var(--accent-terra)" }}>work</em>.
               </h2>
+              <p className="mt-3 text-[15px] text-text-secondary">
+                Three software engineering projects, each as a problem and the decisions behind it.
+              </p>
             </div>
-            <ul className="reveal">
-              {work.map((w) => (
-                <li key={w.n} className="group border-t border-hairline first:border-t-0">
-                    <div className="grid grid-cols-[40px_1fr_auto] items-baseline gap-6 py-6 transition-colors group-hover:bg-warm-fill">
-                    <span className="mono-label">{w.n}</span>
-                    <div className="min-w-0">
-                      <h3 className="font-serif-display text-[22px] md:text-[26px]">{w.title}</h3>
-                      <p className="mt-2 text-[16px] text-text-secondary">{w.desc}</p>
-                      <p className="mono-label mt-3">{w.tags.join(" · ")}</p>
+            <ul className="reveal grid grid-cols-1 gap-5">
+              {CASE_STUDIES.map((c, i) => (
+                <li key={c.slug}>
+                  <Link
+                    to={
+                      c.slug === "api-infrastructure"
+                        ? "/work/api-infrastructure"
+                        : c.slug === "observability"
+                        ? "/work/observability"
+                        : "/work/kafka-kubernetes"
+                    }
+                    className="group block rounded-[3px] border border-hairline bg-panel p-6 transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra md:p-8"
+                  >
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="mono-label">0{i + 1}</span>
+                      <span className="mono-label">{c.year}</span>
                     </div>
-                    <span className="mono-label whitespace-nowrap">
-                      {w.year}
+                    <h3 className="font-serif-display mt-3 text-[22px] md:text-[26px]">{c.title}</h3>
+                    <p className="mt-3 text-[16px] text-text-secondary">{c.blurb}</p>
+                    <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
+                      {c.tags.map((t) => (
+                        <li key={t} className="!text-[11px]">
+                          · {t}
+                        </li>
+                      ))}
+                    </ul>
+                    <span className="mono-label mt-5 inline-flex items-center gap-1 group-hover:!text-terra">
+                      Read case study →
                     </span>
-                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
-          <details className="mt-12 ml-0 md:ml-[216px]">
-            <summary className="mono-label cursor-pointer hover:!text-terra">+ Earlier &amp; academic projects</summary>
-            <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-2 text-[15px] text-text-secondary sm:grid-cols-2 lg:grid-cols-3">
-              {earlier.map((p) => (
-                <li key={p.label} className="border-b border-hairline py-2">
-                  {p.href ? (
-                    <a
-                      href={p.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1 transition-colors hover:!text-terra"
-                    >
-                      {p.label} ↗
-                    </a>
-                  ) : (
-                    p.label
-                  )}
-                </li>
-              ))}
-            </ul>
-          </details>
         </section>
 
         {/* Experience */}
-        <section id="experience" className="border-t border-hairline py-20">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
+        <section id="experience" aria-labelledby="exp-heading" className="border-t border-hairline py-20">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">02 - Experience</span>
-              <h2 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                A short <em className="italic" style={{ color: "var(--accent-terra)" }}>timeline</em>.
+              <span className="mono-label">02 — Experience</span>
+              <h2 id="exp-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                Professional <em className="italic" style={{ color: "var(--accent-terra)" }}>timeline</em>.
               </h2>
             </div>
             <ol className="relative">
-              {experience.map((e, i) => (
+              {EXPERIENCE.map((e, i) => (
                 <li key={i} className="reveal relative border-l border-hairline pb-12 pl-8 last:pb-0">
                   <span className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full" style={{ background: "var(--accent-terra)" }} />
                   <p className="mono-label">{e.date} · {e.place}</p>
-                  <h3 className="font-serif-display mt-2 text-[22px] md:text-[26px]">
-                    {e.role} <span className="text-text-secondary"> - {e.org}</span>
+                  <h3 className="font-serif-display mt-2 text-[22px] md:text-[24px]">
+                    {e.role} <span className="text-text-secondary"> — {e.org}</span>
                   </h3>
-                  <p className="mt-3 max-w-[62ch] text-[16.5px] text-text-secondary">{e.body}</p>
+                  <p className="mt-3 max-w-[64ch] text-[16.5px] text-text-secondary">{e.scope}</p>
+                  <ul className="mt-4 space-y-2 text-[16px] text-text-secondary">
+                    {e.contributions.map((c, j) => (
+                      <li key={j} className="flex gap-3">
+                        <span className="mt-2.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--accent-terra)" }} />
+                        <span>{c}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {e.stack ? (
+                    <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
+                      {e.stack.map((s) => (
+                        <li key={s} className="!text-[11px]">· {s}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {"note" in e && e.note ? (
+                    <p className="mono-label mt-3 !text-[11px]">{e.note}</p>
+                  ) : null}
                 </li>
               ))}
             </ol>
           </div>
         </section>
 
-        {/* Skills */}
-        <section className="border-t border-hairline py-20">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[200px_1fr] md:gap-16">
+        {/* Principles */}
+        <section id="principles" aria-labelledby="principles-heading" className="border-t border-hairline py-20">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">03 - Toolkit</span>
-              <h2 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Tools I <em className="italic" style={{ color: "var(--accent-terra)" }}>reach for</em>.
+              <span className="mono-label">03 — Principles</span>
+              <h2 id="principles-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                How I <em className="italic" style={{ color: "var(--accent-terra)" }}>think</em>.
+              </h2>
+            </div>
+            <ul className="reveal grid grid-cols-1 gap-5 md:grid-cols-2">
+              {PRINCIPLES.map((p) => (
+                <li key={p.title} className="rounded-[3px] border border-hairline bg-panel p-5 md:p-6">
+                  <h3 className="font-serif-display text-[18px]">{p.title}</h3>
+                  <p className="mt-2 text-[15.5px] text-text-secondary">{p.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* Capabilities */}
+        <section id="capabilities" aria-labelledby="cap-heading" className="border-t border-hairline py-20">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+            <div className="reveal">
+              <span className="mono-label">04 — Capabilities</span>
+              <h2 id="cap-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                Technical <em className="italic" style={{ color: "var(--accent-terra)" }}>capabilities</em>.
               </h2>
             </div>
             <div className="reveal space-y-8">
-              {skills.map((g) => (
-                <div key={g.label} className="grid grid-cols-1 gap-4 sm:grid-cols-[180px_1fr]">
+              {CAPABILITIES.map((g) => (
+                <div key={g.label} className="grid grid-cols-1 gap-4 sm:grid-cols-[200px_1fr]">
                   <p className="mono-label pt-1">{g.label}</p>
                   <ul className="flex flex-wrap gap-2">
                     {g.items.map((t) => (
@@ -459,69 +364,89 @@ function Portfolio() {
           </div>
         </section>
 
-        {/* About */}
-        <section id="about" className="border-t border-hairline py-20">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_340px] md:gap-14">
+        {/* Public engineering work */}
+        <section aria-labelledby="repos-heading" className="border-t border-hairline py-20">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">About</span>
-              <h2 className="font-serif-display mt-4 text-[clamp(28px,3.6vw,38px)]">
-                I build the quiet infrastructure that keeps financial platforms running - and I care about doing it well.
+              <span className="mono-label">05 — Open source</span>
+              <h2 id="repos-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                Public <em className="italic" style={{ color: "var(--accent-terra)" }}>engineering</em> work.
               </h2>
-              <div className="mt-8 max-w-[58ch] space-y-5 text-[18px] text-text-secondary">
-                <p>
-                  I'm a software engineer at Goldman Sachs on the AWM Subledger Technology team, working across cloud platform engineering, API gateway infrastructure, and observability. Previously at Oracle, I focused on automation, CI/CD, and infrastructure reliability - building modular Cypress frameworks, tuning GitLab pipelines, and designing test strategies for Apache Kafka and the Strimzi Operator that caught regressions before they reached production.
-                </p>
-                <p>
-                  My background is in Electronics &amp; Communications Engineering (B.Tech, VNR VJIET). I'm always eager to connect with engineers and industry leaders about backend development, cloud-native platforms, and the future of engineering.
-                </p>
-              </div>
+              <p className="mt-3 text-[15px] text-text-secondary">
+                Repositories in progress. Each will ship with architecture notes, tests, and deployment instructions.
+              </p>
             </div>
-            <aside className="reveal space-y-5">
-              <a
-                href={links.research}
-                target="_blank"
-                rel="noreferrer"
-                className="group block rounded-[3px] bg-terra p-6 text-dark-foreground transition-colors hover:bg-terra-dark md:p-7"
-              >
-                <p className="mono-label !text-dark-foreground/80">Published Research</p>
-                <h3 className="font-serif-display mt-4 text-[22px] leading-snug">
-                  Multi-level authentication combining RFID and PIN-based access control
-                </h3>
-                <p className="mt-4 text-[14px] opacity-90">IEEE ICMACC 2024 · Co-authored</p>
-                <span className="mono-label mt-5 inline-flex items-center gap-1 !text-dark-foreground group-hover:underline">
-                  Read paper →
-                </span>
-              </a>
-              <div className="rounded-[3px] border border-hairline bg-panel p-6 md:p-7">
-                <p className="mono-label">Quick Facts</p>
-                <dl className="mt-5 space-y-3 text-[14px]">
-                  <div className="flex justify-between"><dt className="mono-label">Based in</dt><dd className="text-text-secondary">Bengaluru, India</dd></div>
-                  <div className="flex justify-between"><dt className="mono-label">Degree</dt><dd className="text-text-secondary">B.Tech ECE</dd></div>
-                  <div className="flex justify-between"><dt className="mono-label">University</dt><dd className="text-text-secondary">VNR VJIET</dd></div>
-                  <div className="flex justify-between"><dt className="mono-label">Focus</dt><dd className="text-text-secondary">Cloud-native platforms</dd></div>
-                </dl>
-              </div>
-            </aside>
+            <ul className="reveal grid grid-cols-1 gap-4">
+              {PUBLIC_REPOS.map((r) => (
+                <li key={r.title} className="rounded-[3px] border border-hairline bg-panel p-5 md:p-6">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h3 className="font-serif-display text-[18px]">{r.title}</h3>
+                    <span className="mono-label !text-[11px]">{r.status}</span>
+                  </div>
+                  <p className="mt-2 text-[15.5px] text-text-secondary">{r.blurb}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
+        {/* Research + earlier */}
+        <section aria-labelledby="research-heading" className="border-t border-hairline py-20">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+            <div className="reveal">
+              <span className="mono-label">06 — Research</span>
+              <h2 id="research-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                Published <em className="italic" style={{ color: "var(--accent-terra)" }}>research</em>.
+              </h2>
+            </div>
+            <div className="reveal space-y-6">
+              <a
+                href={RESEARCH.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block rounded-[3px] bg-terra p-6 text-dark-foreground transition-colors hover:bg-terra-dark md:p-7"
+              >
+                <p className="mono-label !text-dark-foreground/80">{RESEARCH.venue} · {RESEARCH.note}</p>
+                <h3 className="font-serif-display mt-3 text-[22px] leading-snug">{RESEARCH.title}</h3>
+                <span className="mono-label mt-4 inline-flex items-center gap-1 !text-dark-foreground group-hover:underline">
+                  Read paper →
+                </span>
+              </a>
+              <details className="rounded-[3px] border border-hairline bg-panel p-5">
+                <summary className="mono-label cursor-pointer hover:!text-terra">+ Earlier projects</summary>
+                <ul className="mt-5 grid grid-cols-1 gap-x-8 gap-y-2 text-[15px] text-text-secondary sm:grid-cols-2">
+                  {EARLIER_PROJECTS.map((p) => (
+                    <li key={p.label} className="border-b border-hairline py-2">
+                      {p.href ? (
+                        <a href={p.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:!text-terra">
+                          {p.label} ↗
+                        </a>
+                      ) : (
+                        p.label
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </div>
+          </div>
+        </section>
       </main>
 
-      {/* Contact + Footer */}
+      {/* Contact + footer */}
       <div className="bg-dark-background text-dark-foreground">
-        <section id="contact" className="mx-auto max-w-[1280px] px-6 py-24 md:px-[46px] md:py-32">
+        <section id="contact" aria-labelledby="contact-heading" className="mx-auto max-w-[1280px] px-6 py-24 md:px-[46px] md:py-28">
           <div className="reveal grid grid-cols-1 gap-14 md:grid-cols-[1fr_1fr] md:gap-20">
             <div>
-              <span className="mono-label !text-dark-foreground/60">Get in Touch</span>
-              <h2 className="font-serif-display mt-6 text-[clamp(40px,6vw,68px)]">
-                Let's build something{" "}
-                <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em>.
+              <span className="mono-label !text-dark-foreground/60">07 — Contact</span>
+              <h2 id="contact-heading" className="font-serif-display mt-6 text-[clamp(38px,5.6vw,60px)]">
+                Let's talk about <em className="italic" style={{ color: "var(--accent-terra)" }}>software</em>.
               </h2>
               <p className="mt-6 max-w-[42ch] text-[17px] text-dark-foreground/70">
-                Drop a note about a role, a project, or anything you're building. I read every message.
+                Open to software engineering roles and collaborations. Reach out about a project, a role, or anything you're building.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <a href={links.email} className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
+                <a href={LINKS.email} className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
                   Email directly
                 </a>
                 <a href={resume} download className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
@@ -535,16 +460,16 @@ function Portfolio() {
 
         <footer className="border-t border-dark-foreground/10">
           <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4 px-6 py-8 md:px-[46px]">
-            <p className="mono-label !text-dark-foreground/60">© 2026 ASRITHA NIBHANUPUDI · BENGALURU</p>
+            <p className="mono-label !text-dark-foreground/60">© 2026 {SITE.name.toUpperCase()} · {SITE.location.toUpperCase()}</p>
             <ul className="flex flex-wrap gap-x-7 gap-y-2">
               {[
-                { href: links.github, label: "GitHub" },
-                { href: links.linkedin, label: "LinkedIn" },
-                { href: links.email, label: "Email" },
-                { href: links.research, label: "Research" },
+                { href: LINKS.github, label: "GitHub" },
+                { href: LINKS.linkedin, label: "LinkedIn" },
+                { href: LINKS.email, label: "Email" },
+                { href: LINKS.research, label: "Research" },
               ].map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} target={l.href.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer" className="mono-label inline-flex items-center gap-1 !text-dark-foreground/70 transition-colors hover:!text-dark-foreground">
+                  <a href={l.href} target={l.href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer" className="mono-label inline-flex items-center gap-1 !text-dark-foreground/70 transition-colors hover:!text-dark-foreground">
                     {l.label} ↗
                   </a>
                 </li>
@@ -553,55 +478,140 @@ function Portfolio() {
           </div>
         </footer>
       </div>
-
     </div>
   );
 }
+
+type FormState = "idle" | "submitting" | "success" | "error";
 
 function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
+  const [website, setWebsite] = useState(""); // honeypot
+  const [state, setState] = useState<FormState>("idle");
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
+
+  const validate = () => {
+    const next: typeof errors = {};
+    const n = name.trim();
+    const em = email.trim();
+    const m = message.trim();
+    if (!n) next.name = "Please enter your name.";
+    else if (n.length > 100) next.name = "Name is too long.";
+    if (!em) next.email = "Please enter your email.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) next.email = "Please enter a valid email.";
+    if (!m) next.message = "Please enter a message.";
+    else if (m.length > 2000) next.message = "Message is too long.";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmedName = name.trim().slice(0, 100);
-    const trimmedEmail = email.trim().slice(0, 200);
-    const trimmedMsg = message.trim().slice(0, 2000);
-    if (!trimmedName || !trimmedEmail || !trimmedMsg) return;
-    const subject = `Portfolio inquiry from ${trimmedName}`;
-    const body = `${trimmedMsg}\n\n—\nFrom: ${trimmedName} <${trimmedEmail}>`;
-    const href = `mailto:nibhanupudiasritha@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-    setSent(true);
+    if (website) return; // honeypot tripped — silently drop
+    if (!validate()) return;
+    setState("submitting");
+    try {
+      const subject = `Portfolio inquiry from ${name.trim()}`;
+      const body = `${message.trim()}\n\n—\nFrom: ${name.trim()} <${email.trim()}>`;
+      const href = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = href;
+      setState("success");
+    } catch {
+      setState("error");
+    }
   };
 
   const fieldClass =
-    "w-full rounded-[3px] border border-dark-foreground/20 bg-dark-foreground/[0.04] px-4 py-3 text-[15px] text-dark-foreground placeholder:text-dark-foreground/40 outline-none transition-colors focus:border-[var(--accent-terra)] focus:bg-dark-foreground/[0.07]";
+    "w-full rounded-[3px] border border-dark-foreground/25 bg-dark-foreground/[0.04] px-4 py-3 text-[15px] text-dark-foreground placeholder:text-dark-foreground/40 outline-none transition-colors focus:border-[var(--accent-terra)] focus:bg-dark-foreground/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-terra)]";
 
   return (
-    <form onSubmit={onSubmit} className="rounded-[3px] border border-dark-foreground/15 bg-dark-foreground/[0.03] p-6 md:p-8">
+    <form onSubmit={onSubmit} noValidate className="rounded-[3px] border border-dark-foreground/15 bg-dark-foreground/[0.03] p-6 md:p-8">
       <p className="mono-label !text-dark-foreground/60">Send a message</p>
+
+      {/* honeypot */}
+      <label className="sr-only" htmlFor="cf-website">Website</label>
+      <input
+        id="cf-website"
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        className="absolute left-[-9999px]"
+        aria-hidden="true"
+      />
+
       <div className="mt-6 space-y-4">
         <div>
           <label htmlFor="cf-name" className="mono-label !text-dark-foreground/60 !text-[11px]">Name</label>
-          <input id="cf-name" required maxLength={100} value={name} onChange={(e) => setName(e.target.value)} className={`${fieldClass} mt-2`} placeholder="Your name" />
+          <input
+            id="cf-name"
+            required
+            maxLength={100}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? "cf-name-err" : undefined}
+            className={`${fieldClass} mt-2`}
+            placeholder="Your name"
+          />
+          {errors.name ? <p id="cf-name-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">{errors.name}</p> : null}
         </div>
         <div>
           <label htmlFor="cf-email" className="mono-label !text-dark-foreground/60 !text-[11px]">Email</label>
-          <input id="cf-email" type="email" required maxLength={200} value={email} onChange={(e) => setEmail(e.target.value)} className={`${fieldClass} mt-2`} placeholder="you@domain.com" />
+          <input
+            id="cf-email"
+            type="email"
+            required
+            maxLength={200}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "cf-email-err" : undefined}
+            className={`${fieldClass} mt-2`}
+            placeholder="you@domain.com"
+          />
+          {errors.email ? <p id="cf-email-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">{errors.email}</p> : null}
         </div>
         <div>
           <label htmlFor="cf-msg" className="mono-label !text-dark-foreground/60 !text-[11px]">Message</label>
-          <textarea id="cf-msg" required maxLength={2000} rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className={`${fieldClass} mt-2 resize-y`} placeholder="What are you working on?" />
+          <textarea
+            id="cf-msg"
+            required
+            maxLength={2000}
+            rows={5}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            aria-invalid={!!errors.message}
+            aria-describedby={errors.message ? "cf-msg-err" : undefined}
+            className={`${fieldClass} mt-2 resize-y`}
+            placeholder="What are you working on?"
+          />
+          {errors.message ? <p id="cf-msg-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">{errors.message}</p> : null}
         </div>
       </div>
-      <button type="submit" className="mt-6 w-full rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark">
-        Send message →
+
+      <button
+        type="submit"
+        disabled={state === "submitting"}
+        className="mt-6 w-full rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-terra)]"
+      >
+        {state === "submitting" ? "Opening…" : "Send message →"}
       </button>
-      {sent ? (
-        <p className="mono-label mt-4 !text-[var(--accent-terra)]">Opening your email app… thank you!</p>
+
+      <p className="mono-label mt-4 !text-[11px] !text-dark-foreground/50">
+        Your message opens in your email app. Nothing is stored on this site.
+      </p>
+
+      {state === "success" ? (
+        <p role="status" className="mono-label mt-3 !text-[var(--accent-terra)]">Opening your email app… thank you!</p>
+      ) : null}
+      {state === "error" ? (
+        <p role="alert" className="mono-label mt-3 !text-[var(--accent-terra)]">
+          Something went wrong. Email me directly at <a href={LINKS.email} className="underline">{SITE.email}</a>.
+        </p>
       ) : null}
     </form>
   );
