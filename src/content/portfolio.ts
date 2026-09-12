@@ -19,7 +19,7 @@ export const HERO = {
   eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD",
   headline: "I build reliable software systems across application, cloud, and platform layers.",
   description:
-    "I work across the full lifecycle of a service: application changes and integrations, deployment and infrastructure, monitoring, failure recovery, and production troubleshooting.",
+    "I work across service changes, integrations, deployment workflows, infrastructure, monitoring, and production troubleshooting.",
   primaryCta: { label: "View my work", href: "/work" },
   secondaryCta: { label: "Download résumé", href: "" }, // wired in component
 };
@@ -939,7 +939,7 @@ export const GS_PARENT: Project = {
   summaryProblem:
     "A subledger platform spanning on-prem and multi-region AWS needs changes to land safely across application, infrastructure, and operations.",
   summaryRole:
-    "Working across the service lifecycle - application changes, infrastructure, integrations, deployment, monitoring, and production troubleshooting.",
+    "Working across service changes, integrations, deployment workflows, infrastructure, monitoring, and production troubleshooting.",
   summaryResult:
     "Changes in my scope ship through reviewed merge requests and version-controlled infrastructure, with monitoring and recovery paths exercised before they are needed.",
   scopeNote:
