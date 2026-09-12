@@ -1,10 +1,33 @@
 import { Link } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
-import { CONFIDENTIALITY_NOTICE, type Project } from "@/content/portfolio";
+import { ProjectCover, coverVariantForSlug } from "@/components/ProjectCover";
+import { CONFIDENTIALITY_NOTICE, firstSentence, type Project } from "@/content/portfolio";
 import { track } from "@/lib/analytics";
 
 export function CaseStudyLayout({ study }: { study: Project }) {
+  const coreTech = (study.technologies ?? study.tags ?? []).slice(0, 5);
+  const summaryProblem = firstSentence(study.problem) || study.shortDescription;
+  const summaryResult = firstSentence(study.outcome);
+  const summaryScope = study.scopeNote || study.ownershipWording;
+
+  const hasTechDetails = Boolean(
+    study.constraints?.length ||
+      study.alternatives?.length ||
+      study.edgeCases?.length ||
+      (study.technologies && study.technologies.length > 5) ||
+      study.challenges?.length ||
+      study.engineeringMoment ||
+      study.beforeState ||
+      study.afterState ||
+      study.verifiedMetrics?.some((m) => m.approvedForPublicUse) ||
+      study.confirmedMetrics?.length ||
+      study.ownership ||
+      study.learned ||
+      study.wouldImprove ||
+      study.lessons?.length,
+  );
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-sm">
@@ -21,29 +44,61 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">{study.title}</h1>
         <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">{study.shortDescription}</p>
 
-        {study.tags?.length ? (
-          <ul className="mono-label mt-6 flex flex-wrap gap-x-3 gap-y-2">
-            {study.tags.map((t) => (
-              <li key={t} className="rounded-[3px] border border-hairline bg-panel px-2.5 py-1 !text-[11px]">
-                {t}
-              </li>
-            ))}
-          </ul>
-        ) : null}
+        <div className="mt-8">
+          <ProjectCover variant={coverVariantForSlug(study.slug)} ratio="16/9" />
+        </div>
 
         {study.confidential ? (
-          <p className="mt-8 rounded-[3px] border border-hairline bg-warm-fill p-4 text-[14px] text-text-secondary">
+          <p className="mt-6 rounded-[3px] border border-hairline bg-warm-fill p-4 text-[14px] text-text-secondary">
             {CONFIDENTIALITY_NOTICE}
           </p>
         ) : null}
 
-        {study.scopeNote ? (
-          <p className="mt-4 rounded-[3px] border border-hairline bg-panel p-4 text-[14px] text-text-secondary">
-            <span className="mono-label !text-text-primary !text-[11px]">Scope note · </span>
-            {study.scopeNote}
-          </p>
-        ) : null}
+        {/* Summary panel — supports a two-minute review */}
+        <aside
+          aria-label="Case study summary"
+          className="mt-8 rounded-[3px] border border-hairline bg-panel p-5 md:p-6"
+        >
+          <p className="mono-label !text-text-primary !text-[11px]">Summary</p>
+          <dl className="mt-4 grid grid-cols-1 gap-4">
+            {summaryProblem ? (
+              <SummaryRow label="Problem">{summaryProblem}</SummaryRow>
+            ) : null}
+            <SummaryRow label="My role">{study.myContribution}</SummaryRow>
+            {summaryResult ? (
+              <SummaryRow label="Result">{summaryResult}</SummaryRow>
+            ) : null}
+            {coreTech.length ? (
+              <div>
+                <dt className="mono-label !text-text-primary !text-[11px]">Core technologies</dt>
+                <dd className="mt-2 flex flex-wrap gap-2">
+                  {coreTech.map((t) => (
+                    <span
+                      key={t}
+                      className="inline-flex items-center rounded-[3px] border border-hairline bg-background px-2.5 py-1 text-[13px] leading-none"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            ) : null}
+            {summaryScope ? (
+              <SummaryRow label="Scope">{summaryScope}</SummaryRow>
+            ) : null}
+          </dl>
 
+          {hasTechDetails ? (
+            <a
+              href="#technical-details"
+              className="mono-label mt-5 inline-flex items-center gap-1 rounded-[3px] border border-hairline bg-background px-3 py-2 hover:!text-terra hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+            >
+              Show technical details ↓
+            </a>
+          ) : null}
+        </aside>
+
+        {/* Primary visible sections */}
         {study.professionalContext ? (
           <Section heading="Context">
             <p>{study.professionalContext}</p>
@@ -51,14 +106,8 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         ) : null}
 
         {study.problem ? (
-          <Section heading="Problem">
+          <Section heading="Engineering problem">
             <p>{study.problem}</p>
-          </Section>
-        ) : null}
-
-        {study.constraints?.length ? (
-          <Section heading="Constraints">
-            <List items={study.constraints} />
           </Section>
         ) : null}
 
@@ -76,7 +125,7 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         ) : null}
 
         {study.decision ? (
-          <Section heading="One important engineering decision">
+          <Section heading="Key decision and trade-off">
             <div className="space-y-4">
               <div>
                 <p className="mono-label !text-text-primary !text-[12px]">Decision</p>
@@ -94,107 +143,131 @@ export function CaseStudyLayout({ study }: { study: Project }) {
           </Section>
         ) : null}
 
-        {study.alternatives?.length ? (
-          <Section heading="Alternatives considered">
-            <List items={study.alternatives} />
-          </Section>
-        ) : null}
-
-        {study.edgeCases?.length ? (
-          <Section heading="Failure cases and edge cases">
-            <List items={study.edgeCases} />
-          </Section>
-        ) : null}
-
-        {study.technologies?.length ? (
-          <Section heading="Technologies used">
-            <ul className="flex flex-wrap gap-2">
-              {study.technologies.map((t) => (
-                <li
-                  key={t}
-                  className="inline-flex items-center rounded-[3px] border border-hairline bg-panel px-3 py-1.5 text-[14px] leading-none text-text-primary"
-                >
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </Section>
-        ) : null}
-
-        {study.challenges?.length ? (
-          <Section heading="Challenges">
-            <List items={study.challenges} />
-          </Section>
-        ) : null}
-
-        {study.engineeringMoment ? <EngineeringMomentSection moment={study.engineeringMoment} /> : null}
-
-        {study.beforeState || study.afterState ? (
-          <Section heading="Before and after">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {study.beforeState ? (
-                <div className="rounded-[3px] border border-hairline bg-panel p-4">
-                  <p className="mono-label !text-text-primary !text-[12px]">Before</p>
-                  <p className="mt-2 text-[15.5px]">{study.beforeState}</p>
-                </div>
-              ) : null}
-              {study.afterState ? (
-                <div className="rounded-[3px] border border-hairline bg-panel p-4">
-                  <p className="mono-label !text-text-primary !text-[12px]">After</p>
-                  <p className="mt-2 text-[15.5px]">{study.afterState}</p>
-                </div>
-              ) : null}
-            </div>
-          </Section>
-        ) : null}
-
         {study.outcome ? (
-          <Section heading="Verified outcome">
+          <Section heading="Outcome">
             <p>{study.outcome}</p>
           </Section>
         ) : null}
 
-        {(() => {
-          const approved = study.verifiedMetrics?.filter((m) => m.approvedForPublicUse) ?? [];
-          if (!approved.length) return null;
-          return (
-            <Section heading="Verified metrics">
-              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {approved.map((m, i) => (
-                  <li key={i} className="rounded-[3px] border border-hairline bg-panel p-4">
-                    <p className="mono-label !text-text-primary !text-[12px]">{m.label}</p>
-                    <p className="mt-2 font-serif-display text-[22px]">{m.value}</p>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-          );
-        })()}
+        {/* Progressive-disclosure: one Technical details block. Native
+            <details> gives keyboard support, aria-expanded, and stays in
+            the DOM for search engines and assistive tech. */}
+        {hasTechDetails ? (
+          <details
+            id="technical-details"
+            className="tech-details mt-12 rounded-[3px] border border-hairline bg-panel"
+          >
+            <summary className="cursor-pointer list-none px-5 py-4 md:px-6">
+              <span className="mono-label !text-text-primary !text-[12px]">Technical details</span>
+              <span className="ml-2 text-text-secondary text-[13px]">
+                Constraints, alternatives, edge cases, ownership breakdown, lessons.
+              </span>
+            </summary>
+            <div className="border-t border-hairline px-5 py-2 md:px-6">
+              {study.constraints?.length ? (
+                <Section heading="Constraints">
+                  <List items={study.constraints} />
+                </Section>
+              ) : null}
 
-        {study.confirmedMetrics?.length ? (
-          <Section heading="Confirmed measures">
-            <List items={study.confirmedMetrics} />
-          </Section>
-        ) : null}
+              {study.alternatives?.length ? (
+                <Section heading="Alternatives considered">
+                  <List items={study.alternatives} />
+                </Section>
+              ) : null}
 
-        {study.learned ? (
-          <Section heading="What I learned">
-            <p>{study.learned}</p>
-          </Section>
-        ) : null}
+              {study.edgeCases?.length ? (
+                <Section heading="Failure cases and edge cases">
+                  <List items={study.edgeCases} />
+                </Section>
+              ) : null}
 
-        {study.wouldImprove ? (
-          <Section heading="What I would improve">
-            <p>{study.wouldImprove}</p>
-          </Section>
-        ) : null}
+              {study.technologies?.length ? (
+                <Section heading="Full technology list">
+                  <ul className="flex flex-wrap gap-2">
+                    {study.technologies.map((t) => (
+                      <li
+                        key={t}
+                        className="inline-flex items-center rounded-[3px] border border-hairline bg-background px-3 py-1.5 text-[14px] leading-none text-text-primary"
+                      >
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </Section>
+              ) : null}
 
-        {study.ownership ? <OwnershipSection ownership={study.ownership} /> : null}
+              {study.challenges?.length ? (
+                <Section heading="Challenges">
+                  <List items={study.challenges} />
+                </Section>
+              ) : null}
 
-        {study.lessons?.length ? (
-          <Section heading="Lessons">
-            <List items={study.lessons} />
-          </Section>
+              {study.engineeringMoment ? <EngineeringMomentSection moment={study.engineeringMoment} /> : null}
+
+              {study.beforeState || study.afterState ? (
+                <Section heading="Before and after">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {study.beforeState ? (
+                      <div className="rounded-[3px] border border-hairline bg-background p-4">
+                        <p className="mono-label !text-text-primary !text-[12px]">Before</p>
+                        <p className="mt-2 text-[15.5px]">{study.beforeState}</p>
+                      </div>
+                    ) : null}
+                    {study.afterState ? (
+                      <div className="rounded-[3px] border border-hairline bg-background p-4">
+                        <p className="mono-label !text-text-primary !text-[12px]">After</p>
+                        <p className="mt-2 text-[15.5px]">{study.afterState}</p>
+                      </div>
+                    ) : null}
+                  </div>
+                </Section>
+              ) : null}
+
+              {(() => {
+                const approved = study.verifiedMetrics?.filter((m) => m.approvedForPublicUse) ?? [];
+                if (!approved.length) return null;
+                return (
+                  <Section heading="Verified metrics">
+                    <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {approved.map((m, i) => (
+                        <li key={i} className="rounded-[3px] border border-hairline bg-background p-4">
+                          <p className="mono-label !text-text-primary !text-[12px]">{m.label}</p>
+                          <p className="mt-2 font-serif-display text-[22px]">{m.value}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </Section>
+                );
+              })()}
+
+              {study.confirmedMetrics?.length ? (
+                <Section heading="Confirmed measures">
+                  <List items={study.confirmedMetrics} />
+                </Section>
+              ) : null}
+
+              {study.ownership ? <OwnershipSection ownership={study.ownership} /> : null}
+
+              {study.learned ? (
+                <Section heading="What I learned">
+                  <p>{study.learned}</p>
+                </Section>
+              ) : null}
+
+              {study.wouldImprove ? (
+                <Section heading="What I would improve">
+                  <p>{study.wouldImprove}</p>
+                </Section>
+              ) : null}
+
+              {study.lessons?.length ? (
+                <Section heading="Lessons">
+                  <List items={study.lessons} />
+                </Section>
+              ) : null}
+            </div>
+          </details>
         ) : null}
 
         {study.publicationUrl ? (
@@ -220,6 +293,15 @@ export function CaseStudyLayout({ study }: { study: Project }) {
           </Link>
         </div>
       </main>
+    </div>
+  );
+}
+
+function SummaryRow({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div>
+      <dt className="mono-label !text-text-primary !text-[11px]">{label}</dt>
+      <dd className="mt-1.5 text-[15.5px] text-text-secondary">{children}</dd>
     </div>
   );
 }
@@ -264,7 +346,7 @@ function OwnershipSection({ ownership }: { ownership: NonNullable<Project["owner
     <Section heading="Ownership breakdown">
       <div className="grid grid-cols-1 gap-5">
         {present.map((b) => (
-          <div key={b.label} className="rounded-[3px] border border-hairline bg-panel p-4">
+          <div key={b.label} className="rounded-[3px] border border-hairline bg-background p-4">
             <p className="mono-label !text-text-primary !text-[12px]">{b.label}</p>
             <ul className="mt-3 space-y-2">
               {b.items!.map((it, i) => (

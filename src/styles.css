@@ -199,3 +199,35 @@
 }
 
 
+
+/* Progressive-disclosure Technical details panel */
+.tech-details > summary {
+  position: relative;
+  padding-right: 2.5rem;
+}
+.tech-details > summary::after {
+  content: "+";
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: ui-monospace, monospace;
+  font-size: 18px;
+  color: var(--accent-terra);
+  line-height: 1;
+}
+.tech-details[open] > summary::after {
+  content: "−";
+}
+.tech-details > summary:focus-visible {
+  outline: 2px solid var(--accent-terra);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Project cover - no hover transform, prevents any perceived "zoom" on cards */
+.project-cover svg { display: block; }
+
+/* Debugging loop step */
+.loop-step { position: relative; }
+.loop-arrow { color: var(--accent-terra); opacity: 0.7; }

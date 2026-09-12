@@ -938,6 +938,15 @@ export function projectCtaLabel(p: Pick<Project, "projectType">): string {
     case "Engineering Implementation":
     case "Professional Work":
     default:
-      return "Read case study";
+      return "Read sanitized case study";
   }
+}
+
+// Pull the first sentence out of a longer paragraph (used by summary panels
+// and homepage cards). Does not invent content - just truncates at the first
+// terminal punctuation.
+export function firstSentence(s?: string): string {
+  if (!s) return "";
+  const m = s.match(/^[^.!?]+[.!?]/);
+  return (m ? m[0] : s).trim();
 }

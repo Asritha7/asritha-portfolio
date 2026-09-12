@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
+import { ProjectCover } from "@/components/ProjectCover";
 import { ENGINEERING_NOTES, SITE } from "@/content/portfolio";
 
 const TITLE = "Engineering Notes - Asritha Nibhanupudi";
@@ -63,6 +64,12 @@ function NotesIndex() {
           {ENGINEERING_NOTES.map((n) => (
             <li key={n.slug} id={n.slug} className="border-t border-hairline pt-10 scroll-mt-24">
               <h2 className="font-serif-display text-[clamp(22px,2.6vw,28px)]">{n.title}</h2>
+              <div className="mt-5 md:hidden">
+                <ProjectCover variant="note" ratio="3/2" />
+              </div>
+              <div className="mt-5 hidden md:block md:max-w-[420px]">
+                <ProjectCover variant="note" ratio="16/9" />
+              </div>
               <p className="mt-4 text-[17px] text-text-secondary">{n.summary}</p>
 
               <NoteBlock label="Introduction">{n.introduction}</NoteBlock>
