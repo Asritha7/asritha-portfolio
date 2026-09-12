@@ -6,12 +6,12 @@ const BASE_URL = "https://asritha.dev";
 const entries = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/work", changefreq: "weekly", priority: "0.9" },
-  { path: "/work/api-infrastructure", changefreq: "monthly", priority: "0.8" },
-  { path: "/work/observability", changefreq: "monthly", priority: "0.8" },
-  { path: "/work/kafka-kubernetes", changefreq: "monthly", priority: "0.8" },
-  { path: "/work/authentication-system", changefreq: "monthly", priority: "0.7" },
-  { path: "/work/realtime-monitoring", changefreq: "monthly", priority: "0.7" },
-  { path: "/work/rfid-authentication-research", changefreq: "monthly", priority: "0.7" },
+  { path: "/work/automation-framework", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/keycloak-identity-flow", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/kafka-strimzi-upgrade", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/kubernetes-cicd-reliability", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/uim-sensitive-attribute-encryption", changefreq: "monthly", priority: "0.7" },
+  { path: "/work/rfid-pin-authentication-research", changefreq: "monthly", priority: "0.7" },
 ];
 
 export const Route = createFileRoute("/sitemap.xml")({

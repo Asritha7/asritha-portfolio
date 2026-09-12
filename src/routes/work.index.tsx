@@ -4,6 +4,7 @@ import {
   PROJECTS,
   PROJECT_CATEGORIES,
   PROJECT_ROUTE,
+  projectCtaLabel,
   type ProjectCategory,
   SITE,
 } from "@/content/portfolio";
@@ -104,7 +105,7 @@ function WorkIndex() {
                 <p className="mt-3 text-[15.5px] text-text-secondary">{p.shortDescription}</p>
                 <p className="mt-3 text-[14.5px] text-text-secondary">
                   <span className="text-text-primary">My contribution: </span>
-                  {p.contribution}
+                  {p.myContribution}
                 </p>
                 <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
                   {p.tags.slice(0, 5).map((t) => (
@@ -112,7 +113,7 @@ function WorkIndex() {
                   ))}
                 </ul>
                 <span className="mono-label mt-5 inline-flex items-center gap-1 group-hover:!text-terra">
-                  Read details →
+                  {projectCtaLabel(p)} →
                 </span>
               </Link>
             </li>
