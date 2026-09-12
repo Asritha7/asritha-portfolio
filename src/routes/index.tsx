@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Sun, Moon, Sunset, ArrowUp } from "lucide-react";
-import portraitAsset from "@/assets/portrait.jpg.asset.json";
 import resumeAsset from "@/assets/resume.pdf.asset.json";
 import {
   SITE,
@@ -23,7 +22,7 @@ import { track } from "@/lib/analytics";
 import { ProjectCover, coverVariantForSlug } from "@/components/ProjectCover";
 
 
-const portrait = portraitAsset.url;
+const portrait = "/portrait.jpg";
 const resume = resumeAsset.url;
 
 const TITLE = "Asritha Nibhanupudi | Software Engineer";
@@ -412,11 +411,11 @@ function Portfolio() {
         <a id="top" />
 
         {/* Hero */}
-        <section aria-labelledby="hero-heading" className="grid grid-cols-1 gap-12 pt-16 pb-20 md:grid-cols-[1fr_360px] md:gap-16 md:pt-24 md:pb-28">
+        <section aria-labelledby="hero-heading" className="grid grid-cols-1 items-center gap-12 pt-16 pb-20 md:grid-cols-[1fr_360px] md:gap-16 md:pt-24 md:pb-28">
           <div className="reveal">
             <p className="mono-label">{HERO.eyebrow}</p>
             <h1 id="hero-heading" className="font-serif-display mt-6 text-[clamp(36px,6.4vw,68px)]">
-              I build <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em> software systems across application, cloud, and platform layers.
+              I build <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em> software across services and infrastructure.
             </h1>
             <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">{HERO.description}</p>
             <p className="mt-4 max-w-[58ch] text-[16.5px] italic text-text-secondary">
@@ -462,12 +461,12 @@ function Portfolio() {
 
           </div>
           <aside className="reveal">
-            <div className="overflow-hidden rounded-[3px] border border-hairline bg-warm-fill">
+            <div className="mx-auto w-full max-w-[360px] overflow-hidden rounded-[3px] border border-hairline bg-warm-fill md:max-w-[300px]">
               <img
                 src={portrait}
                 alt={`Portrait of ${SITE.name}`}
-                width={1200}
-                height={1600}
+                width={800}
+                height={1000}
                 className="aspect-[4/5] h-auto w-full object-cover"
                 loading="eager"
                 decoding="async"
