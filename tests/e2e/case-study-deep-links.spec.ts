@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const ROUTES = [
   "/work",
+  "/work/goldman-sachs-platform-engineering",
   "/work/aws-microservices-cdk-ecs",
   "/work/automation-framework",
   "/work/keycloak-identity-flow",

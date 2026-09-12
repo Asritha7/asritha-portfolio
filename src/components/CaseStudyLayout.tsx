@@ -291,12 +291,7 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         ) : null}
 
         <div className="mt-16 border-t border-hairline pt-8">
-          <Link
-            to="/work"
-            className="mono-label hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
-          >
-            ← Back to all work
-          </Link>
+          <HistoryBackLink href="/work" label="← Back to all work" />
         </div>
       </main>
     </div>

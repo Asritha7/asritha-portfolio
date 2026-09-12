@@ -23,6 +23,7 @@ import { Route as WorkKeycloakIdentityFlowRouteImport } from './routes/work.keyc
 import { Route as WorkKafkaStrimziUpgradeRouteImport } from './routes/work.kafka-strimzi-upgrade'
 import { Route as WorkJavaApplicationServiceEngineeringRouteImport } from './routes/work.java-application-service-engineering'
 import { Route as WorkIacZeroDowntimeMigrationsRouteImport } from './routes/work.iac-zero-downtime-migrations'
+import { Route as WorkGoldmanSachsPlatformEngineeringRouteImport } from './routes/work.goldman-sachs-platform-engineering'
 import { Route as WorkAwsMicroservicesCdkEcsRouteImport } from './routes/work.aws-microservices-cdk-ecs'
 import { Route as WorkAutomationFrameworkRouteImport } from './routes/work.automation-framework'
 import { Route as NotesKubernetesDeploymentDebuggingRouteImport } from './routes/notes.kubernetes-deployment-debugging'
@@ -107,6 +108,12 @@ const WorkIacZeroDowntimeMigrationsRoute =
     path: '/work/iac-zero-downtime-migrations',
     getParentRoute: () => rootRouteImport,
   } as any)
+const WorkGoldmanSachsPlatformEngineeringRoute =
+  WorkGoldmanSachsPlatformEngineeringRouteImport.update({
+    id: '/work/goldman-sachs-platform-engineering',
+    path: '/work/goldman-sachs-platform-engineering',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkAwsMicroservicesCdkEcsRoute =
   WorkAwsMicroservicesCdkEcsRouteImport.update({
     id: '/work/aws-microservices-cdk-ecs',
@@ -152,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
+  '/work/goldman-sachs-platform-engineering': typeof WorkGoldmanSachsPlatformEngineeringRoute
   '/work/iac-zero-downtime-migrations': typeof WorkIacZeroDowntimeMigrationsRoute
   '/work/java-application-service-engineering': typeof WorkJavaApplicationServiceEngineeringRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
@@ -173,6 +181,7 @@ export interface FileRoutesByTo {
   '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
+  '/work/goldman-sachs-platform-engineering': typeof WorkGoldmanSachsPlatformEngineeringRoute
   '/work/iac-zero-downtime-migrations': typeof WorkIacZeroDowntimeMigrationsRoute
   '/work/java-application-service-engineering': typeof WorkJavaApplicationServiceEngineeringRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
@@ -196,6 +205,7 @@ export interface FileRoutesById {
   '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
+  '/work/goldman-sachs-platform-engineering': typeof WorkGoldmanSachsPlatformEngineeringRoute
   '/work/iac-zero-downtime-migrations': typeof WorkIacZeroDowntimeMigrationsRoute
   '/work/java-application-service-engineering': typeof WorkJavaApplicationServiceEngineeringRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
@@ -220,6 +230,7 @@ export interface FileRouteTypes {
     | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
+    | '/work/goldman-sachs-platform-engineering'
     | '/work/iac-zero-downtime-migrations'
     | '/work/java-application-service-engineering'
     | '/work/kafka-strimzi-upgrade'
@@ -241,6 +252,7 @@ export interface FileRouteTypes {
     | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
+    | '/work/goldman-sachs-platform-engineering'
     | '/work/iac-zero-downtime-migrations'
     | '/work/java-application-service-engineering'
     | '/work/kafka-strimzi-upgrade'
@@ -263,6 +275,7 @@ export interface FileRouteTypes {
     | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
+    | '/work/goldman-sachs-platform-engineering'
     | '/work/iac-zero-downtime-migrations'
     | '/work/java-application-service-engineering'
     | '/work/kafka-strimzi-upgrade'
@@ -283,6 +296,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WorkAutomationFrameworkRoute: typeof WorkAutomationFrameworkRoute
   WorkAwsMicroservicesCdkEcsRoute: typeof WorkAwsMicroservicesCdkEcsRoute
+  WorkGoldmanSachsPlatformEngineeringRoute: typeof WorkGoldmanSachsPlatformEngineeringRoute
   WorkIacZeroDowntimeMigrationsRoute: typeof WorkIacZeroDowntimeMigrationsRoute
   WorkJavaApplicationServiceEngineeringRoute: typeof WorkJavaApplicationServiceEngineeringRoute
   WorkKafkaStrimziUpgradeRoute: typeof WorkKafkaStrimziUpgradeRoute
@@ -395,6 +409,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkIacZeroDowntimeMigrationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/goldman-sachs-platform-engineering': {
+      id: '/work/goldman-sachs-platform-engineering'
+      path: '/work/goldman-sachs-platform-engineering'
+      fullPath: '/work/goldman-sachs-platform-engineering'
+      preLoaderRoute: typeof WorkGoldmanSachsPlatformEngineeringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work/aws-microservices-cdk-ecs': {
       id: '/work/aws-microservices-cdk-ecs'
       path: '/work/aws-microservices-cdk-ecs'
@@ -465,6 +486,8 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WorkAutomationFrameworkRoute: WorkAutomationFrameworkRoute,
   WorkAwsMicroservicesCdkEcsRoute: WorkAwsMicroservicesCdkEcsRoute,
+  WorkGoldmanSachsPlatformEngineeringRoute:
+    WorkGoldmanSachsPlatformEngineeringRoute,
   WorkIacZeroDowntimeMigrationsRoute: WorkIacZeroDowntimeMigrationsRoute,
   WorkJavaApplicationServiceEngineeringRoute:
     WorkJavaApplicationServiceEngineeringRoute,

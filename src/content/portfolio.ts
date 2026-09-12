@@ -16,7 +16,7 @@ export const LINKS = {
 };
 
 export const HERO = {
-  eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD · PLATFORM ENGINEERING · JAVA · AWS · DISTRIBUTED SYSTEMS",
+  eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD · PLATFORM ENGINEERING · JAVA · TYPESCRIPT · AWS · DISTRIBUTED SYSTEMS",
   headline: "I build reliable software systems across application, cloud, and platform layers.",
   description:
     "I work across the full lifecycle of a service: application changes and integrations, deployment and infrastructure, monitoring, failure recovery, and production troubleshooting.",
@@ -905,13 +905,93 @@ export const PROJECTS: Project[] = [
 
 // Backwards-compat aliases.
 export type CaseStudy = Project;
-export const CASE_STUDIES: Project[] = PROJECTS.filter((p) => p.featured);
-// Additional Engineering Work: non-featured professional/implementation work
-// only. Research lives in its own Published Research section so it never
-// appears twice on the homepage.
-export const ADDITIONAL_PROJECTS: Project[] = PROJECTS.filter(
-  (p) => !p.featured && p.projectType !== "Published Research",
+
+// The five 2026 Goldman Sachs case studies are presented as one parent case
+// study with subsections, so the work index stays short and the current role
+// reads as a single story rather than five overlapping pages.
+export const GS_PARENT_SLUG = "goldman-sachs-platform-engineering";
+export const GS_SUBSTUDY_SLUGS = [
+  "java-application-service-engineering",
+  "aws-microservices-cdk-ecs",
+  "reliability-multi-region-infrastructure",
+  "observability-and-slos",
+  "iac-zero-downtime-migrations",
+];
+
+export const GS_SUBSTUDIES: Project[] = GS_SUBSTUDY_SLUGS.map(
+  (s) => PROJECTS.find((p) => p.slug === s)!,
 );
+
+export const GS_PARENT: Project = {
+  slug: GS_PARENT_SLUG,
+  title: "Java Services, AWS Platform, and Reliability",
+  projectType: "Professional Work",
+  year: "2026",
+  shortDescription:
+    "My current work on a subledger platform, in one case study: Java service development, AWS platform and event-driven systems, reliability and multi-region infrastructure, observability and SLOs, and zero-downtime infrastructure migrations.",
+  myContribution:
+    "Contributing to Java service development, building AWS service infrastructure with CDK and CloudFormation, developing event-driven integrations, strengthening reliability and recovery, and extending monitoring and SLO-based alerting.",
+  cardContribution:
+    "Java service development, AWS infrastructure with CDK and CloudFormation, event-driven integrations, reliability and multi-region recovery, observability, and zero-downtime migrations.",
+  cardResult:
+    "Five sections covering what I contributed in each area, with scope and ownership stated for every one.",
+  ownershipWording: "Contributed to",
+  summaryProblem:
+    "A subledger platform spanning on-prem and multi-region AWS needs changes to land safely across application, infrastructure, and operations.",
+  summaryRole:
+    "Working across the service lifecycle - application changes, infrastructure, integrations, deployment, monitoring, and production troubleshooting.",
+  summaryResult:
+    "Changes in my scope ship through reviewed merge requests and version-controlled infrastructure, with monitoring and recovery paths exercised before they are needed.",
+  scopeNote:
+    "This case study covers my contribution within defined services rather than ownership of the wider platform.",
+  professionalContext:
+    "Subledger Technology platform inside Asset & Wealth Management. The platform spans on-prem and multi-region AWS; my work sits on the service layer, its infrastructure, and its operations.",
+  technologies: [
+    "Java",
+    "REST APIs",
+    "PostgreSQL",
+    "AWS CDK",
+    "CloudFormation",
+    "ECS Fargate",
+    "Lambda",
+    "API Gateway",
+    "Aurora PostgreSQL",
+    "Kafka / MSK",
+    "Debezium CDC",
+    "EventBridge",
+    "SQS",
+    "Prometheus",
+    "Grafana",
+    "CloudWatch",
+    "AWS FIS",
+    "GitLab CI",
+  ],
+  confidential: true,
+  featured: true,
+  categories: ["Backend", "Cloud", "Distributed Systems", "Observability", "APIs"],
+  tags: ["Java", "AWS", "Kafka / MSK", "Reliability", "Observability"],
+};
+
+// Two engineering case studies stay featured: the combined current-role work
+// and the Kubernetes delivery/reliability write-up, which is closest to the
+// current profile. The published research keeps its own section.
+export const SECOND_CASE_STUDY_SLUG = "kubernetes-cicd-reliability";
+export const RESEARCH_SLUG = "rfid-pin-authentication-research";
+
+export const CASE_STUDIES: Project[] = [
+  GS_PARENT,
+  PROJECTS.find((p) => p.slug === SECOND_CASE_STUDY_SLUG)!,
+];
+
+// Everything shown on /work: both case studies plus the published research.
+export const VISIBLE_PROJECTS: Project[] = [
+  ...CASE_STUDIES,
+  PROJECTS.find((p) => p.slug === RESEARCH_SLUG)!,
+];
+
+// No separate "Earlier Professional Work" list while only two case studies
+// are surfaced.
+export const ADDITIONAL_PROJECTS: Project[] = [];
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
   "Backend",
@@ -1317,11 +1397,13 @@ export const TESTIMONIALS: Testimonial[] = [];
 
 // Map slug to typed route path for type-safe <Link to=...>
 export const PROJECT_ROUTE: Record<string, string> = {
-  "java-application-service-engineering": "/work/java-application-service-engineering",
-  "aws-microservices-cdk-ecs": "/work/aws-microservices-cdk-ecs",
-  "reliability-multi-region-infrastructure": "/work/reliability-multi-region-infrastructure",
-  "observability-and-slos": "/work/observability-and-slos",
-  "iac-zero-downtime-migrations": "/work/iac-zero-downtime-migrations",
+  "goldman-sachs-platform-engineering": "/work/goldman-sachs-platform-engineering",
+  // The 2026 Goldman Sachs work now lives in the combined case study above.
+  "java-application-service-engineering": "/work/goldman-sachs-platform-engineering",
+  "aws-microservices-cdk-ecs": "/work/goldman-sachs-platform-engineering",
+  "reliability-multi-region-infrastructure": "/work/goldman-sachs-platform-engineering",
+  "observability-and-slos": "/work/goldman-sachs-platform-engineering",
+  "iac-zero-downtime-migrations": "/work/goldman-sachs-platform-engineering",
   "automation-framework": "/work/automation-framework",
   "keycloak-identity-flow": "/work/keycloak-identity-flow",
   "kafka-strimzi-upgrade": "/work/kafka-strimzi-upgrade",

@@ -3,8 +3,10 @@ import { useMemo } from "react";
 import { z } from "zod";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 
+import { HistoryBackLink } from "@/components/HistoryBackLink";
+
 import {
-  PROJECTS,
+  VISIBLE_PROJECTS,
   PROJECT_CATEGORIES,
   PROJECT_ROUTE,
   projectCtaLabel,
@@ -63,8 +65,8 @@ function WorkIndex() {
   const filtered = useMemo(
     () =>
       current === "All"
-        ? PROJECTS
-        : PROJECTS.filter((p) => p.categories.includes(current as ProjectCategory)),
+        ? VISIBLE_PROJECTS
+        : VISIBLE_PROJECTS.filter((p) => p.categories.includes(current as ProjectCategory)),
     [current],
   );
 
@@ -81,12 +83,7 @@ function WorkIndex() {
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
             {SITE.name}
           </Link>
-          <Link
-            to="/"
-            className="mono-label hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
-          >
-            ← Home
-          </Link>
+          <HistoryBackLink href="/" label="← Back" />
         </div>
       </header>
 

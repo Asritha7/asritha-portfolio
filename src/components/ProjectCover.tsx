@@ -536,6 +536,7 @@ export function coverVariantForSlug(slug: string): CoverVariant {
     case "kubernetes-cicd-reliability":
     case "rfid-pin-authentication-research":
       return slug;
+    case "goldman-sachs-platform-engineering":
     case "java-application-service-engineering":
       return "aws-integration";
     case "reliability-multi-region-infrastructure":
