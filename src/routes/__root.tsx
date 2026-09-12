@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import faviconAsset from "../assets/favicon.png.asset.json";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -56,15 +57,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Asritha Nibhanupudi — Software Engineer" },
-      { name: "description", content: "Asritha Nibhanupudi — Analyst, Systems Engineering at Goldman Sachs. Cloud platform engineering, distributed systems, and observability." },
+      { title: "Asritha Nibhanupudi - Software Engineer" },
+      { name: "description", content: "Analyst, Systems Engineering at Goldman Sachs. Cloud platform engineering & distributed systems." },
       { name: "author", content: "Asritha Nibhanupudi" },
-      { property: "og:title", content: "Asritha Nibhanupudi — Software Engineer" },
-      { property: "og:description", content: "Cloud platform engineering, distributed systems, and observability." },
+      { property: "og:title", content: "Asritha Nibhanupudi - Software Engineer" },
+      { property: "og:description", content: "Analyst, Systems Engineering at Goldman Sachs. Cloud platform engineering & distributed systems." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Asritha Nibhanupudi - Software Engineer" },
+      { name: "twitter:description", content: "Analyst, Systems Engineering at Goldman Sachs. Cloud platform engineering & distributed systems." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/177295f5-81f1-45f5-b5f8-f9af2b3369b3" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/177295f5-81f1-45f5-b5f8-f9af2b3369b3" },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: faviconAsset.url },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
