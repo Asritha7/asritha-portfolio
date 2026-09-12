@@ -44,8 +44,8 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">{study.title}</h1>
         <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">{study.shortDescription}</p>
 
-        <div className="mt-8">
-          <ProjectCover variant={coverVariantForSlug(study.slug)} ratio="16/9" />
+        <div className="mt-8 max-w-[220px]">
+          <ProjectCover variant={coverVariantForSlug(study.slug)} ratio="3/2" />
         </div>
 
         {study.confidential ? (

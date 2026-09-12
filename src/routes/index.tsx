@@ -500,44 +500,47 @@ function Portfolio() {
 
 
         {/* How I Work - personal debugging loop */}
-        <section aria-labelledby="loop-heading" className="border-t border-hairline py-16 md:py-20">
+        <section aria-labelledby="loop-heading" className="border-t border-hairline py-14 md:py-16">
           <div className="reveal grid grid-cols-1 gap-8 md:grid-cols-[220px_1fr] md:gap-16">
             <div>
               <span className="mono-label">HOW I WORK</span>
-              <h2 id="loop-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+              <h2 id="loop-heading" className="font-serif-display mt-4 text-[clamp(22px,2.6vw,28px)]">
                 My debugging <em className="italic" style={{ color: "var(--accent-terra)" }}>loop</em>.
               </h2>
-              <p className="mt-3 max-w-[42ch] text-[15px] text-text-secondary">
-                I'm drawn to problems that first appear random but become explainable once the system state,
-                environment, and failure evidence are compared carefully. Once the cause is understood, I look
-                for a way to prevent the same manual investigation from repeating.
+              <p className="mt-4 text-[15px] leading-relaxed text-text-secondary">
+                I enjoy the moment when a failure stops looking random and starts becoming a system I
+                can reason about. I usually begin with the evidence, compare the states that differ,
+                isolate the failing condition, make the smallest defensible fix, and automate
+                repeatable checks where it is safe to do so.
               </p>
             </div>
             <ol
-              className="grid grid-cols-1 gap-3 md:grid-cols-5 md:gap-2"
-              aria-label="My debugging loop"
+              aria-label="Personal debugging loop: Observe, Compare, Isolate, Fix, Automate"
+              className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-5"
             >
               {[
-                { step: "Observe", body: "Start with the actual failure evidence rather than the first assumption." },
-                { step: "Compare", body: "Look for differences across environments, configurations, versions, or execution paths." },
-                { step: "Isolate", body: "Reduce the problem until the failing component or condition is clear." },
-                { step: "Fix", body: "Address the root cause with the smallest defensible change." },
-                { step: "Automate", body: "Encode repeatable validation or recovery steps where it is safe to do so." },
+                { n: "01", t: "Observe", d: "Start with the actual failure evidence rather than the first assumption." },
+                { n: "02", t: "Compare", d: "Look for differences across environments, configurations, versions, or execution paths." },
+                { n: "03", t: "Isolate", d: "Reduce the problem until the failing component or condition is clear." },
+                { n: "04", t: "Fix",     d: "Address the root cause with the smallest defensible change." },
+                { n: "05", t: "Automate", d: "Encode repeatable validation or recovery steps where it is safe to do so." },
               ].map((s, i, arr) => (
                 <li
-                  key={s.step}
-                  className="loop-step relative rounded-[3px] border border-hairline bg-panel p-4"
+                  key={s.n}
+                  className="relative rounded-[3px] border border-hairline bg-panel p-4 md:p-4"
                 >
-                  <span className="mono-label !text-[10.5px]">0{i + 1}</span>
-                  <h3 className="font-serif-display mt-1 text-[17px]">{s.step}</h3>
-                  <p className="mt-1.5 text-[13.5px] text-text-secondary">{s.body}</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="mono-label !text-[11px] !text-terra">{s.n}</span>
+                    <h3 className="font-serif-display text-[16px] md:text-[17px]">{s.t}</h3>
+                  </div>
+                  <p className="mt-2 text-[13.5px] leading-snug text-text-secondary">{s.d}</p>
                   {i < arr.length - 1 ? (
                     <span
                       aria-hidden="true"
-                      className="loop-arrow mono-label absolute hidden md:block"
-                      style={{ right: "-10px", top: "50%", transform: "translateY(-50%)" }}
+                      className="mono-label !text-[11px] !text-terra absolute right-3 -bottom-3 md:bottom-auto md:right-[-14px] md:top-1/2 md:-translate-y-1/2"
                     >
-                      →
+                      <span className="md:hidden">↓</span>
+                      <span className="hidden md:inline">→</span>
                     </span>
                   ) : null}
                 </li>
@@ -545,6 +548,7 @@ function Portfolio() {
             </ol>
           </div>
         </section>
+
 
 
         {/* Featured Engineering Work */}
@@ -571,39 +575,41 @@ function Portfolio() {
                       onClick={() => track("case_study_opened", { slug: c.slug })}
                       className="group block overflow-hidden rounded-[3px] border border-hairline bg-panel transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
                     >
-                      <ProjectCover variant={coverVariantForSlug(c.slug)} ratio="3/2" rounded={false} className="border-0 border-b border-hairline" />
-                      <div className="p-6 md:p-8">
-                      <div className="flex items-baseline justify-between gap-4">
-                        <span className="mono-label">0{i + 1} · {c.projectType}</span>
-                        <span className="mono-label">{c.year}</span>
-                      </div>
-                      <h3 className="font-serif-display mt-3 text-[22px] md:text-[26px]">{c.title}</h3>
-                      <dl className="mt-4 space-y-2 text-[15.5px] text-text-secondary">
-                        {problemLine ? (
-                          <div>
-                            <dt className="inline text-text-primary">Problem: </dt>
-                            <dd className="inline">{problemLine}</dd>
+                      <div className="flex flex-col gap-0 sm:flex-row sm:items-stretch">
+                        <ProjectCover
+                          variant={coverVariantForSlug(c.slug)}
+                          ratio="3/2"
+                          rounded={false}
+                          className="border-0 border-b border-hairline sm:w-[140px] sm:flex-none sm:border-b-0 sm:border-r"
+                        />
+                        <div className="p-6 md:p-7 flex-1">
+                          <div className="flex items-baseline justify-between gap-4">
+                            <span className="mono-label">0{i + 1} · {c.projectType}</span>
+                            <span className="mono-label">{c.year}</span>
                           </div>
-                        ) : null}
-                        <div>
-                          <dt className="inline text-text-primary">My contribution: </dt>
-                          <dd className="inline">{c.myContribution}</dd>
+                          <h3 className="font-serif-display mt-3 text-[22px] md:text-[24px]">{c.title}</h3>
+                          <dl className="mt-3 space-y-1.5 text-[15px] text-text-secondary">
+                            {problemLine ? (
+                              <div>
+                                <dt className="inline text-text-primary">Problem: </dt>
+                                <dd className="inline">{problemLine}</dd>
+                              </div>
+                            ) : null}
+                            <div>
+                              <dt className="inline text-text-primary">My contribution: </dt>
+                              <dd className="inline">{c.myContribution}</dd>
+                            </div>
+                            {resultLine ? (
+                              <div>
+                                <dt className="inline text-text-primary">Result: </dt>
+                                <dd className="inline">{resultLine}</dd>
+                              </div>
+                            ) : null}
+                          </dl>
+                          <span className="mono-label mt-4 inline-flex items-center gap-1 group-hover:!text-terra">
+                            {projectCtaLabel(c)} →
+                          </span>
                         </div>
-                        {resultLine ? (
-                          <div>
-                            <dt className="inline text-text-primary">Result: </dt>
-                            <dd className="inline">{resultLine}</dd>
-                          </div>
-                        ) : null}
-                      </dl>
-                      <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
-                        {c.tags.slice(0, 5).map((t) => (
-                          <li key={t} className="!text-[11px]">· {t}</li>
-                        ))}
-                      </ul>
-                      <span className="mono-label mt-5 inline-flex items-center gap-1 group-hover:!text-terra">
-                        {projectCtaLabel(c)} →
-                      </span>
                       </div>
                     </Link>
                   </li>

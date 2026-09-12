@@ -135,26 +135,24 @@ function WorkIndex() {
                 onClick={() => track("case_study_opened", { slug: p.slug })}
                 className="group block h-full overflow-hidden rounded-[3px] border border-hairline bg-panel transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
               >
-                <ProjectCover variant={coverVariantForSlug(p.slug)} ratio="3/2" rounded={false} className="border-0 border-b border-hairline" />
-                <div className="p-6">
-                <div className="flex items-baseline justify-between gap-4">
-                  <span className="mono-label">{p.projectType.toUpperCase()}</span>
-                  <span className="mono-label">{p.year}</span>
-                </div>
-                <h2 className="font-serif-display mt-3 text-[22px]">{p.title}</h2>
-                <p className="mt-3 text-[15.5px] text-text-secondary">{p.shortDescription}</p>
-                <p className="mt-3 text-[14.5px] text-text-secondary">
-                  <span className="text-text-primary">My contribution: </span>
-                  {p.myContribution}
-                </p>
-                <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
-                  {p.tags.slice(0, 5).map((t) => (
-                    <li key={t} className="!text-[11px]">· {t}</li>
-                  ))}
-                </ul>
-                <span className="mono-label mt-5 inline-flex items-center gap-1 group-hover:!text-terra">
-                  {projectCtaLabel(p)} →
-                </span>
+                <div className="flex flex-col gap-0 sm:flex-row sm:items-stretch h-full">
+                  <ProjectCover
+                    variant={coverVariantForSlug(p.slug)}
+                    ratio="3/2"
+                    rounded={false}
+                    className="border-0 border-b border-hairline sm:w-[120px] sm:flex-none sm:border-b-0 sm:border-r"
+                  />
+                  <div className="p-5 flex-1">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="mono-label">{p.projectType.toUpperCase()}</span>
+                      <span className="mono-label">{p.year}</span>
+                    </div>
+                    <h2 className="font-serif-display mt-3 text-[20px]">{p.title}</h2>
+                    <p className="mt-2 text-[15px] text-text-secondary">{p.shortDescription}</p>
+                    <span className="mono-label mt-4 inline-flex items-center gap-1 group-hover:!text-terra">
+                      {projectCtaLabel(p)} →
+                    </span>
+                  </div>
                 </div>
               </Link>
             </li>

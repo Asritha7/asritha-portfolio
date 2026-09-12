@@ -15,7 +15,20 @@ export type CoverVariant =
   | "kubernetes-cicd-reliability"
   | "rfid-pin-authentication-research"
   | "note"
-  | "public";
+  | "note-keycloak"
+  | "note-kafka"
+  | "note-kubernetes"
+  | "public"
+  // requested aliases
+  | "aws-integration"
+  | "keycloak-identity"
+  | "kafka-upgrade"
+  | "kubernetes-debugging"
+  | "rfid-authentication"
+  | "engineering-note-keycloak"
+  | "engineering-note-kafka"
+  | "engineering-note-kubernetes"
+  | "learning-project";
 
 type Ratio = "16/9" | "4/3" | "3/2";
 
@@ -28,18 +41,41 @@ const RATIO_CLASS: Record<Ratio, string> = {
 const ALT: Record<CoverVariant, string> = {
   "aws-microservices-cdk-ecs":
     "Abstract architecture sketch: an API gateway routing into a tier of three ECS Fargate services with running tasks, connected to a data store, with one service highlighted as the scope of my work.",
+  "aws-integration":
+    "Abstract architecture sketch of microservices behind a gateway with one service scope highlighted.",
   "automation-framework":
     "Abstract illustration of reusable automation modules moving through a delivery pipeline with branching validation states.",
   "keycloak-identity-flow":
     "Abstract illustration of identity nodes and configuration layers converging through a key motif into a consistent state.",
+  "keycloak-identity":
+    "Abstract illustration of identity nodes converging into an aligned configuration state.",
   "kafka-strimzi-upgrade":
     "Abstract illustration of message streams flowing through a clustered system with two distinct upgrade phases.",
+  "kafka-upgrade":
+    "Abstract illustration of message streams flowing across a clustered system through two upgrade phases.",
   "kubernetes-cicd-reliability":
     "Abstract illustration of a rollout path with pods and configuration signals, with one failed state isolated.",
+  "kubernetes-debugging":
+    "Abstract illustration of a rollout path with one failed pod state isolated.",
   "rfid-pin-authentication-research":
     "Abstract illustration of a two-stage authentication flow combining an RFID card and a keypad pattern.",
+  "rfid-authentication":
+    "Abstract illustration of a two-stage RFID card and PIN keypad authentication flow.",
   note: "Abstract editorial sketch of a notebook page with checklist marks and a small decision tree.",
+  "note-keycloak":
+    "Notebook-style sketch of identity nodes aligning with checklist marks and a small decision tree.",
+  "engineering-note-keycloak":
+    "Notebook-style sketch of identity nodes aligning with checklist marks and a small decision tree.",
+  "note-kafka":
+    "Notebook-style sketch of message streams across a clustered system with checklist annotations.",
+  "engineering-note-kafka":
+    "Notebook-style sketch of message streams across a clustered system with checklist annotations.",
+  "note-kubernetes":
+    "Notebook-style sketch of a rollout path with one isolated failing pod and checklist annotations.",
+  "engineering-note-kubernetes":
+    "Notebook-style sketch of a rollout path with one isolated failing pod and checklist annotations.",
   public: "Simple editorial mark indicating a learning project.",
+  "learning-project": "Simple editorial mark indicating a learning project.",
 };
 
 export function ProjectCover({
@@ -75,20 +111,35 @@ export function ProjectCover({
 function CoverArt({ variant }: { variant: CoverVariant }) {
   switch (variant) {
     case "aws-microservices-cdk-ecs":
+    case "aws-integration":
       return <AwsCover />;
     case "automation-framework":
       return <AutomationCover />;
     case "keycloak-identity-flow":
+    case "keycloak-identity":
       return <KeycloakCover />;
     case "kafka-strimzi-upgrade":
+    case "kafka-upgrade":
       return <KafkaCover />;
     case "kubernetes-cicd-reliability":
+    case "kubernetes-debugging":
       return <K8sCover />;
     case "rfid-pin-authentication-research":
+    case "rfid-authentication":
       return <RfidCover />;
     case "note":
       return <NoteCover />;
+    case "note-keycloak":
+    case "engineering-note-keycloak":
+      return <NoteCover accent="keycloak" />;
+    case "note-kafka":
+    case "engineering-note-kafka":
+      return <NoteCover accent="kafka" />;
+    case "note-kubernetes":
+    case "engineering-note-kubernetes":
+      return <NoteCover accent="kubernetes" />;
     case "public":
+    case "learning-project":
       return <PublicCover />;
   }
 }
@@ -426,7 +477,7 @@ function RfidCover() {
 }
 
 /* ---------- 7. Engineering note (editorial sketch) ---------- */
-function NoteCover() {
+function NoteCover({ accent: _accent }: { accent?: "keycloak" | "kafka" | "kubernetes" } = {}) {
   return (
     <svg {...SVG_PROPS}>
       {/* notebook page */}
