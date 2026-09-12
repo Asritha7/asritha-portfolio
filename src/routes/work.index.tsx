@@ -7,6 +7,9 @@ import { HistoryBackLink } from "@/components/HistoryBackLink";
 
 import {
   VISIBLE_PROJECTS,
+  CASE_STUDIES,
+  ADDITIONAL_PROJECTS,
+  RESEARCH_SLUG,
   PROJECT_CATEGORIES,
   PROJECT_ROUTE,
   projectCtaLabel,
@@ -56,6 +59,12 @@ export const Route = createFileRoute("/work/")({
   }),
   component: WorkIndex,
 });
+
+const GROUPS = [
+  { label: "Featured Professional Work", slugs: CASE_STUDIES.map((p) => p.slug) },
+  { label: "Earlier Professional Work", slugs: ADDITIONAL_PROJECTS.map((p) => p.slug) },
+  { label: "Research", slugs: [RESEARCH_SLUG] },
+];
 
 function WorkIndex() {
   const { category } = Route.useSearch();
@@ -124,37 +133,46 @@ function WorkIndex() {
           </div>
         </fieldset>
 
-        <ul className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
-          {filtered.map((p) => (
-            <li key={p.slug}>
-              <Link
-                to={PROJECT_ROUTE[p.slug]}
-                onClick={() => track("case_study_opened", { slug: p.slug })}
-                className="group block h-full overflow-hidden rounded-[3px] border border-hairline bg-panel transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
-              >
-                <div className="flex flex-col gap-0 sm:flex-row sm:items-stretch h-full">
-                  <ProjectCover
-                    variant={coverVariantForSlug(p.slug)}
-                    ratio="3/2"
-                    rounded={false}
-                    className="border-0 border-b border-hairline sm:w-[120px] sm:flex-none sm:border-b-0 sm:border-r"
-                  />
-                  <div className="p-5 flex-1">
-                    <div className="flex items-baseline justify-between gap-4">
-                      <span className="mono-label">{p.projectType.toUpperCase()}</span>
-                      <span className="mono-label">{p.year}</span>
-                    </div>
-                    <h2 className="font-serif-display mt-3 text-[20px]">{p.title}</h2>
-                    <p className="mt-2 text-[15px] text-text-secondary">{p.shortDescription}</p>
-                    <span className="mono-label mt-4 inline-flex items-center gap-1 group-hover:!text-terra">
-                      {projectCtaLabel(p)} →
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {GROUPS.map((group) => {
+          const items = filtered.filter((p) => group.slugs.includes(p.slug));
+          if (items.length === 0) return null;
+          return (
+            <section key={group.label} className="mt-14">
+              <h2 className="mono-label">{group.label.toUpperCase()}</h2>
+              <ul className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                {items.map((p) => (
+                  <li key={p.slug}>
+                    <Link
+                      to={PROJECT_ROUTE[p.slug]}
+                      onClick={() => track("case_study_opened", { slug: p.slug })}
+                      className="group block h-full overflow-hidden rounded-[3px] border border-hairline bg-panel transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                    >
+                      <div className="flex flex-col gap-0 sm:flex-row sm:items-stretch h-full">
+                        <ProjectCover
+                          variant={coverVariantForSlug(p.slug)}
+                          ratio="3/2"
+                          rounded={false}
+                          className="border-0 border-b border-hairline sm:w-[120px] sm:flex-none sm:border-b-0 sm:border-r"
+                        />
+                        <div className="p-5 flex-1">
+                          <div className="flex items-baseline justify-between gap-4">
+                            <span className="mono-label">{p.projectType.toUpperCase()}</span>
+                            <span className="mono-label">{p.year}</span>
+                          </div>
+                          <h3 className="font-serif-display mt-3 text-[20px]">{p.title}</h3>
+                          <p className="mt-2 text-[15px] text-text-secondary">{p.shortDescription}</p>
+                          <span className="mono-label mt-4 inline-flex items-center gap-1 group-hover:!text-terra">
+                            {projectCtaLabel(p)} →
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })}
 
         {filtered.length === 0 ? (
           <p className="mt-10 text-text-secondary">No projects in this category yet.</p>

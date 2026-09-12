@@ -979,18 +979,19 @@ function ContactForm() {
     <form onSubmit={onSubmit} noValidate className="rounded-[3px] border border-dark-foreground/15 bg-dark-foreground/[0.03] p-6 md:p-8">
       <p className="mono-label !text-dark-foreground/60">Send a message</p>
 
-      {/* honeypot */}
-      <label className="sr-only" htmlFor="cf-website">Website</label>
-      <input
-        id="cf-website"
-        type="text"
-        tabIndex={-1}
-        autoComplete="off"
-        value={website}
-        onChange={(e) => setWebsite(e.target.value)}
-        className="absolute left-[-9999px]"
-        aria-hidden="true"
-      />
+      {/* honeypot - hidden from sight, keyboard and assistive tech */}
+      <div aria-hidden="true" hidden style={{ display: "none" }}>
+        <input
+          id="cf-website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
 
       <div className="mt-6 space-y-4">
         <div>
