@@ -6,17 +6,35 @@ import resumeAsset from "@/assets/resume.pdf.asset.json";
 const portrait = portraitAsset.url;
 const resume = resumeAsset.url;
 
+const INDEX_DESC =
+  "Software engineer at Goldman Sachs building API gateway infrastructure, cloud tooling, and observability for distributed systems.";
+const INDEX_URL = "https://asritha.dev";
+const INDEX_OG_IMAGE = "https://asritha.dev/og-image.jpg";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Asritha Nibhanupudi - Software Engineer" },
-      { name: "description", content: "Software engineer working across cloud platform engineering, API gateway infrastructure, and observability. Currently at Goldman Sachs." },
+      { name: "description", content: INDEX_DESC },
+      { property: "og:url", content: INDEX_URL },
       { property: "og:title", content: "Asritha Nibhanupudi - Software Engineer" },
-      { property: "og:description", content: "Cloud platform engineering, distributed systems, and observability." },
+      { property: "og:description", content: INDEX_DESC },
+      { property: "og:image", content: INDEX_OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Asritha Nibhanupudi - Software Engineer at Goldman Sachs" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Asritha Nibhanupudi - Software Engineer" },
+      { name: "twitter:description", content: INDEX_DESC },
+      { name: "twitter:image", content: INDEX_OG_IMAGE },
+      { name: "twitter:image:alt", content: "Asritha Nibhanupudi - Software Engineer at Goldman Sachs" },
     ],
+    links: [{ rel: "canonical", href: "https://asritha.dev/" }],
   }),
   component: Portfolio,
 });
+
+
 
 const nav = [
   { id: "work", label: "Work" },

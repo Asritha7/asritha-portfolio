@@ -1,0 +1,12 @@
+{
+  "name": "Asritha Nibhanupudi",
+  "short_name": "Asritha",
+  "icons": [
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "theme_color": "#C45A3A",
+  "background_color": "#F4EDE2",
+  "display": "standalone",
+  "start_url": "/"
+}
