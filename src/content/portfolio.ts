@@ -20,7 +20,7 @@ export const HERO = {
   headline: "I build reliable software systems that scale.",
   description:
     "Software engineer experienced in building backend services, API infrastructure, cloud systems, automation, and observability across AWS and Kubernetes.",
-  primaryCta: { label: "View my work", href: "#work" },
+  primaryCta: { label: "View my work", href: "/work" },
   secondaryCta: { label: "Download résumé", href: "" }, // wired in component
 };
 
@@ -42,6 +42,21 @@ export type ProjectCategory =
   | "Automation"
   | "Research";
 
+export type OwnershipBreakdown = {
+  team?: string[];          // what the wider team or system did
+  implemented?: string[];   // what I personally implemented
+  contributedTo?: string[]; // what I contributed to
+  investigated?: string[];  // what I investigated
+  validated?: string[];     // what I validated
+};
+
+// Private — never rendered. Used to track claim provenance internally.
+export type PrivateClaim = {
+  claim: string;
+  privateSource: string;
+  approvedForPublicUse: boolean;
+};
+
 export type Project = {
   // identity
   title: string;
@@ -51,29 +66,119 @@ export type Project = {
 
   // surface copy
   shortDescription: string;
-  myContribution: string;        // one-line, used on cards
-  ownershipWording?: string;     // e.g. "Contributed to", "Implemented", "Co-authored"
+  myContribution: string;
+  ownershipWording?: string;
 
-  // case-study fields (only rendered when present)
-  professionalContext?: string;
+  // case-study depth (rendered only when present)
+  professionalContext?: string; // "Context"
   problem?: string;
-  approach?: string[];
+  constraints?: string[];
+  approach?: string[];          // "Technical approach"
+  decision?: { decision: string; why: string; tradeoff: string };
+  alternatives?: string[];
+  edgeCases?: string[];         // failure cases or edge cases
   technologies?: string[];
   challenges?: string[];
-  outcome?: string;
-  confirmedMetrics?: string[];
-  lessons?: string[];
+  outcome?: string;             // qualitative when no verified metric
+  confirmedMetrics?: string[];  // only manually-verified counts
+  learned?: string;             // "What I learned"
+  wouldImprove?: string;        // "What I would improve"
+  ownership?: OwnershipBreakdown;
+  lessons?: string[];           // short bullet lessons (legacy)
 
-  // links and flags
+  // research
   publicationUrl?: string;
+
+  // flags
   confidential: boolean;
   featured: boolean;
   categories: ProjectCategory[];
-  tags: string[]; // surfaced on cards (max ~5)
+  tags: string[];
+
+  // internal only
+  privateClaims?: PrivateClaim[];
 };
 
 export const PROJECTS: Project[] = [
-  // ---------------- FEATURED (4) ----------------
+  // ---------------- FEATURED ----------------
+  {
+    slug: "aws-microservices-cdk-ecs",
+    title: "AWS-Native Microservices on CDK and ECS Fargate",
+    projectType: "Professional Work",
+    year: "2026",
+    shortDescription:
+      "Built AWS-native microservices for a financial subledger platform using TypeScript CDK, ECS Fargate, Aurora PostgreSQL, and Lambda - with routing, auth, and integration tests defined as infrastructure-as-code.",
+    myContribution:
+      "Implemented service scaffolding and infrastructure-as-code in TypeScript CDK; built containerised services on ECS Fargate backed by Aurora PostgreSQL, with Lambda for event-driven work and integration tests wired into the pipeline.",
+    ownershipWording: "Implemented and contributed to",
+    professionalContext:
+      "Subledger Technology platform inside Asset & Wealth Management. The wider platform spans on-prem and multi-region AWS; this work focused on the AWS-native microservices slice and its supporting infrastructure-as-code, not on owning the broader platform.",
+    problem:
+      "New services needed a consistent, repeatable way to ship on AWS - networking, container runtime, database access, auth, and tests - without each team re-inventing the deployment shape per service.",
+    constraints: [
+      "Everything provisioned through code review, not the AWS console",
+      "Services had to fit a hybrid model that spans on-prem and multi-region AWS",
+      "Database access patterns had to suit a financial workload (durability, predictable failover)",
+      "Integration tests had to run in CI against a representative environment, not against mocks only",
+    ],
+    approach: [
+      "Defined service infrastructure in TypeScript CDK so reviewers could read the deployment shape in the same pull request as the code",
+      "Ran services on ECS Fargate to avoid managing EC2 capacity and to keep deployments declarative",
+      "Used Aurora PostgreSQL as the system of record, with schema and access patterns expressed through migrations",
+      "Used Lambda for event-driven and asynchronous edges where running a long-lived container was overkill",
+      "Wired routing and auth into the gateway layer as IaC rather than per-service ad-hoc configuration",
+      "Added integration tests that exercise real AWS resources from CI to catch wiring mistakes before promotion",
+    ],
+    decision: {
+      decision:
+        "Express routing, auth, and integration-test scaffolding as part of the service's CDK stack instead of treating them as separate, hand-managed environment config.",
+      why: "When routing and auth were managed outside the service, drift between environments was easy and reviewers could not see in one place what a service actually exposed. Putting it in CDK made the exposed surface reviewable in the same diff as the code.",
+      tradeoff:
+        "Service authors had to learn the CDK conventions used by the platform, and small routing tweaks now went through code review instead of a console change - slower per change, but auditable.",
+    },
+    alternatives: [
+      "Console-driven networking, gateway routing, and auth configuration (faster initially, but invisible to source control and prone to drift between environments)",
+      "Plain CloudFormation YAML instead of CDK (works, but loses the type-checking and shared abstractions that make TypeScript CDK reviewable across teams)",
+      "Running services on EC2 instead of ECS Fargate (more control, but adds capacity management without a clear benefit for this workload)",
+    ],
+    edgeCases: [
+      "Cold-start behaviour for Lambda paths on the asynchronous edges",
+      "Aurora failover behaviour during planned maintenance windows",
+      "Integration tests that passed in CI but pointed at a misconfigured environment resource",
+      "Gateway routes that worked in one region but not another because of a region-scoped IaC parameter",
+    ],
+    technologies: ["AWS", "AWS CDK (TypeScript)", "ECS Fargate", "Aurora PostgreSQL", "AWS Lambda", "API Gateway"],
+    challenges: [
+      "Keeping the AWS-native slice consistent with on-prem services in the hybrid model",
+      "Making integration tests against real AWS resources reliable enough to gate releases",
+      "Encoding routing and auth as IaC without making service authors' day-to-day changes painful",
+    ],
+    outcome:
+      "Services landed with a consistent, reviewable deployment shape on AWS, and routing, auth, and integration tests lived alongside the service code in version control rather than in console configuration.",
+    learned:
+      "Infrastructure that is reviewable in the same diff as the code is dramatically easier to reason about than infrastructure managed in a console. The cost of writing CDK pays itself back the first time you ship the same change across regions.",
+    wouldImprove:
+      "I would invest more in a shared CDK construct library that captures the routing, auth, and integration-test scaffolding as one reusable unit, so a new service can opt into the platform defaults with a few lines instead of copying patterns across stacks.",
+    ownership: {
+      team: ["Owned the broader Subledger Technology platform spanning on-prem and multi-region AWS"],
+      implemented: [
+        "Service infrastructure-as-code in TypeScript CDK",
+        "Containerised services on ECS Fargate backed by Aurora PostgreSQL",
+        "Lambda-based handlers for event-driven and asynchronous edges",
+        "Integration tests running against real AWS resources from CI",
+      ],
+      contributedTo: [
+        "The hybrid API gateway layer that spans on-prem and multi-region AWS",
+        "Conventions for routing and auth expressed as IaC",
+      ],
+      investigated: ["Aurora failover and Lambda cold-start behaviour on critical paths"],
+      validated: ["Service behaviour end-to-end via integration tests gated in CI"],
+    },
+    confidential: true,
+    featured: true,
+    categories: ["Cloud", "Backend", "APIs"],
+    tags: ["AWS", "CDK", "ECS Fargate", "Aurora PostgreSQL", "Lambda", "TypeScript"],
+  },
   {
     slug: "automation-framework",
     title: "Automation Framework and Release Workflow",
@@ -88,14 +193,35 @@ export const PROJECTS: Project[] = [
       "Engineering automation system for enterprise services deployed on Kubernetes. Used by release pipelines to validate end-to-end workflows before each rollout.",
     problem:
       "Release validation depended on repetitive manual steps across many workflows, which slowed releases and made regressions easy to miss.",
+    constraints: [
+      "Coverage had to grow without making the framework harder to maintain",
+      "Pipelines had to distinguish real regressions from environment or pipeline noise",
+      "Asynchronous application behaviour made naive sleeps unreliable",
+    ],
     approach: [
       "Reusable framework components shared across workflows",
       "REST API integrations for workflow setup, state checks, and verification",
       "Shell-script integrations for environment preparation, teardown, and orchestration",
       "Execution from CI/CD so validation runs on every release candidate",
       "Reporting and diagnostics that surface failing steps with enough context to debug",
-      "Explicit handling of asynchronous application behaviour via waits, polling, and retries",
+      "Explicit handling of asynchronous behaviour via waits, polling, and retries",
       "Maintenance and scalability practices to keep the framework usable as coverage grew",
+    ],
+    decision: {
+      decision:
+        "Treat asynchronous waits as a first-class framework primitive instead of letting individual workflows handle timing themselves.",
+      why: "Individual workflows had grown ad-hoc sleeps and retries that hid real regressions behind flaky failures, so the same async behaviour kept being re-solved per workflow.",
+      tradeoff:
+        "Authors had to learn a small framework convention instead of writing inline sleeps, and the framework gained a layer of indirection that has to be understood when debugging.",
+    },
+    alternatives: [
+      "Inline sleeps and retries inside each workflow (simpler per file, but encouraged drift and hid regressions)",
+      "Outsourcing release validation to manual QA passes (rejected because it does not scale with coverage)",
+    ],
+    edgeCases: [
+      "Pipeline-level flake caused by environment startup, not by the application",
+      "Workflows that depended on data created by an earlier step needing strict ordering and cleanup",
+      "REST APIs that returned 2xx before the workflow was actually ready",
     ],
     technologies: ["Cypress", "JavaScript", "REST APIs", "Shell scripting", "GitLab CI"],
     challenges: [
@@ -104,12 +230,22 @@ export const PROJECTS: Project[] = [
       "Distinguishing real regressions from environment or pipeline noise",
     ],
     outcome:
-      "Expanded automated coverage to more than 150 workflows and reduced repetitive manual release-validation effort.",
+      "Expanded automated coverage to more than 150 workflows, removed repetitive manual release-validation steps, and gave reviewers a clearer signal on whether a failure was a real regression.",
     confirmedMetrics: ["150+ workflows covered by the framework"],
-    lessons: [
-      "A flaky test is usually a framework bug, not an app bug - fix it at the source",
-      "Maintainability of automation matters more than raw coverage breadth",
-    ],
+    learned:
+      "Most 'flaky tests' are really framework bugs in disguise. Fixing the framework's async model once paid off across every workflow that used it.",
+    wouldImprove:
+      "With more time I would invest in a structured failure-classifier that groups CI failures by root cause (environment vs application vs framework) so that on-call reviewers see triage hints instead of a raw failure log.",
+    ownership: {
+      team: ["Owned the broader release process and infrastructure"],
+      implemented: [
+        "Reusable framework primitives for waits, polling, and retries",
+        "REST API and shell-script integration helpers",
+      ],
+      contributedTo: ["The overall CI/CD pipeline design"],
+      investigated: ["Recurring flaky-failure patterns across workflows"],
+      validated: ["Workflow coverage across release candidates"],
+    },
     confidential: true,
     featured: true,
     categories: ["Automation", "Backend"],
@@ -129,6 +265,11 @@ export const PROJECTS: Project[] = [
       "Enterprise services using Keycloak as the identity provider across multiple environments. Work focused on automation, configuration consistency, and failure prevention - not on building an independent authentication product.",
     problem:
       "Authentication failures appeared intermittently across environments with no obvious pattern, and identity-provider configuration was drifting between environments.",
+    constraints: [
+      "Could not change the identity-provider product itself",
+      "Could not store secrets or realm exports in source control without sanitisation",
+      "Validation had to run from CI/CD without manual setup per environment",
+    ],
     approach: [
       "Automated authentication-flow validation using REST APIs and Cypress",
       "Scripted realm, client, and role setup via the Keycloak Admin REST API",
@@ -137,17 +278,43 @@ export const PROJECTS: Project[] = [
       "Standardised the affected configuration across environments",
       "Added CI/CD validation checks to catch the same class of failure earlier",
     ],
+    decision: {
+      decision:
+        "Drive realm and client setup through the Keycloak Admin REST API from scripts instead of editing realm configuration by hand per environment.",
+      why: "The intermittent failures kept tracing back to drift between environments: a client redirect URI updated in one environment but not another. Scripted setup made the drift impossible.",
+      tradeoff:
+        "Setup scripts became a new artifact to maintain, and any future change to identity configuration has to go through the scripts rather than the admin UI.",
+    },
+    alternatives: [
+      "Realm export/import files checked into source control (rejected because exports contain environment-specific secrets and credentials)",
+      "Keeping configuration manual but writing a runbook (rejected because runbooks do not catch drift between environments)",
+    ],
+    edgeCases: [
+      "Redirect URI mismatches that only failed under specific browser cookie states",
+      "Token-exchange flows that succeeded on the second attempt and masked the underlying misconfiguration",
+      "Realm imports failing silently when a role already existed with the same name",
+    ],
     technologies: ["Keycloak", "REST APIs", "OIDC", "Cypress", "Shell scripting", "GitLab CI"],
     challenges: [
       "Tracing intermittent failures across services and environments",
       "Keeping identity-provider configuration consistent as environments evolved",
     ],
     outcome:
-      "Configuration-driven authentication failures were reduced after standardising config and adding CI/CD validation checks, improving environment consistency.",
-    lessons: [
-      "Most authentication failures are configuration failures - automate the configuration first",
-      "Environment drift is invisible until something breaks; CI checks make it visible early",
-    ],
+      "Configuration-driven authentication failures became much rarer after standardising realm and client setup and adding CI/CD validation checks. Environment-to-environment drift was caught earlier in the release process.",
+    learned:
+      "Most authentication failures are configuration failures. Automating the configuration is more valuable than writing more tests against the authentication flow itself.",
+    wouldImprove:
+      "I would add an explicit environment-diff report that compares realm and client configuration across environments on every pipeline run, so drift surfaces visually rather than only via failing flows.",
+    ownership: {
+      team: ["Owned the identity-provider deployment and operational responsibility"],
+      implemented: [
+        "Scripted realm and client setup against the Keycloak Admin REST API",
+        "Automated authentication-flow validation using REST APIs and Cypress",
+      ],
+      contributedTo: ["Standardising configuration across environments"],
+      investigated: ["Intermittent authentication failures and their root causes"],
+      validated: ["Authentication flows across releases"],
+    },
     confidential: true,
     featured: true,
     categories: ["Security", "Automation", "APIs"],
@@ -167,6 +334,11 @@ export const PROJECTS: Project[] = [
       "Apache Kafka deployed via the Strimzi operator on Kubernetes. The wider team owned the Kafka architecture; this work focused on validation of upgrades, not ownership of the platform.",
     problem:
       "Kafka and Strimzi version upgrades carried real risk of message-flow regressions, operator-side surprises, and pod recovery issues, and needed systematic validation before rollout.",
+    constraints: [
+      "Upgrades had to be rehearsable without affecting production data",
+      "Validation had to be reproducible across environments rather than one-shot",
+      "Rollback paths had to be considered for each upgrade scenario",
+    ],
     approach: [
       "Upgrade planning and pre-upgrade checks",
       "Compatibility verification across Kafka and Strimzi versions",
@@ -177,6 +349,22 @@ export const PROJECTS: Project[] = [
       "Rollback considerations for each upgrade scenario",
       "Execution of validation steps through CI/CD",
     ],
+    decision: {
+      decision:
+        "Validate operator-side reconciliation behaviour as a separate concern from broker behaviour, with its own checks in the upgrade rehearsal.",
+      why: "Upgrade pain tended to come from the Strimzi operator's reconciliation between versions, not from the brokers themselves, but the two were being treated as one signal.",
+      tradeoff:
+        "The rehearsal got longer because operator and broker checks now ran as distinct phases instead of one combined pass.",
+    },
+    alternatives: [
+      "Treating the upgrade as a single combined check (faster, but harder to attribute failures)",
+      "Skipping rehearsals on minor version bumps (rejected because operator behaviour can still change between minors)",
+    ],
+    edgeCases: [
+      "Pods that recovered on their own after several minutes, masking a slow operator reconciliation",
+      "Consumer groups whose offsets appeared correct but whose membership had not stabilised yet",
+      "Transient deployment failures during the upgrade that looked like real regressions",
+    ],
     technologies: ["Apache Kafka", "Strimzi", "Kubernetes", "kubectl", "GitLab CI"],
     challenges: [
       "Distinguishing environment flakiness from real upgrade regressions",
@@ -184,11 +372,26 @@ export const PROJECTS: Project[] = [
       "Reproducing transient pod and service failures observed during upgrades",
     ],
     outcome:
-      "Provided upgrade validation evidence that supported safer Kafka and Strimzi rollouts on Kubernetes.",
-    lessons: [
-      "Operator-side reconciliation is often where upgrade pain hides, not the broker itself",
-      "Validation is only useful when it clearly separates flaky from broken",
-    ],
+      "Provided upgrade validation evidence that supported safer Kafka and Strimzi rollouts on Kubernetes and made operator-side regressions easier to spot during rehearsal.",
+    learned:
+      "Operator-side reconciliation is often where upgrade pain hides, not the broker itself. Validation is only useful when it clearly separates 'flaky' from 'broken'.",
+    wouldImprove:
+      "I would automate the comparison of operator state and broker state before and after the upgrade into a single diff artifact attached to the pipeline run, instead of relying on kubectl inspection by hand.",
+    ownership: {
+      team: ["Owned the Kafka and Strimzi architecture and the upgrade itself"],
+      contributedTo: [
+        "Upgrade validation across versions",
+        "Pre- and post-upgrade verification steps in CI/CD",
+      ],
+      investigated: [
+        "Pod and service failures observed during rehearsals",
+        "Operator-side reconciliation behaviour across versions",
+      ],
+      validated: [
+        "Producer and consumer behaviour before and after upgrade",
+        "Message-flow stability and consumer-group state",
+      ],
+    },
     confidential: true,
     featured: true,
     categories: ["Distributed Systems", "Cloud"],
@@ -208,6 +411,11 @@ export const PROJECTS: Project[] = [
       "Enterprise services deployed on Kubernetes with GitLab CI pipelines. This work focused on deployment reliability and CI/CD diagnosis, not on owning a broader Kubernetes platform.",
     problem:
       "Deployments failed intermittently across environments with a mix of pod-level, configuration, and pipeline-stage root causes, slowing delivery.",
+    constraints: [
+      "Failures often reproduced only in specific environments",
+      "Pipeline-stage failures and application failures looked the same to a casual reader of the log",
+      "Fixes had to be backwards-compatible with existing deployment manifests",
+    ],
     approach: [
       "Analysed Kubernetes events and pod and container logs",
       "Diagnosed pod startup failures and CrashLoopBackOff loops",
@@ -216,66 +424,58 @@ export const PROJECTS: Project[] = [
       "Drove configuration consistency across environments",
       "Contributed deployment workflow improvements based on recurring failure patterns",
     ],
+    decision: {
+      decision:
+        "Start every deployment investigation from Kubernetes events and pod descriptions rather than from CI pipeline logs.",
+      why: "CI logs were showing symptoms; the actual cause (image pull, readiness probe, config map mismatch) was almost always visible in events much earlier.",
+      tradeoff:
+        "Investigations took an extra cluster-context step before opening the CI log, which felt slower for the first few minutes but converged on the real cause faster overall.",
+    },
+    alternatives: [
+      "Reading the CI pipeline log top-to-bottom on every failure (familiar, but consistently led people to the wrong layer first)",
+      "Re-running the pipeline immediately to see if it was 'just flake' (rejected because it hid real, reproducible failures)",
+    ],
+    edgeCases: [
+      "Readiness probes that passed once and then failed under load during rollout",
+      "Config map updates that did not propagate until a pod was manually restarted",
+      "Pipeline stages that timed out waiting for a pod that had been evicted",
+    ],
     technologies: ["Kubernetes", "kubectl", "YAML", "GitLab CI", "Shell scripting"],
     challenges: [
       "Reproducing environment-specific failures outside the original environment",
       "Distinguishing transient pipeline failures from real deployment regressions",
     ],
     outcome:
-      "Recurring deployment and pipeline failure modes were diagnosed and addressed, improving CI/CD reliability.",
-    lessons: [
-      "Most 'flaky' deployment failures have a real root cause hiding in events or config",
-      "Consistent environments cost less than one bad incident",
-    ],
+      "Recurring deployment and pipeline failure modes were diagnosed and addressed, and reviewers had a more consistent way to triage a failing deployment.",
+    learned:
+      "Most 'flaky' deployment failures have a real root cause hiding in Kubernetes events or in a config mismatch. Consistent environments cost less than one bad incident.",
+    wouldImprove:
+      "I would automate a small post-failure diagnostic step in the pipeline that collects pod descriptions, recent events, and config map versions into a single artifact so on-call engineers do not have to recreate that context by hand.",
+    ownership: {
+      team: ["Owned the broader Kubernetes platform and pipeline infrastructure"],
+      contributedTo: ["Deployment workflow improvements based on recurring patterns"],
+      investigated: [
+        "Pod startup failures and CrashLoopBackOff loops",
+        "Configuration mismatches in deployment manifests",
+        "Environment-specific pipeline-stage failures",
+      ],
+      validated: ["Configuration consistency across environments"],
+    },
     confidential: true,
-    featured: true,
+    featured: false,
     categories: ["Cloud", "Automation"],
     tags: ["Kubernetes", "GitLab CI", "YAML", "Debugging"],
   },
 
-  // ---------------- ADDITIONAL (2) ----------------
-  {
-    slug: "uim-sensitive-attribute-encryption",
-    title: "Sensitive-Attribute Encryption in Oracle UIM",
-    projectType: "Engineering Implementation",
-    year: "2025",
-    shortDescription:
-      "Secure handling of sensitive UIM attributes using AES-256 encryption, role-based decryption controls, API-level access, and upgrade and rollback support.",
-    myContribution:
-      "Contributed to and demonstrated the secure-attribute handling: AES-256 encryption, role-controlled decryption via SecureDataAccessGroup, an opt-in decryptAttributes API parameter, and upgrade and rollback scripts with backward compatibility.",
-    ownershipWording: "Contributed to / demonstrated",
-    professionalContext:
-      "Oracle Unified Inventory Management (UIM) - enterprise inventory platform. Work concerned secure handling of sensitive attributes within the existing platform, not independent ownership of the complete feature.",
-    approach: [
-      "AES-256 encryption applied to sensitive attributes at the persistence layer",
-      "Role-controlled decryption via SecureDataAccessGroup",
-      "Opt-in decryptAttributes parameter at the API boundary so plaintext is never returned by default",
-      "Upgrade scripts to encrypt existing data in place",
-      "Rollback scripts to safely revert to the prior state",
-      "Compatibility maintained across Java and PL/SQL layers",
-      "Backward compatibility preserved for existing clients",
-    ],
-    technologies: ["Java", "PL/SQL", "Oracle UIM", "AES-256"],
-    challenges: [
-      "Preserving backward compatibility while changing how attributes are stored",
-      "Coordinating upgrade and rollback paths across Java and PL/SQL layers",
-    ],
-    lessons: [
-      "Secure defaults (plaintext never returned unless explicitly requested) prevent accidental exposure",
-      "Reversible migrations matter as much as the forward path",
-    ],
-    confidential: true,
-    featured: false,
-    categories: ["Security", "Backend"],
-    tags: ["Java", "PL/SQL", "AES-256", "Oracle UIM"],
-  },
+  // ---------------- ADDITIONAL ----------------
   {
     slug: "rfid-pin-authentication-research",
+
     title: "Multi-Level RFID and PIN Authentication Research",
     projectType: "Published Research",
     year: "2024",
     shortDescription:
-      "Peer-reviewed standalone access-control system combining RFID and PIN-based authentication, published at IEEE ICMACC 2024.",
+      "A standalone access-control system combining RFID identification with a second PIN-verification step. The work explored how layered authentication could improve access security while remaining practical for embedded hardware.",
     myContribution:
       "Co-authored the paper; contributed to system design, hardware-software integration, and experimental validation.",
     ownershipWording: "Co-authored",
@@ -291,7 +491,7 @@ export const PROJECTS: Project[] = [
     ],
     technologies: ["RFID", "Embedded microcontroller", "Keypad", "Firmware"],
     outcome:
-      "Published as 'Multi-level authentication combining RFID and PIN-based access control' at IEEE ICMACC 2024.",
+      "Published as 'Multi-level authentication combining RFID and PIN-based access control' at IEEE ICMACC 2024 as a research prototype, not a commercial security product.",
     lessons: [
       "Authentication strength comes from independence of factors, not from stacking similar ones",
       "In access control, the default must be deny - any subsystem fault should fail closed",
@@ -430,13 +630,15 @@ export const RESEARCH = {
   venue: "IEEE ICMACC 2024",
   note: "Co-authored",
   href: LINKS.research,
+  summary:
+    "A standalone access-control system combining RFID identification with a second PIN-verification step. The work explored how layered authentication could improve access security while remaining practical for embedded hardware.",
 };
 
 export const PUBLIC_REPOS = [
   {
     name: "SONAR-RockVsMine-Prediction-ML-Python",
     href: "https://github.com/Asritha7/SONAR-RockVsMine-Prediction-ML-Python",
-    type: "Machine learning - Python",
+    type: "Learning project - Python",
     description:
       "Binary classifier on the UCI SONAR dataset that predicts whether a sonar return is a rock or a mine using logistic regression.",
     tech: ["Python", "NumPy", "pandas", "scikit-learn"],
@@ -444,21 +646,100 @@ export const PUBLIC_REPOS = [
   {
     name: "YouTube-Comment-Analysis-Python",
     href: "https://github.com/Asritha7/YouTube-Comment-Analysis-Python",
-    type: "Data analysis - Python",
+    type: "Learning project - Python",
     description:
       "Pulls comments, likes, and dislikes for a given YouTube video via the YouTube Data API and segregates them by keywords.",
     tech: ["Python", "YouTube Data API", "Google Cloud Console"],
   },
 ];
 
+// Engineering Notes - short, sanitized technical notes.
+export type EngineeringNote = {
+  slug: string;
+  title: string;
+  summary: string;
+  problem: string;
+  whyDifficult: string;
+  approach: string;
+  technicalDecision: string;
+  limitation: string;
+  lesson: string;
+};
+
+export const ENGINEERING_NOTES: EngineeringNote[] = [
+  {
+    slug: "automating-keycloak-identity-workflows",
+    title: "Automating Keycloak identity workflows",
+    summary:
+      "What I learned scripting realm, client, and role setup against the Keycloak Admin REST API instead of clicking through the admin UI per environment.",
+    problem:
+      "Identity-provider configuration was drifting between environments, and the same client redirect URI mismatch kept causing intermittent authentication failures.",
+    whyDifficult:
+      "Failures only reproduced in some environments. The admin UI was easy to use but invisible to source control, so there was no audit trail for who changed what.",
+    approach:
+      "Move realm and client setup into scripts that call the Keycloak Admin REST API. Add CI checks that re-apply the desired configuration on every pipeline run.",
+    technicalDecision:
+      "Idempotent setup scripts - safe to re-run - instead of one-shot exports. Each script reads the current configuration, computes a diff, and only applies what is missing or wrong.",
+    limitation:
+      "Scripts only cover the configuration that has been encoded. Anything still set by hand in the admin UI can still drift; the discipline only works if every change goes through the scripts.",
+    lesson:
+      "Most authentication failures are configuration failures. Automating the configuration is more valuable than writing more tests against the authentication flow itself.",
+  },
+  {
+    slug: "validating-kafka-strimzi-upgrades",
+    title: "A practical checklist for validating Kafka and Strimzi upgrades",
+    summary:
+      "How I separate operator-side checks from broker-side checks during an upgrade rehearsal so failures get attributed to the right layer.",
+    problem:
+      "Upgrades to Kafka or the Strimzi operator carry real risk - message-flow regressions, operator surprises, pod recovery issues - and the failure modes look similar from the outside.",
+    whyDifficult:
+      "Operator reconciliation behaviour can change between minor versions, and pods can recover on their own after a few minutes. Both effects mask the actual upgrade impact.",
+    approach:
+      "Run the rehearsal in distinct phases: pre-upgrade snapshot, operator upgrade and reconcile verification, broker upgrade and consumer-group verification, then a rollback dry-run. Validate each phase from CI/CD before moving to the next.",
+    technicalDecision:
+      "Treat operator state and broker state as two separate signals during the rehearsal instead of a single combined check. The rehearsal got longer, but failures became attributable.",
+    limitation:
+      "The checklist is only as good as the post-upgrade comparison. Without a structured diff of operator and broker state before and after, subtle regressions can still slip through.",
+    lesson:
+      "Operator-side reconciliation is often where upgrade pain hides, not the broker itself. Validation only helps when it clearly separates 'flaky' from 'broken'.",
+  },
+  {
+    slug: "investigating-kubernetes-deployment-failures",
+    title: "How I investigate Kubernetes deployment failures",
+    summary:
+      "Why I start from Kubernetes events and pod descriptions rather than the CI pipeline log when a deployment fails.",
+    problem:
+      "Deployments failed intermittently across environments with a mix of pod-level, configuration, and pipeline-stage root causes, and the CI log usually only showed symptoms.",
+    whyDifficult:
+      "Pipeline logs and application failures look the same to a casual reader. Re-running the pipeline often masked real, reproducible failures by appearing to 'fix' them.",
+    approach:
+      "Start every investigation with kubectl get events and kubectl describe pod on the failing deployment. Only open the CI log afterwards, to confirm the symptom matches the cause already visible in the cluster.",
+    technicalDecision:
+      "Read Kubernetes events first, CI logs second. The extra cluster-context step felt slower for the first few minutes but converged on the actual cause faster overall.",
+    limitation:
+      "Some failures (image pull, network policy) only show up in cluster-wide logs that a developer may not have access to. Those still need to be escalated to whoever owns the platform.",
+    lesson:
+      "Most 'flaky' deployment failures have a real root cause hiding in events or config. Consistent environments cost less than one bad incident.",
+  },
+];
+
+// Testimonials - only render when manually approved.
+export type Testimonial = {
+  quote: string;
+  name: string;            // person name or approved anonymous role
+  relationship: string;
+  permissionConfirmed: true;
+};
+
+export const TESTIMONIALS: Testimonial[] = [];
 
 // Map slug to typed route path for type-safe <Link to=...>
 export const PROJECT_ROUTE: Record<string, string> = {
+  "aws-microservices-cdk-ecs": "/work/aws-microservices-cdk-ecs",
   "automation-framework": "/work/automation-framework",
   "keycloak-identity-flow": "/work/keycloak-identity-flow",
   "kafka-strimzi-upgrade": "/work/kafka-strimzi-upgrade",
   "kubernetes-cicd-reliability": "/work/kubernetes-cicd-reliability",
-  "uim-sensitive-attribute-encryption": "/work/uim-sensitive-attribute-encryption",
   "rfid-pin-authentication-research": "/work/rfid-pin-authentication-research",
 };
 

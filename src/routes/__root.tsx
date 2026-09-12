@@ -18,24 +18,43 @@ const OG_IMAGE_URL = "https://asritha.dev/og-image.jpg";
 const SITE_DESC =
   "Software engineer at Goldman Sachs building API gateway infrastructure, cloud tooling, and observability for distributed systems.";
 
-
-
-
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-serif-display text-7xl">404</h1>
-        <h2 className="mt-4 font-serif-display text-2xl">Page not found</h2>
-        <p className="mt-2 text-sm text-text-secondary">
-          The page you're looking for doesn't exist.
-        </p>
-        <div className="mt-6">
-          <Link to="/" className="inline-flex items-center justify-center rounded-[3px] bg-terra px-4 py-2 text-sm font-medium text-panel transition-colors hover:bg-terra-dark">
-            Go home
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="border-b border-hairline bg-background/85">
+        <div className="mx-auto flex max-w-[1024px] items-center justify-between px-6 py-4 md:px-10">
+          <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
+            Asritha Nibhanupudi
+          </Link>
+          <Link to="/" className="mono-label hover:!text-terra">
+            ← Home
           </Link>
         </div>
-      </div>
+      </header>
+      <main className="mx-auto flex min-h-[70vh] max-w-[720px] flex-col justify-center px-6 py-20 md:px-10">
+        <p className="mono-label">404 · NOT FOUND</p>
+        <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">
+          This page took an unexpected{" "}
+          <em className="italic" style={{ color: "var(--accent-terra)" }}>route</em>.
+        </h1>
+        <p className="mt-6 max-w-[55ch] text-[18px] text-text-secondary">
+          The link may be outdated, or the page may have moved.
+        </p>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Link
+            to="/"
+            className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+          >
+            Return home
+          </Link>
+          <Link
+            to="/work"
+            className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+          >
+            View my work
+          </Link>
+        </div>
+      </main>
     </div>
   );
 }
@@ -101,6 +120,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "https://www.linkedin.com/in/asritha-nibhanupudi/",
           ],
         }),
+      },
+      // Privacy-conscious analytics (Plausible). No cookies, no PII.
+      // Counts on production domain only; no-op on previews.
+      {
+        defer: true,
+        "data-domain": "asritha.dev",
+        src: "https://plausible.io/js/script.tagged-events.js",
+      },
+      {
+        children:
+          "window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}",
       },
     ],
   }),

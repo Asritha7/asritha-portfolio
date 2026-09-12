@@ -10,19 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as NotesRouteImport } from './routes/notes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
-import { Route as WorkUimSensitiveAttributeEncryptionRouteImport } from './routes/work.uim-sensitive-attribute-encryption'
 import { Route as WorkRfidPinAuthenticationResearchRouteImport } from './routes/work.rfid-pin-authentication-research'
 import { Route as WorkKubernetesCicdReliabilityRouteImport } from './routes/work.kubernetes-cicd-reliability'
 import { Route as WorkKeycloakIdentityFlowRouteImport } from './routes/work.keycloak-identity-flow'
 import { Route as WorkKafkaStrimziUpgradeRouteImport } from './routes/work.kafka-strimzi-upgrade'
+import { Route as WorkAwsMicroservicesCdkEcsRouteImport } from './routes/work.aws-microservices-cdk-ecs'
 import { Route as WorkAutomationFrameworkRouteImport } from './routes/work.automation-framework'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesRoute = NotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -35,12 +41,6 @@ const WorkIndexRoute = WorkIndexRouteImport.update({
   path: '/work/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkUimSensitiveAttributeEncryptionRoute =
-  WorkUimSensitiveAttributeEncryptionRouteImport.update({
-    id: '/work/uim-sensitive-attribute-encryption',
-    path: '/work/uim-sensitive-attribute-encryption',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const WorkRfidPinAuthenticationResearchRoute =
   WorkRfidPinAuthenticationResearchRouteImport.update({
     id: '/work/rfid-pin-authentication-research',
@@ -64,6 +64,12 @@ const WorkKafkaStrimziUpgradeRoute = WorkKafkaStrimziUpgradeRouteImport.update({
   path: '/work/kafka-strimzi-upgrade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkAwsMicroservicesCdkEcsRoute =
+  WorkAwsMicroservicesCdkEcsRouteImport.update({
+    id: '/work/aws-microservices-cdk-ecs',
+    path: '/work/aws-microservices-cdk-ecs',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkAutomationFrameworkRoute = WorkAutomationFrameworkRouteImport.update({
   id: '/work/automation-framework',
   path: '/work/automation-framework',
@@ -77,38 +83,41 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
+  '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
-  '/work/uim-sensitive-attribute-encryption': typeof WorkUimSensitiveAttributeEncryptionRoute
   '/work/': typeof WorkIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
+  '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
-  '/work/uim-sensitive-attribute-encryption': typeof WorkUimSensitiveAttributeEncryptionRoute
   '/work': typeof WorkIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
+  '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
-  '/work/uim-sensitive-attribute-encryption': typeof WorkUimSensitiveAttributeEncryptionRoute
   '/work/': typeof WorkIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
@@ -116,50 +125,54 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/notes'
     | '/sitemap.xml'
     | '/work/automation-framework'
+    | '/work/aws-microservices-cdk-ecs'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
     | '/work/rfid-pin-authentication-research'
-    | '/work/uim-sensitive-attribute-encryption'
     | '/work/'
     | '/api/public/contact'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/notes'
     | '/sitemap.xml'
     | '/work/automation-framework'
+    | '/work/aws-microservices-cdk-ecs'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
     | '/work/rfid-pin-authentication-research'
-    | '/work/uim-sensitive-attribute-encryption'
     | '/work'
     | '/api/public/contact'
   id:
     | '__root__'
     | '/'
+    | '/notes'
     | '/sitemap.xml'
     | '/work/automation-framework'
+    | '/work/aws-microservices-cdk-ecs'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
     | '/work/rfid-pin-authentication-research'
-    | '/work/uim-sensitive-attribute-encryption'
     | '/work/'
     | '/api/public/contact'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NotesRoute: typeof NotesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WorkAutomationFrameworkRoute: typeof WorkAutomationFrameworkRoute
+  WorkAwsMicroservicesCdkEcsRoute: typeof WorkAwsMicroservicesCdkEcsRoute
   WorkKafkaStrimziUpgradeRoute: typeof WorkKafkaStrimziUpgradeRoute
   WorkKeycloakIdentityFlowRoute: typeof WorkKeycloakIdentityFlowRoute
   WorkKubernetesCicdReliabilityRoute: typeof WorkKubernetesCicdReliabilityRoute
   WorkRfidPinAuthenticationResearchRoute: typeof WorkRfidPinAuthenticationResearchRoute
-  WorkUimSensitiveAttributeEncryptionRoute: typeof WorkUimSensitiveAttributeEncryptionRoute
   WorkIndexRoute: typeof WorkIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
 }
@@ -171,6 +184,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes': {
+      id: '/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -185,13 +205,6 @@ declare module '@tanstack/react-router' {
       path: '/work'
       fullPath: '/work/'
       preLoaderRoute: typeof WorkIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/work/uim-sensitive-attribute-encryption': {
-      id: '/work/uim-sensitive-attribute-encryption'
-      path: '/work/uim-sensitive-attribute-encryption'
-      fullPath: '/work/uim-sensitive-attribute-encryption'
-      preLoaderRoute: typeof WorkUimSensitiveAttributeEncryptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/work/rfid-pin-authentication-research': {
@@ -222,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkKafkaStrimziUpgradeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/aws-microservices-cdk-ecs': {
+      id: '/work/aws-microservices-cdk-ecs'
+      path: '/work/aws-microservices-cdk-ecs'
+      fullPath: '/work/aws-microservices-cdk-ecs'
+      preLoaderRoute: typeof WorkAwsMicroservicesCdkEcsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work/automation-framework': {
       id: '/work/automation-framework'
       path: '/work/automation-framework'
@@ -241,15 +261,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NotesRoute: NotesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WorkAutomationFrameworkRoute: WorkAutomationFrameworkRoute,
+  WorkAwsMicroservicesCdkEcsRoute: WorkAwsMicroservicesCdkEcsRoute,
   WorkKafkaStrimziUpgradeRoute: WorkKafkaStrimziUpgradeRoute,
   WorkKeycloakIdentityFlowRoute: WorkKeycloakIdentityFlowRoute,
   WorkKubernetesCicdReliabilityRoute: WorkKubernetesCicdReliabilityRoute,
   WorkRfidPinAuthenticationResearchRoute:
     WorkRfidPinAuthenticationResearchRoute,
-  WorkUimSensitiveAttributeEncryptionRoute:
-    WorkUimSensitiveAttributeEncryptionRoute,
   WorkIndexRoute: WorkIndexRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
 }

@@ -1,68 +1,105 @@
-## Goal
-Redesign the existing portfolio into a credible Software Engineer portfolio while preserving the current cream/terracotta editorial aesthetic, typography, and restrained motion. Reposition consistently as "Software Engineer," add three featured case studies as their own routes, and tighten content, accessibility, SEO, and the contact form.
+# Portfolio Hardening Plan
 
-## Confirmations needed before I start
-A few items I won't guess at — please confirm or mark "leave as placeholder":
+Goal: raise credibility, depth, routing correctness, accessibility, and measurement of the existing site without touching the visual identity, hero positioning, or the full-bleed skills marquee.
 
-1. **Case-study content.** I'll scaffold the three case studies (`/work/api-infrastructure`, `/work/observability`, `/work/kafka-kubernetes`) with the full section structure (Overview → Lessons learned) but use clearly-marked `[TBD]` placeholders for: specific architecture details, metrics, ownership level ("led" vs "contributed to"), and any technology names that might be sensitive. You'll fill these in. OK?
-2. **"Best Efforts"** — award or nomination? (I'll mark `[confirm]` if you'd rather decide later.)
-3. **"60% metric"** — reduced effort or reduced cycle time?
-4. **Contact form via Resend.** This needs Lovable Cloud + the Resend connector + your verified sender domain. Want me to enable Cloud and wire it up now, or keep the current mailto form until you're ready?
-5. **Analytics.** Any preference (Plausible, Umami, GA4, none)? Default: skip until you choose one — privacy-friendly options need a key/domain.
-6. **Three "public engineering" repo cards** — placeholder cards with `[Coming soon]` and no GitHub link until you publish the repos, correct?
+## 1. Case-study depth (Priority 1)
 
-## Plan
+Extend the schema in `src/content/portfolio.ts` so every featured study supports a richer structure (additive, no breaking renames):
 
-### 1. Information architecture & shared data
-- New `src/content/portfolio.ts` — single source of truth for hero copy, experience, case-study metadata, principles, capabilities, research. Existing sections re-read from this so nothing contradicts.
-- Add types so case-study pages and homepage cards share the same shape.
+```ts
+type CaseStudy = {
+  // existing fields stay
+  context: string
+  problem: string
+  constraints: string[]
+  myContribution: string         // already exists
+  approach: string
+  decision: { decision: string; why: string; tradeoff: string }
+  alternatives: string[]
+  edgeCases: string[]
+  outcome: string                // qualitative when no verified metric
+  learned: string
+  wouldImprove: string
+  ownershipBreakdown: {
+    team: string[]
+    implemented: string[]
+    contributedTo: string[]
+    investigated: string[]
+    validated: string[]
+  }
+  claims?: Array<{ claim: string; privateSource: string; approvedForPublicUse: boolean }> // not rendered
+}
+```
 
-### 2. Routes
-- `src/routes/index.tsx` — restructured homepage (sequence below).
-- `src/routes/work.api-infrastructure.tsx`
-- `src/routes/work.observability.tsx`
-- `src/routes/work.kafka-kubernetes.tsx`
-- Each case-study route: own `head()` (title, description, og:title/description, canonical, Article JSON-LD), back-link, full section structure, simple inline SVG architecture diagram with `<title>`/`<desc>` for a11y, and the confidentiality notice where applicable.
+Update `CaseStudyLayout.tsx` to render the new sections with clear headings:
+Context → Problem → Constraints → My contribution → Approach → Decision (Decision/Why/Trade-off block) → Alternatives → Edge cases → Outcome → What I learned → What I would improve → Ownership breakdown.
 
-### 3. Homepage sequence (replaces current)
-1. Hero — new eyebrow / headline / description / CTAs, "Based in Bengaluru, India" chip, education shown separately from location.
-2. Featured case studies (3 cards → routes).
-3. Professional experience — scope statement + 3-5 contributions per role, action verbs, no QA framing.
-4. Engineering principles — the 5 you listed, short prose each.
-5. Technical capabilities — your 6 grouped categories, plain chips (no bars/percentages).
-6. Published research — IEEE RFID/PIN entry preserved.
-7. Earlier projects — collapsed `<details>`, SONAR & YouTube links kept.
-8. Contact.
-- Remove the duplicated Now / Toolkit / About-bio blocks; keep the marquee (it's restrained) but trim its label.
+Audit each of the four featured studies (Automation Framework, Keycloak, Kafka/Strimzi, Kubernetes CI/CD, UIM Encryption). Any study lacking real depth gets moved to **Additional Engineering Work** instead of being padded. Verbs are downgraded to "contributed to / investigated / validated" where ownership isn't confirmed.
 
-### 4. Components
-- `src/components/CaseStudyCard.tsx`, `CaseStudyLayout.tsx`, `ArchitectureDiagram.tsx` (simple SVG wrapper), `SectionHeading.tsx`, `ContactForm.tsx` (rebuilt with zod, inline errors, loading/success/error states, honeypot, basic in-memory rate limit; wired to Resend only if you greenlight #4).
+## 2. Evidence and metrics (Priority 2)
 
-### 5. Accessibility & motion
-- Single `<main>`, proper landmark/heading order, visible focus rings on all interactive elements, `prefers-reduced-motion` already respected — extend to marquee + reveal hooks. Verify contrast for both themes against the cream/terracotta tokens.
+Sweep every number on the site. Remove any unverified percentage, latency, availability, user count, cost, or business impact. Replace with precise qualitative outcomes (e.g. "removed the manual redeploy step from the release checklist"). Keep verified counts (workflows automated, environments supported, releases handled) only where the user can confirm them - I'll default to qualitative wording and flag any number I'm unsure about for the user to confirm in preview. `claims[]` is stored in the data model but never rendered. No "Metric pending confirmation" strings ship to the UI.
 
-### 6. SEO
-- Homepage title → "Asritha Nibhanupudi | Software Engineer"
-- Homepage meta description → your provided copy.
-- Each case-study route → unique title/description, canonical, Article JSON-LD.
-- `__root.tsx` — keep WebSite + Person JSON-LD; remove leaf-only tags.
-- `public/robots.txt` updated; `src/routes/sitemap[.]xml.ts` server route listing `/`, `/work/*`.
-- Keep current OG image; per-page og:url + canonical.
+## 3. Research entry (Priority 3)
 
-### 7. Performance
-- Add `width`/`height` + `loading="lazy"` (except hero portrait which stays eager) and a 2x `srcset` for the portrait.
-- Disable marquee animation under `prefers-reduced-motion` and on `<768px`.
+Expand the RFID + PIN entry:
+- Homepage card: use the suggested plain-English summary.
+- New route `src/routes/work/rfid-pin-research.tsx` (or reuse the existing route) with: research problem, motivation, proposed authentication flow, hardware/software components, my contribution, experimental setup, findings, limitations, IEEE publication link.
+- Add a simple accessible flow diagram in SVG (RFID tag → reader → PIN entry → verification → access decision) with proper `<title>`/`<desc>` and a text fallback.
+- No "production-ready commercial security system" language.
 
-### 8. Out of scope this pass (unless you say otherwise)
-- Resend wiring (waiting on #4).
-- Analytics (waiting on #5).
-- Actual case-study prose / metrics (waiting on #1–#3).
-- Publishing — I will NOT publish; you review preview first.
+## 4. Public Projects (Priority 4)
 
-## Technical notes
-- TanStack Start file-based routing: `work.api-infrastructure.tsx` → `/work/api-infrastructure`, declared as `createFileRoute("/work/api-infrastructure")`.
-- Case-study links use `<Link to="/work/...">`, not `<a href>`.
-- All new content tokens stay in `src/content/portfolio.ts` so future edits are one-file changes.
-- No new dependencies unless you approve Resend (would add `@react-email/components`, `zod` is already in shadcn deps).
+Rename the section to **Public Projects** with the exact description provided. Keep only the two verified repos already shown (SONAR rock-vs-mine, YouTube comment analysis). No live-demo links unless one actually works. Classify them honestly as learning/experiment projects. Section sits below professional work and research.
 
-Reply with answers to the 6 confirmations (even quick "placeholders everywhere, no Resend, no analytics" is fine) and I'll build it.
+## 5. Engineering Notes (Priority 5)
+
+Add a new section + route `/notes` with 2-3 short notes based on real experience:
+- Automating Keycloak identity workflows
+- A checklist for validating Kafka/Strimzi upgrades
+- Investigating Kubernetes deployment failures
+
+Each note follows: Problem → Why it was difficult → Approach → Technical decision → Limitation or mistake → General lesson. No client names, system names, screenshots, or proprietary details.
+
+## 6. /work routing + filters (Priority 6)
+
+`/work` already exists. Harden it:
+- Use TanStack `validateSearch` with a Zod schema for `category` (`all | featured | research | security | infrastructure | public`). Invalid values fall back to `all`.
+- Filter chips are real `<button>`s with `aria-pressed`, visible focus ring, and an icon/underline in addition to colour for the selected state.
+- Direct links, refresh, and Back/Forward all work because state lives in the URL.
+- Homepage "View my work" and the bottom "View all work" both route to `/work` via `<Link to="/work">`.
+
+## 7. 404 page (Priority 7)
+
+Set `notFoundComponent` on `__root.tsx` and `defaultNotFoundComponent` on the router. Branded page with the exact heading, description, and two CTAs (Return home, View my work). Matches existing cream/terracotta tokens.
+
+## 8. Reduced motion (Priority 8)
+
+Add a global CSS block under `@media (prefers-reduced-motion: reduce)` in `src/styles.css` that:
+- Pauses the marquee animation and lets the strip wrap as a static visible list.
+- Disables entrance/parallax/smooth-scroll animations and any counters.
+- Sets `scroll-behavior: auto`.
+
+Update `useReveal`/`useParallax` hooks to short-circuit when `matchMedia('(prefers-reduced-motion: reduce)').matches`.
+
+## 9. Analytics (Priority 9)
+
+Add **Plausible** (script tag in `__root.tsx` head, no cookies, no PII). Create a tiny `src/lib/analytics.ts` wrapper `track(event)` that no-ops when `window.plausible` is missing. Wire these events only:
+`case_study_opened`, `resume_downloaded`, `github_opened`, `linkedin_opened`, `research_opened`, `contact_started`, `contact_submitted`, `work_filter_selected`. No form contents, no names, no emails. I'll ask you for the Plausible domain before enabling.
+
+## 10. Testimonials (Priority 10)
+
+Add an optional `testimonials: Testimonial[]` array in `portfolio.ts`. The section only renders when the array is non-empty. Schema supports quote, name-or-approved-role, relationship, and a `permissionConfirmed: true` gate. Ships empty - nothing rendered until you provide approved quotes.
+
+## Acceptance pass
+
+After implementing, I'll verify with Playwright at mobile/tablet/desktop: hero positioning unchanged, `/work` filters via URL, 404 renders for `/does-not-exist`, marquee freezes under emulated reduced motion, keyboard tab order works on filters and CTAs. I will NOT publish - you review the preview first.
+
+## What I need from you before/while building
+
+1. **Plausible (or Umami) domain** - which one, and the domain to register (likely `asritha.dev`).
+2. **Number audit** - I'll list every numerical claim currently on the site and ask which are verified; unverified ones become qualitative wording.
+3. **Ownership wording per case study** - for each of the 4-5 studies, a one-line confirmation of whether you "implemented", "contributed to", "investigated", or "validated" the work.
+4. **Engineering Notes** - confirm the three topic picks above, or swap.
+
+I'll start with items 6 (routing), 7 (404), 8 (reduced motion), and 10 (testimonials scaffold) since they need no input from you, then come back with the audit questions for 1, 2, 3, 5, and 9.

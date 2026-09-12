@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CaseStudyLayout } from "@/components/CaseStudyLayout";
 import { PROJECTS } from "@/content/portfolio";
 
-const study = PROJECTS.find((p) => p.slug === "uim-sensitive-attribute-encryption")!;
-const url = "https://asritha.dev/work/uim-sensitive-attribute-encryption";
+const study = PROJECTS.find((p) => p.slug === "aws-microservices-cdk-ecs")!;
+const url = "https://asritha.dev/work/aws-microservices-cdk-ecs";
 
-export const Route = createFileRoute("/work/uim-sensitive-attribute-encryption")({
+export const Route = createFileRoute("/work/aws-microservices-cdk-ecs")({
   head: () => ({
     meta: [
       { title: `${study.title} - Asritha Nibhanupudi` },

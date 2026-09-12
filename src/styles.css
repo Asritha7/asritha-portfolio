@@ -158,6 +158,11 @@
   .reveal { opacity: 1; transform: none; transition: none; }
 }
 
+@utility full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
 @keyframes marquee-x {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -174,5 +179,23 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; transform: none; }
+  html { scroll-behavior: auto; }
+  /* Stop the marquee but keep its content visible as a wrapping list */
+  .marquee-strip { overflow: visible !important; }
+  .marquee-track {
+    animation: none !important;
+    transform: none !important;
+    flex-wrap: wrap;
+    width: 100%;
+    white-space: normal;
+  }
+  /* Disable any global animations or transitions */
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
+
+

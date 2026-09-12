@@ -16,7 +16,10 @@ import {
   CAPABILITIES,
   RESEARCH,
   PUBLIC_REPOS,
+  TESTIMONIALS,
 } from "@/content/portfolio";
+import { track } from "@/lib/analytics";
+
 
 const portrait = portraitAsset.url;
 const resume = resumeAsset.url;
@@ -55,8 +58,10 @@ const nav = [
   { id: "experience", label: "Experience" },
   { id: "principles", label: "Principles" },
   { id: "capabilities", label: "Capabilities" },
+  { id: "notes", label: "Notes", route: "/notes" as const },
   { id: "contact", label: "Contact" },
 ];
+
 
 type ThemeMode = "light" | "amber" | "dark";
 const THEME_ORDER: ThemeMode[] = ["light", "amber", "dark"];
@@ -90,6 +95,13 @@ function useThemePreference() {
 
 function useReveal() {
   useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      document.querySelectorAll<HTMLElement>(".reveal").forEach((el) => el.classList.add("reveal-in"));
+      return;
+    }
     const els = document.querySelectorAll<HTMLElement>(".reveal");
     const io = new IntersectionObserver(
       (entries) => {
@@ -106,6 +118,7 @@ function useReveal() {
     return () => io.disconnect();
   }, []);
 }
+
 
 function Portfolio() {
   useReveal();
@@ -125,11 +138,18 @@ function Portfolio() {
             {SITE.name}
           </a>
           <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
-            {nav.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className="mono-label transition-colors hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra">
-                {n.label}
-              </a>
-            ))}
+            {nav.map((n) =>
+              "route" in n && n.route ? (
+                <Link key={n.id} to={n.route} className="mono-label transition-colors hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra">
+                  {n.label}
+                </Link>
+              ) : (
+                <a key={n.id} href={`#${n.id}`} className="mono-label transition-colors hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra">
+                  {n.label}
+                </a>
+              ),
+            )}
+
             <button
               type="button"
               onClick={cycleTheme}
@@ -164,12 +184,19 @@ function Portfolio() {
         {menuOpen ? (
           <nav id="mobile-nav" aria-label="Mobile" className="border-t border-hairline bg-background px-6 py-4 md:hidden">
             <div className="grid grid-cols-2 gap-3">
-              {nav.map((n) => (
-                <a key={n.id} href={`#${n.id}`} onClick={() => setMenuOpen(false)} className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 hover:!text-terra hover:bg-warm-fill">
-                  {n.label}
-                </a>
-              ))}
+              {nav.map((n) =>
+                "route" in n && n.route ? (
+                  <Link key={n.id} to={n.route} onClick={() => setMenuOpen(false)} className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 hover:!text-terra hover:bg-warm-fill">
+                    {n.label}
+                  </Link>
+                ) : (
+                  <a key={n.id} href={`#${n.id}`} onClick={() => setMenuOpen(false)} className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 hover:!text-terra hover:bg-warm-fill">
+                    {n.label}
+                  </a>
+                ),
+              )}
             </div>
+
           </nav>
         ) : null}
       </header>
@@ -186,13 +213,14 @@ function Portfolio() {
             </h1>
             <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">{HERO.description}</p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <a href="#work" className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+              <Link to="/work" className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
                 View my work →
-              </a>
-              <a href={resume} download className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+              </Link>
+              <a href={resume} download onClick={() => track("resume_downloaded")} className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
                 Download résumé
               </a>
             </div>
+
             <ul className="mt-8 flex flex-wrap gap-2">
               <li className="rounded-[3px] border border-hairline bg-panel px-3 py-1.5 mono-label !text-text-primary !text-[11px]">
                 Based in {SITE.location}
@@ -203,16 +231,17 @@ function Portfolio() {
             </ul>
             <ul className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
               {[
-                { href: LINKS.github, label: "GitHub" },
-                { href: LINKS.linkedin, label: "LinkedIn" },
-                { href: LINKS.research, label: "Research" },
-                { href: LINKS.email, label: "Email" },
+                { href: LINKS.github, label: "GitHub", event: "github_opened" as const },
+                { href: LINKS.linkedin, label: "LinkedIn", event: "linkedin_opened" as const },
+                { href: LINKS.research, label: "Research", event: "research_opened" as const },
+                { href: LINKS.email, label: "Email", event: "contact_started" as const },
               ].map((l) => (
                 <li key={l.label}>
                   <a
                     href={l.href}
                     target={l.href.startsWith("mailto") ? undefined : "_blank"}
                     rel="noopener noreferrer"
+                    onClick={() => track(l.event)}
                     className="mono-label inline-flex items-center gap-1 border-b border-transparent !text-text-secondary transition-colors hover:!text-terra hover:border-terra focus-visible:!text-terra"
                   >
                     {l.label} ↗
@@ -220,6 +249,7 @@ function Portfolio() {
                 </li>
               ))}
             </ul>
+
           </div>
           <aside className="reveal">
             <div className="overflow-hidden rounded-[3px] border border-hairline bg-warm-fill">
@@ -235,6 +265,32 @@ function Portfolio() {
             </div>
           </aside>
         </section>
+
+        {/* Tech marquee */}
+        {(() => {
+          const MARQUEE = [
+            "Python", "Java", "SQL", "REST APIs", "Kafka", "Kubernetes", "Strimzi",
+            "Docker", "Linux", "AWS", "OCI", "Keycloak", "OAuth2 / OIDC",
+            "Prometheus", "Grafana", "Jenkins", "GitLab CI", "Git",
+          ];
+          const row = [...MARQUEE, ...MARQUEE];
+          return (
+            <div
+              aria-hidden="true"
+              className="marquee-strip full-bleed overflow-hidden border-y border-hairline"
+              style={{ background: "var(--marquee-bg)" }}
+            >
+              <div className="marquee-track flex gap-10 py-4 whitespace-nowrap">
+                {row.map((t, i) => (
+                  <span key={i} className="mono-label !text-[12px]">
+                    {t} <span className="opacity-50">·</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
 
         {/* Featured Engineering Work */}
         <section id="work" aria-labelledby="work-heading" className="border-t border-hairline py-20">
@@ -254,8 +310,10 @@ function Portfolio() {
                 <li key={c.slug}>
                   <Link
                     to={PROJECT_ROUTE[c.slug]}
+                    onClick={() => track("case_study_opened", { slug: c.slug })}
                     className="group block rounded-[3px] border border-hairline bg-panel p-6 transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra md:p-8"
                   >
+
                     <div className="flex items-baseline justify-between gap-4">
                       <span className="mono-label">0{i + 1} · {c.projectType}</span>
                       <span className="mono-label">{c.year}</span>
@@ -299,8 +357,10 @@ function Portfolio() {
                 <li key={p.slug}>
                   <Link
                     to={PROJECT_ROUTE[p.slug]}
+                    onClick={() => track(p.projectType === "Published Research" ? "research_opened" : "case_study_opened", { slug: p.slug })}
                     className="group flex h-full flex-col rounded-[3px] border border-hairline bg-panel p-5 transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
                   >
+
                     <span className="mono-label !text-[11px]">{p.projectType.toUpperCase()}</span>
                     <h4 className="font-serif-display mt-2 text-[18px] leading-snug">{p.title}</h4>
                     <p className="mt-2 text-[14px] text-text-secondary">{p.shortDescription}</p>
@@ -422,21 +482,22 @@ function Portfolio() {
         </section>
 
 
-        {/* Public engineering work - real GitHub repos only */}
+        {/* Public Projects - real GitHub repos only */}
         <section id="public-work" aria-labelledby="public-heading" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
               <span className="mono-label">05 - Public code</span>
               <h2 id="public-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Public engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>work</em>.
+                Public <em className="italic" style={{ color: "var(--accent-terra)" }}>Projects</em>.
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                A small set of public repositories. Professional work at Oracle is confidential and is not on GitHub.
+                Earlier projects and technical experiments available publicly on GitHub.
               </p>
               <a
                 href={LINKS.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track("github_opened")}
                 className="mono-label mt-4 inline-flex items-center gap-1 hover:!text-terra"
               >
                 View full GitHub profile ↗
@@ -462,6 +523,7 @@ function Portfolio() {
                     href={r.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => track("github_opened", { repo: r.name })}
                     className="mono-label mt-4 inline-flex items-center gap-1 hover:!text-terra"
                   >
                     View repository ↗
@@ -472,6 +534,7 @@ function Portfolio() {
           </div>
         </section>
 
+
         {/* Research */}
         <section aria-labelledby="research-heading" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
@@ -481,22 +544,56 @@ function Portfolio() {
                 Published <em className="italic" style={{ color: "var(--accent-terra)" }}>research</em>.
               </h2>
             </div>
-            <div className="reveal">
-              <a
-                href={RESEARCH.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block rounded-[3px] bg-terra p-6 text-dark-foreground transition-colors hover:bg-terra-dark md:p-7"
-              >
-                <p className="mono-label !text-dark-foreground/80">{RESEARCH.venue} · {RESEARCH.note}</p>
+            <div className="reveal space-y-4">
+              <div className="rounded-[3px] border border-hairline bg-panel p-6 md:p-7">
+                <p className="mono-label">{RESEARCH.venue} · {RESEARCH.note}</p>
                 <h3 className="font-serif-display mt-3 text-[22px] leading-snug">{RESEARCH.title}</h3>
-                <span className="mono-label mt-4 inline-flex items-center gap-1 !text-dark-foreground group-hover:underline">
-                  Read paper →
-                </span>
-              </a>
+                <p className="mt-3 text-[15px] text-text-secondary">{RESEARCH.summary}</p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link
+                    to={PROJECT_ROUTE["rfid-pin-authentication-research"]}
+                    onClick={() => track("research_opened", { surface: "detail" })}
+                    className="mono-label inline-flex items-center gap-1 rounded-[3px] border border-hairline px-3 py-2 hover:!text-terra hover:bg-warm-fill"
+                  >
+                    Read research detail →
+                  </Link>
+                  <a
+                    href={RESEARCH.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track("research_opened", { surface: "ieee" })}
+                    className="mono-label inline-flex items-center gap-1 rounded-[3px] bg-terra px-3 py-2 !text-dark-foreground hover:bg-terra-dark"
+                  >
+                    Read paper on IEEE ↗
+                  </a>
+                </div>
+              </div>
             </div>
+
           </div>
         </section>
+
+        {TESTIMONIALS.length > 0 ? (
+          <section aria-labelledby="testimonials-heading" className="border-t border-hairline py-20">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+              <div className="reveal">
+                <span className="mono-label">07 - Words</span>
+                <h2 id="testimonials-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                  What people have <em className="italic" style={{ color: "var(--accent-terra)" }}>said</em>.
+                </h2>
+              </div>
+              <ul className="reveal grid grid-cols-1 gap-4">
+                {TESTIMONIALS.filter((t) => t.permissionConfirmed).map((t, i) => (
+                  <li key={i} className="rounded-[3px] border border-hairline bg-panel p-6">
+                    <p className="font-serif-display text-[18px] leading-snug">"{t.quote}"</p>
+                    <p className="mono-label mt-4">{t.name} · {t.relationship}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
+
 
       </main>
 

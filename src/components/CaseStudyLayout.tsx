@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import { CONFIDENTIALITY_NOTICE, type Project } from "@/content/portfolio";
+import { track } from "@/lib/analytics";
 
 export function CaseStudyLayout({ study }: { study: Project }) {
   return (
@@ -36,8 +37,20 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         ) : null}
 
         {study.professionalContext ? (
-          <Section heading="Professional context">
+          <Section heading="Context">
             <p>{study.professionalContext}</p>
+          </Section>
+        ) : null}
+
+        {study.problem ? (
+          <Section heading="Problem">
+            <p>{study.problem}</p>
+          </Section>
+        ) : null}
+
+        {study.constraints?.length ? (
+          <Section heading="Constraints">
+            <List items={study.constraints} />
           </Section>
         ) : null}
 
@@ -48,15 +61,40 @@ export function CaseStudyLayout({ study }: { study: Project }) {
           <p className={study.ownershipWording ? "mt-3" : ""}>{study.myContribution}</p>
         </Section>
 
-        {study.problem ? (
-          <Section heading="Problem">
-            <p>{study.problem}</p>
+        {study.approach?.length ? (
+          <Section heading="Technical approach">
+            <List items={study.approach} />
           </Section>
         ) : null}
 
-        {study.approach?.length ? (
-          <Section heading="Approach">
-            <List items={study.approach} />
+        {study.decision ? (
+          <Section heading="One important engineering decision">
+            <div className="space-y-4">
+              <div>
+                <p className="mono-label !text-text-primary !text-[12px]">Decision</p>
+                <p className="mt-2">{study.decision.decision}</p>
+              </div>
+              <div>
+                <p className="mono-label !text-text-primary !text-[12px]">Why</p>
+                <p className="mt-2">{study.decision.why}</p>
+              </div>
+              <div>
+                <p className="mono-label !text-text-primary !text-[12px]">Trade-off</p>
+                <p className="mt-2">{study.decision.tradeoff}</p>
+              </div>
+            </div>
+          </Section>
+        ) : null}
+
+        {study.alternatives?.length ? (
+          <Section heading="Alternatives considered">
+            <List items={study.alternatives} />
+          </Section>
+        ) : null}
+
+        {study.edgeCases?.length ? (
+          <Section heading="Failure cases and edge cases">
+            <List items={study.edgeCases} />
           </Section>
         ) : null}
 
@@ -82,16 +120,30 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         ) : null}
 
         {study.outcome ? (
-          <Section heading="Outcome">
+          <Section heading="Verified outcome">
             <p>{study.outcome}</p>
           </Section>
         ) : null}
 
         {study.confirmedMetrics?.length ? (
-          <Section heading="Confirmed metrics">
+          <Section heading="Confirmed measures">
             <List items={study.confirmedMetrics} />
           </Section>
         ) : null}
+
+        {study.learned ? (
+          <Section heading="What I learned">
+            <p>{study.learned}</p>
+          </Section>
+        ) : null}
+
+        {study.wouldImprove ? (
+          <Section heading="What I would improve">
+            <p>{study.wouldImprove}</p>
+          </Section>
+        ) : null}
+
+        {study.ownership ? <OwnershipSection ownership={study.ownership} /> : null}
 
         {study.lessons?.length ? (
           <Section heading="Lessons">
@@ -105,6 +157,7 @@ export function CaseStudyLayout({ study }: { study: Project }) {
               href={study.publicationUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track("research_opened")}
               className="mono-label inline-flex items-center gap-1 !text-terra hover:underline"
             >
               View research ↗
@@ -128,7 +181,7 @@ function BackToWorkLink({ label }: { label: string }) {
     }
   };
   return (
-    <a href="/#work" onClick={handleClick} className="mono-label hover:!text-terra">
+    <a href="/work" onClick={handleClick} className="mono-label hover:!text-terra">
       {label}
     </a>
   );
@@ -156,5 +209,39 @@ function List({ items }: { items: string[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function OwnershipSection({ ownership }: { ownership: NonNullable<Project["ownership"]> }) {
+  const blocks: Array<{ label: string; items?: string[] }> = [
+    { label: "What the wider team or system did", items: ownership.team },
+    { label: "What I personally implemented", items: ownership.implemented },
+    { label: "What I contributed to", items: ownership.contributedTo },
+    { label: "What I investigated", items: ownership.investigated },
+    { label: "What I validated", items: ownership.validated },
+  ];
+  const present = blocks.filter((b) => b.items && b.items.length > 0);
+  if (present.length === 0) return null;
+  return (
+    <Section heading="Ownership breakdown">
+      <div className="grid grid-cols-1 gap-5">
+        {present.map((b) => (
+          <div key={b.label} className="rounded-[3px] border border-hairline bg-panel p-4">
+            <p className="mono-label !text-text-primary !text-[12px]">{b.label}</p>
+            <ul className="mt-3 space-y-2">
+              {b.items!.map((it, i) => (
+                <li key={i} className="flex gap-3 text-[15.5px]">
+                  <span
+                    className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+                    style={{ background: "var(--accent-terra)" }}
+                  />
+                  <span>{it}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </Section>
   );
 }

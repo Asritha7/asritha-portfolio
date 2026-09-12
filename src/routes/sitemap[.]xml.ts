@@ -6,11 +6,12 @@ const BASE_URL = "https://asritha.dev";
 const entries = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/work", changefreq: "weekly", priority: "0.9" },
+  { path: "/notes", changefreq: "monthly", priority: "0.6" },
+  { path: "/work/aws-microservices-cdk-ecs", changefreq: "monthly", priority: "0.8" },
   { path: "/work/automation-framework", changefreq: "monthly", priority: "0.8" },
   { path: "/work/keycloak-identity-flow", changefreq: "monthly", priority: "0.8" },
   { path: "/work/kafka-strimzi-upgrade", changefreq: "monthly", priority: "0.8" },
   { path: "/work/kubernetes-cicd-reliability", changefreq: "monthly", priority: "0.8" },
-  { path: "/work/uim-sensitive-attribute-encryption", changefreq: "monthly", priority: "0.7" },
   { path: "/work/rfid-pin-authentication-research", changefreq: "monthly", priority: "0.7" },
 ];
 

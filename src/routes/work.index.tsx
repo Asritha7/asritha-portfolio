@@ -1,5 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { z } from "zod";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import {
   PROJECTS,
   PROJECT_CATEGORIES,
@@ -8,13 +10,35 @@ import {
   type ProjectCategory,
   SITE,
 } from "@/content/portfolio";
+import { track } from "@/lib/analytics";
 
 const TITLE = "Work - Asritha Nibhanupudi";
 const DESC =
   "All software engineering work by Asritha Nibhanupudi - backend, APIs, distributed systems, cloud, security, observability, and research.";
 const URL = "https://asritha.dev/work";
 
+const FILTERS = ["all", ...PROJECT_CATEGORIES.map((c) => c.toLowerCase().replace(/ /g, "-"))] as const;
+type FilterSlug = (typeof FILTERS)[number];
+
+const searchSchema = z.object({
+  category: fallback(z.enum(FILTERS as unknown as [string, ...string[]]), "all").default("all"),
+});
+
+function categoryFromSlug(slug: string): ProjectCategory | "All" {
+  if (slug === "all") return "All";
+  const match = PROJECT_CATEGORIES.find(
+    (c) => c.toLowerCase().replace(/ /g, "-") === slug,
+  );
+  return match ?? "All";
+}
+
+function slugFromCategory(c: ProjectCategory | "All"): FilterSlug {
+  if (c === "All") return "all";
+  return c.toLowerCase().replace(/ /g, "-") as FilterSlug;
+}
+
 export const Route = createFileRoute("/work/")({
+  validateSearch: zodValidator(searchSchema),
   head: () => ({
     meta: [
       { title: TITLE },
@@ -29,18 +53,24 @@ export const Route = createFileRoute("/work/")({
   component: WorkIndex,
 });
 
-type Filter = "All" | ProjectCategory;
-
 function WorkIndex() {
-  const [filter, setFilter] = useState<Filter>("All");
+  const { category } = Route.useSearch();
+  const navigate = useNavigate({ from: "/work" });
+  const current = categoryFromSlug(category);
 
   const filtered = useMemo(
     () =>
-      filter === "All"
+      current === "All"
         ? PROJECTS
-        : PROJECTS.filter((p) => p.categories.includes(filter as ProjectCategory)),
-    [filter],
+        : PROJECTS.filter((p) => p.categories.includes(current as ProjectCategory)),
+    [current],
   );
+
+  const setFilter = (c: ProjectCategory | "All") => {
+    const slug = slugFromCategory(c);
+    track("work_filter_selected", { category: slug });
+    navigate({ search: { category: slug } });
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -69,21 +99,23 @@ function WorkIndex() {
         <fieldset className="mt-10">
           <legend className="mono-label mb-3">Filter by category</legend>
           <div role="group" className="flex flex-wrap gap-2">
-            {(["All", ...PROJECT_CATEGORIES] as Filter[]).map((c) => {
-              const active = filter === c;
+            {(["All", ...PROJECT_CATEGORIES] as (ProjectCategory | "All")[]).map((c) => {
+              const active = current === c;
               return (
                 <button
                   key={c}
                   type="button"
                   onClick={() => setFilter(c)}
                   aria-pressed={active}
-                  className={`rounded-[3px] border px-3 py-1.5 text-[13px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra ${
+                  className={`inline-flex items-center gap-1.5 rounded-[3px] border px-3 py-1.5 text-[13px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra ${
                     active
-                      ? "border-terra bg-terra text-panel"
+                      ? "border-terra bg-terra text-panel font-medium"
                       : "border-hairline bg-panel text-text-primary hover:bg-warm-fill"
                   }`}
                 >
-                  {c}
+                  {/* non-colour cue: a checkmark glyph when active */}
+                  <span aria-hidden="true" className={active ? "opacity-100" : "opacity-0"}>✓</span>
+                  <span>{c}</span>
                 </button>
               );
             })}
@@ -95,6 +127,7 @@ function WorkIndex() {
             <li key={p.slug}>
               <Link
                 to={PROJECT_ROUTE[p.slug]}
+                onClick={() => track("case_study_opened", { slug: p.slug })}
                 className="group block h-full rounded-[3px] border border-hairline bg-panel p-6 transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
               >
                 <div className="flex items-baseline justify-between gap-4">
