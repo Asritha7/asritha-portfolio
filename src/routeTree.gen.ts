@@ -13,12 +13,16 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
+import { Route as NotesIndexRouteImport } from './routes/notes.index'
 import { Route as WorkRfidPinAuthenticationResearchRouteImport } from './routes/work.rfid-pin-authentication-research'
 import { Route as WorkKubernetesCicdReliabilityRouteImport } from './routes/work.kubernetes-cicd-reliability'
 import { Route as WorkKeycloakIdentityFlowRouteImport } from './routes/work.keycloak-identity-flow'
 import { Route as WorkKafkaStrimziUpgradeRouteImport } from './routes/work.kafka-strimzi-upgrade'
 import { Route as WorkAwsMicroservicesCdkEcsRouteImport } from './routes/work.aws-microservices-cdk-ecs'
 import { Route as WorkAutomationFrameworkRouteImport } from './routes/work.automation-framework'
+import { Route as NotesKubernetesDeploymentDebuggingRouteImport } from './routes/notes.kubernetes-deployment-debugging'
+import { Route as NotesKeycloakConfigurationDriftRouteImport } from './routes/notes.keycloak-configuration-drift'
+import { Route as NotesKafkaStrimziUpgradeChecklistRouteImport } from './routes/notes.kafka-strimzi-upgrade-checklist'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -40,6 +44,11 @@ const WorkIndexRoute = WorkIndexRouteImport.update({
   id: '/work/',
   path: '/work/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const NotesIndexRoute = NotesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NotesRoute,
 } as any)
 const WorkRfidPinAuthenticationResearchRoute =
   WorkRfidPinAuthenticationResearchRouteImport.update({
@@ -75,6 +84,24 @@ const WorkAutomationFrameworkRoute = WorkAutomationFrameworkRouteImport.update({
   path: '/work/automation-framework',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotesKubernetesDeploymentDebuggingRoute =
+  NotesKubernetesDeploymentDebuggingRouteImport.update({
+    id: '/kubernetes-deployment-debugging',
+    path: '/kubernetes-deployment-debugging',
+    getParentRoute: () => NotesRoute,
+  } as any)
+const NotesKeycloakConfigurationDriftRoute =
+  NotesKeycloakConfigurationDriftRouteImport.update({
+    id: '/keycloak-configuration-drift',
+    path: '/keycloak-configuration-drift',
+    getParentRoute: () => NotesRoute,
+  } as any)
+const NotesKafkaStrimziUpgradeChecklistRoute =
+  NotesKafkaStrimziUpgradeChecklistRouteImport.update({
+    id: '/kafka-strimzi-upgrade-checklist',
+    path: '/kafka-strimzi-upgrade-checklist',
+    getParentRoute: () => NotesRoute,
+  } as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   id: '/api/public/contact',
   path: '/api/public/contact',
@@ -83,41 +110,52 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/notes': typeof NotesRoute
+  '/notes': typeof NotesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/notes/kafka-strimzi-upgrade-checklist': typeof NotesKafkaStrimziUpgradeChecklistRoute
+  '/notes/keycloak-configuration-drift': typeof NotesKeycloakConfigurationDriftRoute
+  '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
+  '/notes/': typeof NotesIndexRoute
   '/work/': typeof WorkIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/notes/kafka-strimzi-upgrade-checklist': typeof NotesKafkaStrimziUpgradeChecklistRoute
+  '/notes/keycloak-configuration-drift': typeof NotesKeycloakConfigurationDriftRoute
+  '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
+  '/notes': typeof NotesIndexRoute
   '/work': typeof WorkIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/notes': typeof NotesRoute
+  '/notes': typeof NotesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/notes/kafka-strimzi-upgrade-checklist': typeof NotesKafkaStrimziUpgradeChecklistRoute
+  '/notes/keycloak-configuration-drift': typeof NotesKeycloakConfigurationDriftRoute
+  '/notes/kubernetes-deployment-debugging': typeof NotesKubernetesDeploymentDebuggingRoute
   '/work/automation-framework': typeof WorkAutomationFrameworkRoute
   '/work/aws-microservices-cdk-ecs': typeof WorkAwsMicroservicesCdkEcsRoute
   '/work/kafka-strimzi-upgrade': typeof WorkKafkaStrimziUpgradeRoute
   '/work/keycloak-identity-flow': typeof WorkKeycloakIdentityFlowRoute
   '/work/kubernetes-cicd-reliability': typeof WorkKubernetesCicdReliabilityRoute
   '/work/rfid-pin-authentication-research': typeof WorkRfidPinAuthenticationResearchRoute
+  '/notes/': typeof NotesIndexRoute
   '/work/': typeof WorkIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
@@ -127,25 +165,32 @@ export interface FileRouteTypes {
     | '/'
     | '/notes'
     | '/sitemap.xml'
+    | '/notes/kafka-strimzi-upgrade-checklist'
+    | '/notes/keycloak-configuration-drift'
+    | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
     | '/work/rfid-pin-authentication-research'
+    | '/notes/'
     | '/work/'
     | '/api/public/contact'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/notes'
     | '/sitemap.xml'
+    | '/notes/kafka-strimzi-upgrade-checklist'
+    | '/notes/keycloak-configuration-drift'
+    | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
     | '/work/rfid-pin-authentication-research'
+    | '/notes'
     | '/work'
     | '/api/public/contact'
   id:
@@ -153,19 +198,23 @@ export interface FileRouteTypes {
     | '/'
     | '/notes'
     | '/sitemap.xml'
+    | '/notes/kafka-strimzi-upgrade-checklist'
+    | '/notes/keycloak-configuration-drift'
+    | '/notes/kubernetes-deployment-debugging'
     | '/work/automation-framework'
     | '/work/aws-microservices-cdk-ecs'
     | '/work/kafka-strimzi-upgrade'
     | '/work/keycloak-identity-flow'
     | '/work/kubernetes-cicd-reliability'
     | '/work/rfid-pin-authentication-research'
+    | '/notes/'
     | '/work/'
     | '/api/public/contact'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  NotesRoute: typeof NotesRoute
+  NotesRoute: typeof NotesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WorkAutomationFrameworkRoute: typeof WorkAutomationFrameworkRoute
   WorkAwsMicroservicesCdkEcsRoute: typeof WorkAwsMicroservicesCdkEcsRoute
@@ -206,6 +255,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/work/'
       preLoaderRoute: typeof WorkIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/notes/': {
+      id: '/notes/'
+      path: '/'
+      fullPath: '/notes/'
+      preLoaderRoute: typeof NotesIndexRouteImport
+      parentRoute: typeof NotesRoute
     }
     '/work/rfid-pin-authentication-research': {
       id: '/work/rfid-pin-authentication-research'
@@ -249,6 +305,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkAutomationFrameworkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notes/kubernetes-deployment-debugging': {
+      id: '/notes/kubernetes-deployment-debugging'
+      path: '/kubernetes-deployment-debugging'
+      fullPath: '/notes/kubernetes-deployment-debugging'
+      preLoaderRoute: typeof NotesKubernetesDeploymentDebuggingRouteImport
+      parentRoute: typeof NotesRoute
+    }
+    '/notes/keycloak-configuration-drift': {
+      id: '/notes/keycloak-configuration-drift'
+      path: '/keycloak-configuration-drift'
+      fullPath: '/notes/keycloak-configuration-drift'
+      preLoaderRoute: typeof NotesKeycloakConfigurationDriftRouteImport
+      parentRoute: typeof NotesRoute
+    }
+    '/notes/kafka-strimzi-upgrade-checklist': {
+      id: '/notes/kafka-strimzi-upgrade-checklist'
+      path: '/kafka-strimzi-upgrade-checklist'
+      fullPath: '/notes/kafka-strimzi-upgrade-checklist'
+      preLoaderRoute: typeof NotesKafkaStrimziUpgradeChecklistRouteImport
+      parentRoute: typeof NotesRoute
+    }
     '/api/public/contact': {
       id: '/api/public/contact'
       path: '/api/public/contact'
@@ -259,9 +336,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface NotesRouteChildren {
+  NotesKafkaStrimziUpgradeChecklistRoute: typeof NotesKafkaStrimziUpgradeChecklistRoute
+  NotesKeycloakConfigurationDriftRoute: typeof NotesKeycloakConfigurationDriftRoute
+  NotesKubernetesDeploymentDebuggingRoute: typeof NotesKubernetesDeploymentDebuggingRoute
+  NotesIndexRoute: typeof NotesIndexRoute
+}
+
+const NotesRouteChildren: NotesRouteChildren = {
+  NotesKafkaStrimziUpgradeChecklistRoute:
+    NotesKafkaStrimziUpgradeChecklistRoute,
+  NotesKeycloakConfigurationDriftRoute: NotesKeycloakConfigurationDriftRoute,
+  NotesKubernetesDeploymentDebuggingRoute:
+    NotesKubernetesDeploymentDebuggingRoute,
+  NotesIndexRoute: NotesIndexRoute,
+}
+
+const NotesRouteWithChildren = NotesRoute._addFileChildren(NotesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  NotesRoute: NotesRoute,
+  NotesRoute: NotesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WorkAutomationFrameworkRoute: WorkAutomationFrameworkRoute,
   WorkAwsMicroservicesCdkEcsRoute: WorkAwsMicroservicesCdkEcsRoute,

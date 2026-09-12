@@ -51,7 +51,7 @@ export type OwnershipBreakdown = {
   validated?: string[];     // components I validated
 };
 
-// Private — never rendered. Used to track claim provenance internally.
+// Private - never rendered. Used to track claim provenance internally.
 export type PrivateClaim = {
   claim: string;
   privateSource: string;
@@ -83,12 +83,22 @@ export type Project = {
   // surface copy
   shortDescription: string;
   myContribution: string;
+  // Compact homepage-card copy (two paragraphs). When present, the homepage
+  // card renders these instead of the labelled Problem/Contribution/Result
+  // block so the card stays under ~45 visible words.
+  cardContribution?: string;
+  cardResult?: string;
   ownershipWording?: string;
   scopeNote?: string; // rendered near start of case study when present
 
   // case-study depth (rendered only when present)
   professionalContext?: string; // "Context"
   problem?: string;
+  // Optional compressed summary copy used in the case-study Summary panel.
+  // Falls back to derived first-sentence of problem/outcome when absent.
+  summaryProblem?: string;
+  summaryRole?: string;
+  summaryResult?: string;
   constraints?: string[];
   approach?: string[];          // "Technical approach"
   decision?: { decision: string; why: string; tradeoff: string };
@@ -134,7 +144,16 @@ export const PROJECTS: Project[] = [
       "Contributed to a defined AWS-native microservice scope using TypeScript CDK, ECS Fargate, Aurora PostgreSQL, and Lambda, including infrastructure definitions, routing, authentication, and integration validation.",
     myContribution:
       "Implemented and contributed to defined service infrastructure and integration components using TypeScript CDK, ECS Fargate, Aurora PostgreSQL and Lambda.",
+    cardContribution:
+      "Contributed to service infrastructure and integration components using TypeScript CDK, ECS Fargate, Aurora PostgreSQL, and Lambda.",
+    cardResult:
+      "Moved key routing, authentication, and deployment configuration into version-controlled infrastructure definitions.",
     ownershipWording: "Contributed to",
+    summaryProblem: "New services needed a repeatable AWS deployment pattern.",
+    summaryRole:
+      "Contributed to defined service infrastructure and integration components.",
+    summaryResult:
+      "Moved selected routing, authentication, and deployment configuration into version-controlled infrastructure definitions.",
     scopeNote:
       "This case study covers my contribution to a defined service and infrastructure scope rather than ownership of the wider platform.",
     professionalContext:
@@ -216,6 +235,10 @@ export const PROJECTS: Project[] = [
       "Reusable Cypress-based automation framework with REST API and shell-script integrations, executed from CI/CD to validate releases.",
     myContribution:
       "Developed and expanded the framework, added REST API and shell integrations, and wired it into CI/CD pipelines.",
+    cardContribution:
+      "Developed reusable Cypress utilities and connected workflow automation to CI/CD execution and failure diagnostics.",
+    cardResult:
+      "Expanded reusable coverage across 150+ workflows while making recurring failures easier to investigate.",
     ownershipWording: "Developed and contributed to",
     professionalContext:
       "Engineering automation system for enterprise services deployed on Kubernetes. Used by release pipelines to validate end-to-end workflows before each rollout.",
@@ -288,6 +311,10 @@ export const PROJECTS: Project[] = [
       "Automated Keycloak identity-provider workflows and root-caused intermittent authentication failures across environments.",
     myContribution:
       "Automated Keycloak workflows via REST APIs, shell scripting, and Cypress; investigated intermittent auth failures and standardised configuration across environments.",
+    cardContribution:
+      "Automated selected Keycloak realm, client, and identity-flow configuration through REST APIs, scripts, and CI/CD validation.",
+    cardResult:
+      "Configuration covered by the automation moved from manual per-environment setup to scripted, CI-validated setup, allowing mismatches to be detected earlier.",
     ownershipWording: "Implemented and contributed to",
     professionalContext:
       "Enterprise services using Keycloak as the identity provider across multiple environments. Work focused on automation, configuration consistency, and failure prevention - not on building an independent authentication product.",
@@ -328,9 +355,9 @@ export const PROJECTS: Project[] = [
       "Keeping identity-provider configuration consistent as environments evolved",
     ],
     outcome:
-      "Configuration-driven authentication failures became much rarer after standardising realm and client setup and adding CI/CD validation checks. Environment-to-environment drift was caught earlier in the release process.",
+      "Configuration covered by the automation moved from manual per-environment setup to scripted, CI-validated setup, allowing mismatches to be detected earlier in the release process.",
     learned:
-      "In this system, several recurring authentication failures were caused by configuration drift rather than by the authentication implementation itself. Automating the configuration is more valuable than writing more tests against the authentication flow itself.",
+      "In this system, several recurring authentication failures were caused by configuration drift rather than by the authentication implementation itself. For this failure class, automating the affected configuration addressed the root cause more directly than adding additional flow-level checks.",
     wouldImprove:
       "I would add an explicit environment-diff report that compares realm and client configuration across environments on every pipeline run, so drift surfaces visually rather than only via failing flows.",
     ownership: {
@@ -421,7 +448,7 @@ export const PROJECTS: Project[] = [
       ],
     },
     confidential: true,
-    featured: true,
+    featured: false,
     categories: ["Distributed Systems", "Cloud"],
     tags: ["Apache Kafka", "Strimzi", "Kubernetes", "GitLab CI"],
   },
@@ -535,7 +562,12 @@ export const PROJECTS: Project[] = [
 // Backwards-compat aliases.
 export type CaseStudy = Project;
 export const CASE_STUDIES: Project[] = PROJECTS.filter((p) => p.featured);
-export const ADDITIONAL_PROJECTS: Project[] = PROJECTS.filter((p) => !p.featured);
+// Additional Engineering Work: non-featured professional/implementation work
+// only. Research lives in its own Published Research section so it never
+// appears twice on the homepage.
+export const ADDITIONAL_PROJECTS: Project[] = PROJECTS.filter(
+  (p) => !p.featured && p.projectType !== "Published Research",
+);
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
   "Backend",
@@ -559,26 +591,21 @@ export const EXPERIENCE = [
     contributions: [
       "Contributed to a hybrid API gateway layer spanning on-prem and multi-region AWS",
       "Contributed to AWS-native microservices using CDK (TypeScript), ECS Fargate, Aurora PostgreSQL, and Lambda",
-      "Onboarded Java microservices to Prometheus and Grafana for consistent service-level visibility",
-      "Implemented routing, auth, and integration tests as infrastructure-as-code",
     ],
-    stack: ["AWS", "CDK", "ECS Fargate", "Aurora", "Lambda", "Prometheus", "Grafana", "Java"],
+    stack: ["AWS", "TypeScript", "Java", "Observability"],
   },
   {
-    role: "Software Engineer - Automation & Infrastructure",
+    role: "Associate Quality Analyst",
     org: "Oracle",
     date: "Aug 2024 - Apr 2026",
     place: "Hyderabad",
     scope:
-      "Engineering productivity, CI/CD, and platform reliability for enterprise services on Kubernetes.",
+      "Software engineering, automation, and infrastructure responsibilities for enterprise services.",
     contributions: [
-      "Contributed to Kafka and Strimzi upgrade validation on Kubernetes",
-      "Built and integrated 150+ modular Cypress workflows into GitLab CI for release validation",
-      "Investigated Kubernetes deployment failures and improved CI/CD reliability",
-      "Automated Keycloak and OpenSearch operations via REST APIs and shell scripting",
-      "Mentored junior engineers on CI/CD and Kubernetes debugging",
+      "Built and integrated 150+ modular Cypress workflows into GitLab CI, plus REST API integrations for Keycloak and OpenSearch",
+      "Investigated Kubernetes deployment failures and authentication issues, and contributed CI/CD reliability improvements",
     ],
-    stack: ["Kubernetes", "Kafka", "Strimzi", "GitLab CI", "Cypress", "Keycloak", "OpenSearch", "Bash"],
+    stack: ["Cypress", "Kubernetes", "Keycloak", "GitLab CI"],
   },
   {
     role: "Project Intern",
@@ -724,7 +751,7 @@ export const ENGINEERING_NOTES: EngineeringNote[] = [
       {
         heading: "Idempotency",
         body:
-          "Rerunning the workflow should not create duplicate clients, roles, flows, or identity-provider entries. The pattern is to look up resources by a stable identifier (for example client ID or alias), create them only when absent, and update only the approved subset of fields when they exist. This is an idempotency goal, not a guarantee — it holds only for the fields the workflow actually manages.",
+          "Rerunning the workflow should not create duplicate clients, roles, flows, or identity-provider entries. The pattern is to look up resources by a stable identifier (for example client ID or alias), create them only when absent, and update only the approved subset of fields when they exist. This is an idempotency goal, not a guarantee - it holds only for the fields the workflow actually manages.",
       },
       {
         heading: "Token expiry during longer workflows",
@@ -949,4 +976,39 @@ export function firstSentence(s?: string): string {
   if (!s) return "";
   const m = s.match(/^[^.!?]+[.!?]/);
   return (m ? m[0] : s).trim();
+}
+
+// Notes - slug to dedicated article route, plus topic tags and a simple
+// reading-time estimate calculated from the article fields.
+export const NOTE_ROUTE: Record<string, string> = {
+  "automating-keycloak-identity-workflows": "/notes/keycloak-configuration-drift",
+  "validating-kafka-strimzi-upgrades": "/notes/kafka-strimzi-upgrade-checklist",
+  "investigating-kubernetes-deployment-failures": "/notes/kubernetes-deployment-debugging",
+};
+
+export const NOTE_TAGS: Record<string, string[]> = {
+  "automating-keycloak-identity-workflows": ["Keycloak", "Identity", "Automation"],
+  "validating-kafka-strimzi-upgrades": ["Kafka", "Strimzi", "Upgrades"],
+  "investigating-kubernetes-deployment-failures": ["Kubernetes", "Debugging", "CI/CD"],
+};
+
+export function noteReadingTimeMinutes(n: EngineeringNote): number {
+  const parts: string[] = [
+    n.summary,
+    n.introduction,
+    n.problem,
+    n.whyDifficult,
+    n.approach,
+    n.importantDecision.title,
+    n.importantDecision.body,
+    n.conclusion,
+    n.whenNotToApply,
+    ...(n.limitations ?? []),
+    ...(n.practicalSteps ?? []),
+    ...((n.checklists ?? []).flatMap((c) => [c.heading, ...c.items])),
+    ...((n.decisionFlow ?? []).flatMap((d) => [d.step, d.detail ?? ""])),
+    ...((n.subsections ?? []).flatMap((s) => [s.heading, s.body])),
+  ];
+  const words = parts.join(" ").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(2, Math.round(words / 220));
 }

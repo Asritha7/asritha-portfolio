@@ -13,6 +13,9 @@ const entries = [
   { path: "/work/kafka-strimzi-upgrade", changefreq: "monthly", priority: "0.8" },
   { path: "/work/kubernetes-cicd-reliability", changefreq: "monthly", priority: "0.8" },
   { path: "/work/rfid-pin-authentication-research", changefreq: "monthly", priority: "0.7" },
+  { path: "/notes/keycloak-configuration-drift", changefreq: "monthly", priority: "0.5" },
+  { path: "/notes/kafka-strimzi-upgrade-checklist", changefreq: "monthly", priority: "0.5" },
+  { path: "/notes/kubernetes-deployment-debugging", changefreq: "monthly", priority: "0.5" },
 ];
 
 export const Route = createFileRoute("/sitemap.xml")({

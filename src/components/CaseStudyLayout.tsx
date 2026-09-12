@@ -7,8 +7,9 @@ import { track } from "@/lib/analytics";
 
 export function CaseStudyLayout({ study }: { study: Project }) {
   const coreTech = (study.technologies ?? study.tags ?? []).slice(0, 5);
-  const summaryProblem = firstSentence(study.problem) || study.shortDescription;
-  const summaryResult = firstSentence(study.outcome);
+  const summaryProblem = study.summaryProblem || firstSentence(study.problem) || study.shortDescription;
+  const summaryRole = study.summaryRole || study.myContribution;
+  const summaryResult = study.summaryResult || firstSentence(study.outcome);
   const summaryScope = study.scopeNote || study.ownershipWording;
 
   const hasTechDetails = Boolean(
@@ -54,7 +55,7 @@ export function CaseStudyLayout({ study }: { study: Project }) {
           </p>
         ) : null}
 
-        {/* Summary panel — supports a two-minute review */}
+        {/* Summary panel - supports a two-minute review */}
         <aside
           aria-label="Case study summary"
           className="mt-8 rounded-[3px] border border-hairline bg-panel p-5 md:p-6"
@@ -64,7 +65,7 @@ export function CaseStudyLayout({ study }: { study: Project }) {
             {summaryProblem ? (
               <SummaryRow label="Problem">{summaryProblem}</SummaryRow>
             ) : null}
-            <SummaryRow label="My role">{study.myContribution}</SummaryRow>
+            <SummaryRow label="My role">{summaryRole}</SummaryRow>
             {summaryResult ? (
               <SummaryRow label="Result">{summaryResult}</SummaryRow>
             ) : null}
@@ -157,8 +158,13 @@ export function CaseStudyLayout({ study }: { study: Project }) {
             id="technical-details"
             className="tech-details mt-12 rounded-[3px] border border-hairline bg-panel"
           >
-            <summary className="cursor-pointer list-none px-5 py-4 md:px-6">
-              <span className="mono-label !text-text-primary !text-[12px]">Technical details</span>
+            <summary className="cursor-pointer list-none px-5 py-4 md:px-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+              <span className="mono-label !text-text-primary !text-[12px] tech-details-when-closed">
+                Show technical details ↓
+              </span>
+              <span className="mono-label !text-text-primary !text-[12px] tech-details-when-open">
+                Hide technical details ↑
+              </span>
               <span className="ml-2 text-text-secondary text-[13px]">
                 Constraints, alternatives, edge cases, ownership breakdown, lessons.
               </span>

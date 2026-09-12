@@ -8,6 +8,7 @@ import {
   LINKS,
   HERO,
   CASE_STUDIES,
+  ADDITIONAL_PROJECTS,
   PROJECT_ROUTE,
   projectCtaLabel,
   firstSentence,
@@ -480,75 +481,28 @@ function Portfolio() {
             "Linux", "AWS", "Keycloak", "OAuth2 / OIDC",
             "Prometheus", "Grafana", "Jenkins", "GitLab CI", "Git",
           ];
-          const row = [...MARQUEE, ...MARQUEE];
           return (
             <div
-              aria-hidden="true"
               className="marquee-strip full-bleed overflow-hidden border-y border-hairline"
               style={{ background: "var(--marquee-bg)" }}
             >
               <div className="marquee-track flex gap-10 py-4 whitespace-nowrap">
-                {row.map((t, i) => (
+                {MARQUEE.map((t, i) => (
                   <span key={i} className="mono-label !text-[12px]">
                     {t} <span className="opacity-50">·</span>
                   </span>
                 ))}
+                <span aria-hidden="true" className="flex gap-10">
+                  {MARQUEE.map((t, i) => (
+                    <span key={i} className="mono-label !text-[12px]">
+                      {t} <span className="opacity-50">·</span>
+                    </span>
+                  ))}
+                </span>
               </div>
             </div>
           );
         })()}
-
-
-        {/* How I Work - personal debugging loop */}
-        <section aria-labelledby="loop-heading" className="border-t border-hairline py-14 md:py-16">
-          <div className="reveal grid grid-cols-1 gap-8 md:grid-cols-[220px_1fr] md:gap-16">
-            <div>
-              <span className="mono-label">HOW I WORK</span>
-              <h2 id="loop-heading" className="font-serif-display mt-4 text-[clamp(22px,2.6vw,28px)]">
-                My debugging <em className="italic" style={{ color: "var(--accent-terra)" }}>loop</em>.
-              </h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-text-secondary">
-                I enjoy the moment when a failure stops looking random and starts becoming a system I
-                can reason about. I usually begin with the evidence, compare the states that differ,
-                isolate the failing condition, make the smallest defensible fix, and automate
-                repeatable checks where it is safe to do so.
-              </p>
-            </div>
-            <ol
-              aria-label="Personal debugging loop: Observe, Compare, Isolate, Fix, Automate"
-              className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-5"
-            >
-              {[
-                { n: "01", t: "Observe", d: "Start with the actual failure evidence rather than the first assumption." },
-                { n: "02", t: "Compare", d: "Look for differences across environments, configurations, versions, or execution paths." },
-                { n: "03", t: "Isolate", d: "Reduce the problem until the failing component or condition is clear." },
-                { n: "04", t: "Fix",     d: "Address the root cause with the smallest defensible change." },
-                { n: "05", t: "Automate", d: "Encode repeatable validation or recovery steps where it is safe to do so." },
-              ].map((s, i, arr) => (
-                <li
-                  key={s.n}
-                  className="relative rounded-[3px] border border-hairline bg-panel p-4 md:p-4"
-                >
-                  <div className="flex items-baseline gap-2">
-                    <span className="mono-label !text-[11px] !text-terra">{s.n}</span>
-                    <h3 className="font-serif-display text-[16px] md:text-[17px]">{s.t}</h3>
-                  </div>
-                  <p className="mt-2 text-[13.5px] leading-snug text-text-secondary">{s.d}</p>
-                  {i < arr.length - 1 ? (
-                    <span
-                      aria-hidden="true"
-                      className="mono-label !text-[11px] !text-terra absolute right-3 -bottom-3 md:bottom-auto md:right-[-14px] md:top-1/2 md:-translate-y-1/2"
-                    >
-                      <span className="md:hidden">↓</span>
-                      <span className="hidden md:inline">→</span>
-                    </span>
-                  ) : null}
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
 
 
         {/* Featured Engineering Work */}
@@ -560,14 +514,15 @@ function Portfolio() {
                 Featured Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Selected professional engineering work. Each item is labelled by type and links to a
-                case study that distinguishes what the wider team owned from what I personally contributed.
+                Selected work across cloud systems, automation, authentication and reliability-with clear context on what I personally contributed.
               </p>
+
             </div>
             <ul className="reveal grid grid-cols-1 gap-5">
               {CASE_STUDIES.slice(0, 3).map((c, i) => {
-                const problemLine = firstSentence(c.problem);
-                const resultLine = firstSentence(c.outcome);
+                const contribution = c.cardContribution ?? c.myContribution;
+                const result = c.cardResult ?? firstSentence(c.outcome);
+                const tags = c.tags.slice(0, 5);
                 return (
                   <li key={c.slug}>
                     <Link
@@ -580,32 +535,24 @@ function Portfolio() {
                           variant={coverVariantForSlug(c.slug)}
                           ratio="3/2"
                           rounded={false}
-                          className="border-0 border-b border-hairline sm:w-[140px] sm:flex-none sm:border-b-0 sm:border-r"
+                          className="border-0 border-b border-hairline sm:w-[180px] sm:flex-none sm:border-b-0 sm:border-r"
                         />
                         <div className="p-6 md:p-7 flex-1">
                           <div className="flex items-baseline justify-between gap-4">
-                            <span className="mono-label">0{i + 1} · {c.projectType}</span>
-                            <span className="mono-label">{c.year}</span>
+                            <span className="mono-label">0{i + 1} · {c.projectType} · {c.year}</span>
                           </div>
                           <h3 className="font-serif-display mt-3 text-[22px] md:text-[24px]">{c.title}</h3>
-                          <dl className="mt-3 space-y-1.5 text-[15px] text-text-secondary">
-                            {problemLine ? (
-                              <div>
-                                <dt className="inline text-text-primary">Problem: </dt>
-                                <dd className="inline">{problemLine}</dd>
-                              </div>
-                            ) : null}
-                            <div>
-                              <dt className="inline text-text-primary">My contribution: </dt>
-                              <dd className="inline">{c.myContribution}</dd>
-                            </div>
-                            {resultLine ? (
-                              <div>
-                                <dt className="inline text-text-primary">Result: </dt>
-                                <dd className="inline">{resultLine}</dd>
-                              </div>
-                            ) : null}
-                          </dl>
+                          <p className="mt-3 text-[15px] text-text-secondary">{contribution}</p>
+                          {result ? (
+                            <p className="mt-2 text-[15px] text-text-secondary">{result}</p>
+                          ) : null}
+                          {tags.length ? (
+                            <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
+                              {tags.map((t) => (
+                                <li key={t} className="!text-[11px]">· {t}</li>
+                              ))}
+                            </ul>
+                          ) : null}
                           <span className="mono-label mt-4 inline-flex items-center gap-1 group-hover:!text-terra">
                             {projectCtaLabel(c)} →
                           </span>
@@ -628,7 +575,61 @@ function Portfolio() {
           </div>
         </section>
 
-
+        {/* Additional Engineering Work - non-featured professional work only.
+            Published Research is intentionally excluded so RFID appears only
+            once on the homepage, in its dedicated section. */}
+        {ADDITIONAL_PROJECTS.length > 0 ? (
+          <section
+            id="additional-work"
+            aria-labelledby="additional-heading"
+            className="border-t border-hairline py-20"
+          >
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+              <div className="reveal">
+                <span className="mono-label">01b - Additional Engineering Work</span>
+                <h2 id="additional-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
+                  Additional Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
+                </h2>
+                <p className="mt-3 text-[15px] text-text-secondary">
+                  Further professional case studies. Each links to a sanitized write-up.
+                </p>
+              </div>
+              <ul className="reveal grid grid-cols-1 gap-4">
+                {ADDITIONAL_PROJECTS.map((c) => (
+                  <li key={c.slug}>
+                    <Link
+                      to={PROJECT_ROUTE[c.slug]}
+                      onClick={() => track("case_study_opened", { slug: c.slug })}
+                      className="group block overflow-hidden rounded-[3px] border border-hairline bg-panel transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                    >
+                      <div className="flex flex-col gap-0 sm:flex-row sm:items-stretch">
+                        <ProjectCover
+                          variant={coverVariantForSlug(c.slug)}
+                          ratio="3/2"
+                          rounded={false}
+                          className="border-0 border-b border-hairline sm:w-[120px] sm:flex-none sm:border-b-0 sm:border-r"
+                        />
+                        <div className="p-5 md:p-6 flex-1">
+                          <div className="flex items-baseline justify-between gap-4">
+                            <span className="mono-label">{c.projectType.toUpperCase()}</span>
+                            <span className="mono-label">{c.year}</span>
+                          </div>
+                          <h3 className="font-serif-display mt-2 text-[19px] md:text-[20px]">{c.title}</h3>
+                          <p className="mt-2 text-[14.5px] text-text-secondary">
+                            {firstSentence(c.problem) || c.shortDescription}
+                          </p>
+                          <span className="mono-label mt-3 inline-flex items-center gap-1 group-hover:!text-terra">
+                            {projectCtaLabel(c)} →
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
 
         {/* Experience */}
         <section id="experience" aria-labelledby="exp-heading" className="border-t border-hairline py-20">
@@ -638,6 +639,9 @@ function Portfolio() {
               <h2 id="exp-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
                 Professional <em className="italic" style={{ color: "var(--accent-terra)" }}>timeline</em>.
               </h2>
+              <p className="mt-3 text-[14px] text-text-secondary">
+                Shortened for scanning. Full details on the résumé.
+              </p>
             </div>
             <ol className="relative">
               {EXPERIENCE.map((e, i) => (
@@ -649,7 +653,7 @@ function Portfolio() {
                   </h3>
                   <p className="mt-3 max-w-[64ch] text-[16.5px] text-text-secondary">{e.scope}</p>
                   <ul className="mt-4 space-y-2 text-[16px] text-text-secondary">
-                    {e.contributions.map((c, j) => (
+                    {e.contributions.slice(0, 2).map((c, j) => (
                       <li key={j} className="flex gap-3">
                         <span className="mt-2.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--accent-terra)" }} />
                         <span>{c}</span>
@@ -658,7 +662,7 @@ function Portfolio() {
                   </ul>
                   {e.stack ? (
                     <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
-                      {e.stack.map((s) => (
+                      {e.stack.slice(0, 4).map((s) => (
                         <li key={s} className="!text-[11px]">· {s}</li>
                       ))}
                     </ul>
@@ -669,8 +673,19 @@ function Portfolio() {
                 </li>
               ))}
             </ol>
+            <div className="mt-4 md:col-start-2">
+              <a
+                href={resume}
+                download
+                onClick={() => track("resume_downloaded")}
+                className="mono-label inline-flex items-center gap-1 rounded-[3px] border border-hairline bg-panel px-4 py-2 hover:bg-warm-fill hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+              >
+                Download résumé ↓
+              </a>
+            </div>
           </div>
         </section>
+
 
         {/* Principles */}
         <section id="principles" aria-labelledby="principles-heading" className="border-t border-hairline py-20">

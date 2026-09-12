@@ -224,6 +224,9 @@
   outline-offset: 2px;
   border-radius: 3px;
 }
+.tech-details-when-open { display: none; }
+.tech-details[open] .tech-details-when-open { display: inline; }
+.tech-details[open] .tech-details-when-closed { display: none; }
 
 /* Project cover - no hover transform, prevents any perceived "zoom" on cards */
 .project-cover svg { display: block; }
