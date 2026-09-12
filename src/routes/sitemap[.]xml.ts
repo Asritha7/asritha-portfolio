@@ -10,7 +10,10 @@ const entries = [
   { path: "/hiring-managers", changefreq: "monthly", priority: "0.7" },
 
   { path: "/work/goldman-sachs-platform-engineering", changefreq: "monthly", priority: "0.9" },
-  { path: "/work/kubernetes-cicd-reliability", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/automation-framework", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/keycloak-identity-flow", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/kafka-strimzi-upgrade", changefreq: "monthly", priority: "0.7" },
+  { path: "/work/kubernetes-cicd-reliability", changefreq: "monthly", priority: "0.7" },
   { path: "/work/rfid-pin-authentication-research", changefreq: "monthly", priority: "0.7" },
   { path: "/notes/keycloak-configuration-drift", changefreq: "monthly", priority: "0.5" },
   { path: "/notes/kafka-strimzi-upgrade-checklist", changefreq: "monthly", priority: "0.5" },

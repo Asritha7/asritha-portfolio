@@ -16,7 +16,7 @@ export const LINKS = {
 };
 
 export const HERO = {
-  eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD · PLATFORM ENGINEERING · JAVA · TYPESCRIPT · AWS · DISTRIBUTED SYSTEMS",
+  eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD",
   headline: "I build reliable software systems across application, cloud, and platform layers.",
   description:
     "I work across the full lifecycle of a service: application changes and integrations, deployment and infrastructure, monitoring, failure recovery, and production troubleshooting.",
@@ -972,26 +972,30 @@ export const GS_PARENT: Project = {
   tags: ["Java", "AWS", "Kafka / MSK", "Reliability", "Observability"],
 };
 
-// Two engineering case studies stay featured: the combined current-role work
-// and the Kubernetes delivery/reliability write-up, which is closest to the
-// current profile. The published research keeps its own section.
-export const SECOND_CASE_STUDY_SLUG = "kubernetes-cicd-reliability";
+// Featured case studies on the homepage: current-role work plus the two strongest
+// earlier professional write-ups. The published research keeps its own section.
 export const RESEARCH_SLUG = "rfid-pin-authentication-research";
 
 export const CASE_STUDIES: Project[] = [
   GS_PARENT,
-  PROJECTS.find((p) => p.slug === SECOND_CASE_STUDY_SLUG)!,
+  PROJECTS.find((p) => p.slug === "automation-framework")!,
+  PROJECTS.find((p) => p.slug === "keycloak-identity-flow")!,
 ];
 
-// Everything shown on /work: both case studies plus the published research.
+// Everything shown on /work: featured case studies, earlier professional work,
+// and the published research.
 export const VISIBLE_PROJECTS: Project[] = [
   ...CASE_STUDIES,
+  PROJECTS.find((p) => p.slug === "kafka-strimzi-upgrade")!,
+  PROJECTS.find((p) => p.slug === "kubernetes-cicd-reliability")!,
   PROJECTS.find((p) => p.slug === RESEARCH_SLUG)!,
 ];
 
-// No separate "Earlier Professional Work" list while only two case studies
-// are surfaced.
-export const ADDITIONAL_PROJECTS: Project[] = [];
+// Earlier professional work shown on the homepage below the featured section.
+export const ADDITIONAL_PROJECTS: Project[] = [
+  PROJECTS.find((p) => p.slug === "kafka-strimzi-upgrade")!,
+  PROJECTS.find((p) => p.slug === "kubernetes-cicd-reliability")!,
+];
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
   "Backend",
@@ -1087,39 +1091,19 @@ export const PRINCIPLES = [
 export const CAPABILITIES: { label: string; items: string[] }[] = [
   {
     label: "Software Development",
-    items: ["Java", "TypeScript", "Python", "C++", "REST APIs", "PostgreSQL"],
+    items: ["Java", "TypeScript", "Python", "REST APIs", "PostgreSQL"],
   },
   {
     label: "Cloud and Infrastructure",
-    items: [
-      "AWS",
-      "AWS CDK",
-      "CloudFormation",
-      "ECS Fargate",
-      "Lambda",
-      "API Gateway",
-      "Aurora PostgreSQL",
-      "VPC / PrivateLink",
-      "Kubernetes",
-      "Docker",
-    ],
+    items: ["AWS", "CDK", "ECS Fargate", "Lambda", "Kubernetes", "Docker"],
   },
   {
     label: "Distributed Systems",
-    items: ["Kafka / MSK", "Debezium CDC", "EventBridge", "SQS / DLQ"],
+    items: ["Kafka / MSK", "EventBridge", "SQS", "Debezium"],
   },
   {
     label: "Reliability and Delivery",
-    items: [
-      "GitLab CI/CD",
-      "Prometheus",
-      "Grafana",
-      "CloudWatch",
-      "SLOs",
-      "Disaster recovery",
-      "Blue-green deployments",
-      "AWS FIS",
-    ],
+    items: ["GitLab CI/CD", "Prometheus", "Grafana", "CloudWatch", "SLOs"],
   },
 ];
 

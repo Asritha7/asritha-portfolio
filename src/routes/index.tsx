@@ -479,10 +479,10 @@ function Portfolio() {
         {/* Tech marquee */}
         {(() => {
           const MARQUEE = [
-            "Java", "TypeScript", "Python", "C++", "REST APIs", "PostgreSQL",
-            "AWS", "CDK", "CloudFormation", "ECS Fargate", "Lambda", "API Gateway",
-            "Kafka / MSK", "Debezium", "EventBridge", "SQS", "Kubernetes", "Docker",
-            "GitLab CI/CD", "Prometheus", "Grafana", "CloudWatch", "SLOs", "AWS FIS",
+            "Java", "TypeScript", "Python", "REST APIs", "PostgreSQL",
+            "AWS", "CDK", "ECS Fargate", "Lambda", "Kubernetes", "Docker",
+            "Kafka / MSK", "EventBridge", "SQS", "Debezium",
+            "GitLab CI/CD", "Prometheus", "Grafana", "CloudWatch", "SLOs",
           ];
           return (
             <div
@@ -517,7 +517,7 @@ function Portfolio() {
                 Featured Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Current work across Java services, AWS platform engineering, event-driven systems, reliability, and observability - with clear context on what I personally contributed.
+                Current work across Java services, AWS cloud infrastructure, event-driven systems, reliability, and observability - with clear context on what I personally contributed.
               </p>
 
             </div>
