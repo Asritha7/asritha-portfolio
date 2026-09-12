@@ -41,6 +41,7 @@
   --color-terra: var(--accent-terra);
   --color-terra-dark: var(--accent-terra-dark);
   --color-status-green: var(--status-green);
+  --color-marquee-bg: var(--marquee-bg);
 
   --font-serif: "Newsreader", ui-serif, Georgia, serif;
   --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -63,6 +64,7 @@
   --accent-terra: #C75A37;
   --accent-terra-dark: #B14A2A;
   --status-green: #3F9D5F;
+  --marquee-bg: #F6ECE0;
   --radius: 3px;
 }
 
@@ -82,6 +84,7 @@
   --accent-terra: #E07852;
   --accent-terra-dark: #C75A37;
   --status-green: #72C18A;
+  --marquee-bg: #2A241E;
 }
 
 @layer base {

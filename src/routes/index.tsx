@@ -37,12 +37,12 @@ const work = [
 ];
 
 const earlier = [
-  "SONAR Rock vs Mine (Python/ML)",
-  "Soil Moisture Monitoring (ESP32)",
-  "Audio Transmission via Li-Fi",
-  "YouTube Comment Analysis (Python)",
-  "Website Blocker (Python)",
-  "PCB Design & Fabrication (KiCad)",
+  { label: "SONAR Rock vs Mine (Python/ML)", href: "https://github.com/Asritha7" },
+  { label: "Soil Moisture Monitoring (ESP32)", href: "" },
+  { label: "Audio Transmission via Li-Fi", href: "" },
+  { label: "YouTube Comment Analysis (Python)", href: "https://github.com/Asritha7" },
+  { label: "Website Blocker (Python)", href: "" },
+  { label: "PCB Design & Fabrication (KiCad)", href: "" },
 ];
 
 const experience = [
@@ -78,10 +78,10 @@ const experience = [
 
 const skills = [
   { label: "Cloud & Platform", items: ["AWS", "CDK", "ECS Fargate", "Aurora PostgreSQL", "Lambda", "Nginx"] },
-  { label: "Distributed & Infra", items: ["Kubernetes", "Apache Kafka", "Strimzi", "Linux"] },
+  { label: "Distributed & Infra", items: ["Kubernetes", "Apache Kafka", "Strimzi", "REST APIs", "Linux"] },
   { label: "CI/CD & Automation", items: ["GitLab CI/CD", "Cypress", "Keycloak", "OpenSearch"] },
   { label: "Observability", items: ["Prometheus", "Grafana"] },
-  { label: "Languages", items: ["TypeScript", "Python", "Java", "C++", "REST APIs"] },
+  { label: "Languages", items: ["TypeScript", "Python", "Java", "SQL", "C++"] },
 ];
 
 const links = {
@@ -161,7 +161,7 @@ function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
       {/* Top bar */}
       <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-[46px]">
@@ -226,34 +226,6 @@ function Portfolio() {
         ) : null}
       </header>
 
-      <div
-        className="marquee-strip overflow-hidden border-y border-hairline"
-        style={{ background: "#F6ECE0", paddingTop: 16, paddingBottom: 16 }}
-        aria-label="Technologies"
-      >
-        <div className="marquee-track">
-          {[0, 1].map((i) => (
-            <div
-              key={i}
-              aria-hidden={i === 1 ? true : undefined}
-              className="flex shrink-0 items-center whitespace-nowrap pr-12"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 13,
-                letterSpacing: "0.06em",
-                color: "var(--text-muted)",
-              }}
-            >
-              {["AWS","CDK","ECS Fargate","Aurora PostgreSQL","Lambda","Kubernetes","Apache Kafka","Strimzi","Nginx","GitLab CI","Cypress","Prometheus","Grafana","TypeScript","Python","Java","C++","Linux"].map((t, j, arr) => (
-                <span key={t} className="flex items-center">
-                  <span>{t}</span>
-                  <span className="px-4 opacity-60">·</span>
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
 
       <main id="top" className="mx-auto max-w-[1280px] px-6 md:px-[46px]">
 
@@ -312,6 +284,34 @@ function Portfolio() {
             </div>
           </aside>
         </section>
+
+        <div
+          className="marquee-strip relative left-1/2 -translate-x-1/2 w-screen overflow-hidden border-y border-hairline bg-[var(--marquee-bg)] py-4"
+          aria-label="Technologies"
+        >
+          <div className="marquee-track">
+            {[0, 1].map((i) => (
+              <div
+                key={i}
+                aria-hidden={i === 1 ? true : undefined}
+                className="flex shrink-0 items-center whitespace-nowrap pr-12"
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 13,
+                  letterSpacing: "0.06em",
+                  color: "var(--text-muted)",
+                }}
+              >
+                {["AWS","CDK","ECS Fargate","Aurora PostgreSQL","Lambda","Kubernetes","Apache Kafka","Strimzi","Nginx","GitLab CI","Cypress","Prometheus","Grafana","TypeScript","Python","Java","SQL","C++","Linux"].map((t, j, arr) => (
+                  <span key={t} className="flex items-center">
+                    <span>{t}</span>
+                    <span className="px-4 opacity-60">·</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Now */}
         <section id="now" className="border-t border-hairline py-20">
@@ -372,7 +372,20 @@ function Portfolio() {
             <summary className="mono-label cursor-pointer hover:!text-terra">+ Earlier &amp; academic projects</summary>
             <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-2 text-[15px] text-text-secondary sm:grid-cols-2 lg:grid-cols-3">
               {earlier.map((p) => (
-                <li key={p} className="border-b border-hairline py-2">{p}</li>
+                <li key={p.label} className="border-b border-hairline py-2">
+                  {p.href ? (
+                    <a
+                      href={p.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 transition-colors hover:!text-terra"
+                    >
+                      {p.label} ↗
+                    </a>
+                  ) : (
+                    p.label
+                  )}
+                </li>
               ))}
             </ul>
           </details>
@@ -479,20 +492,26 @@ function Portfolio() {
       {/* Contact + Footer */}
       <div className="bg-dark-background text-dark-foreground">
         <section id="contact" className="mx-auto max-w-[1280px] px-6 py-24 md:px-[46px] md:py-32">
-          <div className="reveal mx-auto max-w-[900px] text-center md:text-left">
-            <span className="mono-label !text-dark-foreground/60">Get in Touch</span>
-            <h2 className="font-serif-display mt-6 text-[clamp(40px,7vw,76px)]">
-              Let's build something{" "}
-              <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em>.
-            </h2>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-              <a href={links.email} className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark">
-                Email me →
-              </a>
-              <a href={resume} download className="rounded-[3px] border border-dark-foreground/30 bg-dark-background px-5 py-3 text-[15px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
-                Résumé
-              </a>
+          <div className="reveal grid grid-cols-1 gap-14 md:grid-cols-[1fr_1fr] md:gap-20">
+            <div>
+              <span className="mono-label !text-dark-foreground/60">Get in Touch</span>
+              <h2 className="font-serif-display mt-6 text-[clamp(40px,6vw,68px)]">
+                Let's build something{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em>.
+              </h2>
+              <p className="mt-6 max-w-[42ch] text-[17px] text-dark-foreground/70">
+                Drop a note about a role, a project, or anything you're building. I read every message.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href={links.email} className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
+                  Email directly
+                </a>
+                <a href={resume} download className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
+                  Résumé
+                </a>
+              </div>
             </div>
+            <ContactForm />
           </div>
         </section>
 
@@ -516,6 +535,56 @@ function Portfolio() {
           </div>
         </footer>
       </div>
+
     </div>
+  );
+}
+
+function ContactForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmedName = name.trim().slice(0, 100);
+    const trimmedEmail = email.trim().slice(0, 200);
+    const trimmedMsg = message.trim().slice(0, 2000);
+    if (!trimmedName || !trimmedEmail || !trimmedMsg) return;
+    const subject = `Portfolio inquiry from ${trimmedName}`;
+    const body = `${trimmedMsg}\n\n—\nFrom: ${trimmedName} <${trimmedEmail}>`;
+    const href = `mailto:nibhanupudiasritha@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = href;
+    setSent(true);
+  };
+
+  const fieldClass =
+    "w-full rounded-[3px] border border-dark-foreground/20 bg-dark-foreground/[0.04] px-4 py-3 text-[15px] text-dark-foreground placeholder:text-dark-foreground/40 outline-none transition-colors focus:border-[var(--accent-terra)] focus:bg-dark-foreground/[0.07]";
+
+  return (
+    <form onSubmit={onSubmit} className="rounded-[3px] border border-dark-foreground/15 bg-dark-foreground/[0.03] p-6 md:p-8">
+      <p className="mono-label !text-dark-foreground/60">Send a message</p>
+      <div className="mt-6 space-y-4">
+        <div>
+          <label htmlFor="cf-name" className="mono-label !text-dark-foreground/60 !text-[11px]">Name</label>
+          <input id="cf-name" required maxLength={100} value={name} onChange={(e) => setName(e.target.value)} className={`${fieldClass} mt-2`} placeholder="Your name" />
+        </div>
+        <div>
+          <label htmlFor="cf-email" className="mono-label !text-dark-foreground/60 !text-[11px]">Email</label>
+          <input id="cf-email" type="email" required maxLength={200} value={email} onChange={(e) => setEmail(e.target.value)} className={`${fieldClass} mt-2`} placeholder="you@domain.com" />
+        </div>
+        <div>
+          <label htmlFor="cf-msg" className="mono-label !text-dark-foreground/60 !text-[11px]">Message</label>
+          <textarea id="cf-msg" required maxLength={2000} rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className={`${fieldClass} mt-2 resize-y`} placeholder="What are you working on?" />
+        </div>
+      </div>
+      <button type="submit" className="mt-6 w-full rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark">
+        Send message →
+      </button>
+      {sent ? (
+        <p className="mono-label mt-4 !text-[var(--accent-terra)]">Opening your email app… thank you!</p>
+      ) : null}
+    </form>
   );
 }
