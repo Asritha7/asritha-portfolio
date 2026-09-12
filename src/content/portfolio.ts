@@ -150,10 +150,8 @@ export const PROJECTS: Project[] = [
       "Moved key routing, authentication, and deployment configuration into version-controlled infrastructure definitions.",
     ownershipWording: "Contributed to",
     summaryProblem: "New services needed a repeatable AWS deployment pattern.",
-    summaryRole:
-      "Contributed to defined service infrastructure and integration components.",
-    summaryResult:
-      "Moved selected routing, authentication, and deployment configuration into version-controlled infrastructure definitions.",
+    summaryRole: "Contributed to defined service infrastructure and integration components.",
+    summaryResult: "Moved selected deployment configuration into version-controlled infrastructure definitions.",
     scopeNote:
       "This case study covers my contribution to a defined service and infrastructure scope rather than ownership of the wider platform.",
     professionalContext:
@@ -240,6 +238,9 @@ export const PROJECTS: Project[] = [
     cardResult:
       "Expanded reusable coverage across 150+ workflows while making recurring failures easier to investigate.",
     ownershipWording: "Developed and contributed to",
+    summaryProblem: "Release validation depended on repetitive manual steps that hid regressions.",
+    summaryRole: "Built reusable framework primitives and wired them into CI/CD execution.",
+    summaryResult: "Coverage grew past 150 workflows with clearer signal on real regressions.",
     professionalContext:
       "Engineering automation system for enterprise services deployed on Kubernetes. Used by release pipelines to validate end-to-end workflows before each rollout.",
     problem:
@@ -293,7 +294,7 @@ export const PROJECTS: Project[] = [
         "Reusable framework primitives for waits, polling, and retries",
         "REST API and shell-script integration helpers",
       ],
-      contributedTo: ["The overall CI/CD pipeline design"],
+      contributedTo: ["CI/CD integration and execution design for the automation framework"],
       investigated: ["Recurring flaky-failure patterns across workflows"],
       validated: ["Workflow coverage across release candidates"],
     },
@@ -316,6 +317,9 @@ export const PROJECTS: Project[] = [
     cardResult:
       "Configuration covered by the automation moved from manual per-environment setup to scripted, CI-validated setup, allowing mismatches to be detected earlier.",
     ownershipWording: "Implemented and contributed to",
+    summaryProblem: "Auth failures appeared intermittently as identity-provider config drifted between environments.",
+    summaryRole: "Scripted realm and client setup and automated flow validation in CI.",
+    summaryResult: "Covered configuration moved from manual per-environment setup to scripted, CI-validated setup.",
     professionalContext:
       "Enterprise services using Keycloak as the identity provider across multiple environments. Work focused on automation, configuration consistency, and failure prevention - not on building an independent authentication product.",
     problem:
@@ -385,6 +389,9 @@ export const PROJECTS: Project[] = [
     myContribution:
       "Contributed to upgrade validation - verified producer and consumer behaviour, Kubernetes deployment changes, pod and service recovery, and message-flow stability across versions.",
     ownershipWording: "Contributed to",
+    summaryProblem: "Kafka and Strimzi upgrades risked message-flow and operator-side regressions.",
+    summaryRole: "Contributed to upgrade validation across producer, consumer, and operator behaviour.",
+    summaryResult: "Rehearsals separated operator-side issues from broker issues, supporting safer rollouts.",
     professionalContext:
       "Apache Kafka deployed via the Strimzi operator on Kubernetes. The wider team owned the Kafka architecture; this work focused on validation of upgrades, not ownership of the platform.",
     problem:
@@ -407,7 +414,7 @@ export const PROJECTS: Project[] = [
     decision: {
       decision:
         "Validate operator-side reconciliation behaviour as a separate concern from broker behaviour, with its own checks in the upgrade rehearsal.",
-      why: "Upgrade pain tended to come from the Strimzi operator's reconciliation between versions, not from the brokers themselves, but the two were being treated as one signal.",
+      why: "During the upgrade rehearsals I worked on, several difficult failures originated in Strimzi operator reconciliation rather than broker behaviour, but the two were being treated as one signal.",
       tradeoff:
         "The rehearsal got longer because operator and broker checks now ran as distinct phases instead of one combined pass.",
     },
@@ -429,7 +436,7 @@ export const PROJECTS: Project[] = [
     outcome:
       "Provided upgrade validation evidence that supported safer Kafka and Strimzi rollouts on Kubernetes and made operator-side regressions easier to spot during rehearsal.",
     learned:
-      "During these upgrade rehearsals, several difficult failures appeared in operator reconciliation rather than broker behaviour. Validation is only useful when it clearly separates 'flaky' from 'broken'.",
+      "During these upgrade rehearsals, several difficult failures appeared in operator reconciliation rather than broker behaviour. In these rehearsals, validation was most useful when it clearly separated transient behaviour from confirmed regressions.",
     wouldImprove:
       "I would automate the comparison of operator state and broker state before and after the upgrade into a single diff artifact attached to the pipeline run, instead of relying on kubectl inspection by hand.",
     ownership: {
@@ -462,6 +469,9 @@ export const PROJECTS: Project[] = [
     myContribution:
       "Investigated deployment failures (pod startup, CrashLoopBackOff, configuration mismatches), pipeline-stage failures, and environment-specific issues; contributed deployment workflow improvements.",
     ownershipWording: "Investigated and contributed to",
+    summaryProblem: "Deployments failed intermittently across pod, config, and pipeline-stage causes.",
+    summaryRole: "Investigated failures from cluster events first and contributed workflow improvements.",
+    summaryResult: "Recurring failure modes were triaged consistently and addressed at their actual layer.",
     professionalContext:
       "Enterprise services deployed on Kubernetes with GitLab CI pipelines. This work focused on deployment reliability and CI/CD diagnosis, not on owning a broader Kubernetes platform.",
     problem:
@@ -503,7 +513,7 @@ export const PROJECTS: Project[] = [
     outcome:
       "Recurring deployment and pipeline failure modes were diagnosed and addressed, and reviewers had a more consistent way to triage a failing deployment.",
     learned:
-      "Several deployment failures initially classified as flaky had identifiable causes in Kubernetes events, deployment configuration, or environment state. Consistent environments cost less than one bad incident.",
+      "Several deployment failures initially classified as flaky had identifiable causes in Kubernetes events, deployment configuration, or environment state. Improving configuration consistency reduced repeated investigation of environment-specific deployment failures.",
     wouldImprove:
       "I would automate a small post-failure diagnostic step in the pipeline that collects pod descriptions, recent events, and config map versions into a single artifact so engineers reviewing pipeline failures do not have to recreate that context by hand.",
     ownership: {
