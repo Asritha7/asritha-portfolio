@@ -4,7 +4,7 @@ export const SITE = {
   name: "Asritha Nibhanupudi",
   role: "Software Engineer",
   location: "Bengaluru, India",
-  education: "B.Tech, Electronics & Communications — VNR VJIET",
+  education: "B.Tech, Electronics & Communications - VNR VJIET",
   email: "nibhanupudiasritha@gmail.com",
 };
 
@@ -24,18 +24,36 @@ export const HERO = {
   secondaryCta: { label: "Download résumé", href: "" }, // wired in component
 };
 
-export type CaseStudy = {
-  slug: "api-infrastructure" | "observability" | "kafka-kubernetes";
+export type ProjectCategory =
+  | "Backend"
+  | "Distributed Systems"
+  | "Cloud"
+  | "APIs"
+  | "Security"
+  | "Observability"
+  | "Research";
+
+export type ProjectType = "Professional Work" | "Independent Project" | "Research";
+
+export type Project = {
+  slug: string;
   title: string;
-  blurb: string;
-  tags: string[];
+  shortDescription: string; // one-line engineering problem (card)
+  contribution: string;     // what I personally contributed (card)
+  blurb: string;            // longer card/intro blurb
+  tags: string[];           // up to 5 surfaced on cards
+  categories: ProjectCategory[];
+  projectType: ProjectType;
+  featured: boolean;
   year: string;
   confidential: boolean;
+
+  // detail-page fields
   overview: string;
   problem: string;
   requirements: string[];
   role: string;
-  architecture: string; // text description (diagram is a component prop)
+  architecture: string;
   implementation: string[];
   decisions: { decision: string; rationale: string }[];
   alternatives: { option: string; why_not: string }[];
@@ -44,17 +62,30 @@ export type CaseStudy = {
   reliability: string[];
   outcome: string;
   lessons: string[];
+
+  // optional links
+  githubUrl?: string;
+  publicationUrl?: string;
+  liveUrl?: string;
 };
 
 const PLACEHOLDER = "[Details to confirm]";
 
-export const CASE_STUDIES: CaseStudy[] = [
+export const PROJECTS: Project[] = [
+  // ---------------- FEATURED (3) ----------------
   {
     slug: "api-infrastructure",
     title: "Resilient API Infrastructure",
+    shortDescription:
+      "Hybrid traffic across on-prem and multi-region AWS needed a single, stable entry point.",
+    contribution:
+      "Implemented routing, IaC modules, and integration tests for the gateway layer.",
     blurb:
       "Hybrid API gateway spanning on-prem and multi-region AWS, designed for fault tolerance and predictable latency.",
     tags: ["AWS", "API Gateway", "CDK", "ECS Fargate", "Nginx"],
+    categories: ["APIs", "Cloud", "Backend"],
+    projectType: "Professional Work",
+    featured: true,
     year: "2026",
     confidential: true,
     overview:
@@ -105,9 +136,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Additional latency hop in exchange for a stable contract and centralised policy",
     ],
     failureScenarios: [
-      "Region or on-prem path becomes unhealthy — circuit breaker trips and traffic shifts to the healthy path",
-      "Edge configuration regression — caught by integration tests in CI before rollout",
-      "Auth provider degradation — gateway fails closed for protected routes and surfaces a clear error",
+      "Region or on-prem path becomes unhealthy - circuit breaker trips and traffic shifts to the healthy path",
+      "Edge configuration regression - caught by integration tests in CI before rollout",
+      "Auth provider degradation - gateway fails closed for protected routes and surfaces a clear error",
     ],
     reliability: [
       "Health-checked upstreams with explicit timeouts",
@@ -118,15 +149,22 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Provided a single, stable entry point for hybrid traffic. " + PLACEHOLDER,
     lessons: [
       "A small amount of routing observability pays for itself the first time a partial outage happens",
-      "Treat gateway config as application code — review it, test it, roll it back the same way",
+      "Treat gateway config as application code - review it, test it, roll it back the same way",
     ],
   },
   {
     slug: "observability",
     title: "Microservice Observability and Service Reliability",
+    shortDescription:
+      "Service owners couldn't measure latency, errors, or SLOs consistently across environments.",
+    contribution:
+      "Onboarded Java services to Prometheus, built RED-style Grafana dashboards, and tuned alerts to SLIs.",
     blurb:
       "Onboarded Java microservices to Prometheus and Grafana so on-call engineers could answer 'is the system healthy?' in seconds.",
     tags: ["Prometheus", "Grafana", "Java", "Kubernetes"],
+    categories: ["Observability", "Backend", "Distributed Systems"],
+    projectType: "Professional Work",
+    featured: true,
     year: "2026",
     confidential: true,
     overview:
@@ -175,9 +213,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Standard dashboards trade some service-specific nuance for consistency",
     ],
     failureScenarios: [
-      "Scrape target down — alert fires before service degradation is user-visible",
-      "Alert flapping — tuned thresholds and 'for' durations to dampen noise",
-      "Dashboard misread during incident — runbook links embedded in each panel",
+      "Scrape target down - alert fires before service degradation is user-visible",
+      "Alert flapping - tuned thresholds and 'for' durations to dampen noise",
+      "Dashboard misread during incident - runbook links embedded in each panel",
     ],
     reliability: [
       "SLIs reviewed with service owners rather than imposed",
@@ -194,9 +232,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "kafka-kubernetes",
     title: "Kafka and Kubernetes Upgrade Automation",
+    shortDescription:
+      "Kafka and Kubernetes upgrades shipped on manual rehearsals, with no reliable regression signal.",
+    contribution:
+      "Built the ephemeral-cluster upgrade test framework and wired it into GitLab CI.",
     blurb:
       "Test strategy and automation that let Apache Kafka and Kubernetes upgrades roll out without regressions.",
     tags: ["Apache Kafka", "Strimzi", "Kubernetes", "GitLab CI"],
+    categories: ["Distributed Systems", "Cloud", "Backend"],
+    projectType: "Professional Work",
+    featured: true,
     year: "2025",
     confidential: true,
     overview:
@@ -245,9 +290,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Test surface area grows with each Kafka/operator version supported",
     ],
     failureScenarios: [
-      "Consumer-group rebalance during upgrade — validated message delivery semantics post-upgrade",
-      "Operator stuck reconciliation — surfaced via timeout with operator logs attached to the run",
-      "Flaky network in CI — retried only specific transient steps, not the whole upgrade",
+      "Consumer-group rebalance during upgrade - validated message delivery semantics post-upgrade",
+      "Operator stuck reconciliation - surfaced via timeout with operator logs attached to the run",
+      "Flaky network in CI - retried only specific transient steps, not the whole upgrade",
     ],
     reliability: [
       "Deterministic provisioning so the same pipeline yields the same result",
@@ -261,16 +306,275 @@ export const CASE_STUDIES: CaseStudy[] = [
       "A test that can't tell flaky from broken will be ignored by the team it's meant to help",
     ],
   },
+
+  // ---------------- ADDITIONAL SELECTED WORK (3) ----------------
+  {
+    slug: "authentication-system",
+    title: "Enterprise Authentication System",
+    shortDescription:
+      "Enterprise services needed centralised auth, RBAC, and consistent token lifecycle.",
+    contribution:
+      "Automated Keycloak realm/client/role configuration and integrated JWT validation across services.",
+    blurb:
+      "Centralised authentication and authorization across enterprise services using Keycloak, OIDC, and role-based access control.",
+    tags: ["Keycloak", "OAuth 2.0", "OIDC", "JWT", "RBAC"],
+    categories: ["Security", "APIs", "Backend"],
+    projectType: "Professional Work",
+    featured: false,
+    year: "2025",
+    confidential: true,
+    overview:
+      "Worked on the authentication and authorization layer for enterprise services, using Keycloak as the identity provider and OIDC as the protocol contract between clients, services, and the IdP.",
+    problem:
+      "Services were authenticating users in inconsistent ways, with ad-hoc role checks and no clear token lifecycle. The team needed a single identity provider, a consistent token format, and role-based access control that services could enforce uniformly.",
+    requirements: [
+      "Single source of truth for users, clients, and roles",
+      "Standards-based protocol (OIDC over OAuth 2.0) for tokens",
+      "Short-lived access tokens with refresh-token rotation",
+      "Role-based access control enforceable in each service",
+      "Automatable realm, client, and role configuration",
+    ],
+    role:
+      "Implementer. Automated Keycloak configuration via the Admin REST API and shell tooling, integrated JWT validation in services, and helped define the role model. " +
+      PLACEHOLDER,
+    architecture:
+      "Clients perform an OIDC Authorization Code (with PKCE) flow against Keycloak. Services validate JWT access tokens (signature, issuer, audience, expiry) and enforce role claims on protected routes. Refresh tokens are rotated; sessions and tokens have explicit, separate lifetimes.",
+    implementation: [
+      "Automated Keycloak realm, client, and role setup via the Admin REST API",
+      "Integrated JWT validation middleware in services (issuer, audience, signature, expiry)",
+      "Wired role-based authorization checks on protected endpoints",
+      "Scripted environment-specific configuration so envs stayed reproducible",
+    ],
+    decisions: [
+      {
+        decision: "OIDC over a custom auth scheme",
+        rationale: "Standard protocol with mature libraries and well-understood security properties.",
+      },
+      {
+        decision: "Short-lived access tokens with refresh rotation",
+        rationale: "Reduces the blast radius of a leaked token while keeping the user experience seamless.",
+      },
+      {
+        decision: "Roles as JWT claims, validated per request",
+        rationale: "Avoids a network hop to the IdP on every authorization check.",
+      },
+    ],
+    alternatives: [
+      {
+        option: "Per-service session cookies",
+        why_not: "Hard to federate across services and clients; no clean SSO story.",
+      },
+      {
+        option: "Long-lived bearer tokens",
+        why_not: "Token leakage becomes a major incident instead of a minor one.",
+      },
+    ],
+    tradeoffs: [
+      "JWTs can't be revoked instantly without extra infrastructure - short TTLs are the mitigation",
+      "Keycloak adds an operational dependency in exchange for centralised identity",
+    ],
+    failureScenarios: [
+      "Keycloak outage - services keep validating already-issued tokens until expiry; new logins fail explicitly",
+      "Token signing key rotation - services refresh JWKS before old keys expire",
+      "Role misconfiguration - caught by integration tests asserting expected 401/403 responses",
+    ],
+    reliability: [
+      "Realm and client config managed as code, not clicked through a UI",
+      "Token and session lifetimes set explicitly per environment",
+      "Auth-related failures logged with enough context to distinguish 401 vs 403 vs upstream",
+    ],
+    outcome:
+      "Services migrated to a consistent OIDC-based auth model with role-based access control and reproducible IdP configuration. " +
+      PLACEHOLDER,
+    lessons: [
+      "Most auth bugs are configuration bugs - automating realm setup pays off quickly",
+      "Token lifetime is a security-vs-UX trade-off; pick it deliberately per environment",
+    ],
+  },
+  {
+    slug: "realtime-monitoring",
+    title: "Real-Time Monitoring and Event Processing System",
+    shortDescription:
+      "High-volume operational events needed asynchronous processing with reliable delivery and back-pressure handling.",
+    contribution:
+      "Designed Kafka producer/consumer patterns, retry and dead-letter strategy, and consumer-side observability.",
+    blurb:
+      "Event-driven pipeline using Kafka for asynchronous processing, with retries, dead-letter queues, and consumer observability.",
+    tags: ["Apache Kafka", "Java", "Kubernetes", "Prometheus"],
+    categories: ["Distributed Systems", "Backend", "Observability"],
+    projectType: "Independent Project",
+    featured: false,
+    year: "2025",
+    confidential: false,
+    overview:
+      "Reference design for a real-time monitoring and event-processing pipeline built on Kafka, focused on the engineering decisions around delivery semantics, consumer failure handling, and horizontal scalability.",
+    problem:
+      "Operational events arrive in bursts and must be processed without blocking producers, without losing events on consumer failure, and with enough observability that a stuck consumer is visible before downstream systems are affected.",
+    requirements: [
+      "Asynchronous decoupling between producers and downstream processing",
+      "Bounded back-pressure under burst load",
+      "Explicit retry and dead-letter strategy for poison messages",
+      "Horizontally scalable consumers without re-ordering correctness",
+      "Per-consumer metrics: lag, throughput, error rate",
+    ],
+    role:
+      "Designer and implementer of the reference pipeline. " + PLACEHOLDER,
+    architecture:
+      "Producers publish to a primary topic partitioned by entity key. A consumer group processes messages and ACKs only after success. Transient failures retry with backoff to a retry topic; persistent failures land in a dead-letter topic for inspection. Consumer lag and processing latency are exported as Prometheus metrics.",
+    implementation: [
+      "Producer with idempotent writes and explicit acks configuration",
+      "Consumer group with manual offset commits after successful processing",
+      "Retry topic with bounded backoff; dead-letter topic for poison messages",
+      "Prometheus metrics for lag, throughput, errors; alerts on lag growth",
+    ],
+    decisions: [
+      {
+        decision: "At-least-once delivery with idempotent consumers",
+        rationale: "Simpler to operate than exactly-once and sufficient when consumers handle duplicates.",
+      },
+      {
+        decision: "Partition by entity key",
+        rationale: "Preserves per-entity ordering while allowing horizontal consumer scale.",
+      },
+      {
+        decision: "Separate retry and dead-letter topics",
+        rationale: "Keeps the main topic free of poison messages and makes failure modes observable.",
+      },
+    ],
+    alternatives: [
+      {
+        option: "Synchronous HTTP processing",
+        why_not: "Producers couple to downstream availability; bursts cause cascading failures.",
+      },
+      {
+        option: "Exactly-once semantics end-to-end",
+        why_not: "Operational and performance cost outweighs the benefit when consumers can dedupe.",
+      },
+    ],
+    tradeoffs: [
+      "At-least-once means consumers must be idempotent",
+      "More topics (retry, DLQ) means more operational surface, but clearer failure modes",
+    ],
+    failureScenarios: [
+      "Consumer crash mid-batch - offsets only committed after success, so messages are re-delivered",
+      "Poison message - routed to DLQ after N retries instead of blocking the partition",
+      "Broker partial outage - producer retries with backoff; consumer lag alert fires if it persists",
+    ],
+    reliability: [
+      "Bounded retry budget per message to avoid infinite reprocessing",
+      "Consumer lag alerts tied to user-visible SLOs, not absolute thresholds",
+      "DLQ inspection tooling so failures are diagnosed, not just hidden",
+    ],
+    outcome:
+      "A reference pipeline with explicit delivery semantics, retry/DLQ handling, and consumer observability. " +
+      PLACEHOLDER,
+    lessons: [
+      "Delivery semantics are a design decision, not a default - pick them and write them down",
+      "A pipeline without consumer lag metrics is invisible until it's already broken",
+    ],
+    githubUrl: LINKS.github,
+  },
+  {
+    slug: "rfid-authentication-research",
+    title: "RFID and PIN-Based Authentication Research",
+    shortDescription:
+      "Single-factor RFID access control is vulnerable to card cloning and loss; PIN alone is vulnerable to shoulder-surfing.",
+    contribution:
+      "Co-authored the system design, implemented hardware-software integration, and ran the experimental validation.",
+    blurb:
+      "Published IEEE research on multi-level authentication combining RFID and PIN-based access control.",
+    tags: ["RFID", "Embedded", "Security", "IEEE"],
+    categories: ["Research", "Security"],
+    projectType: "Research",
+    featured: false,
+    year: "2024",
+    confidential: false,
+    overview:
+      "Co-authored research, published at IEEE ICMACC 2024, on a multi-level authentication scheme combining RFID and PIN-based access control to mitigate the weaknesses of either factor in isolation.",
+    problem:
+      "Single-factor RFID access control fails when a card is lost or cloned. Single-factor PIN access control fails to shoulder-surfing and keypad observation. The work explored a layered scheme where both factors must succeed, and where the system fails closed under tampering.",
+    requirements: [
+      "Two independent authentication factors (possession + knowledge)",
+      "Local enrolment of authorised RFID tags",
+      "Bounded retry policy on PIN entry",
+      "Clear audit trail of access attempts",
+    ],
+    role:
+      "Co-author. Contributed to system design, hardware-software integration, and experimental validation; co-wrote the paper.",
+    architecture:
+      "An RFID reader and keypad are interfaced with a microcontroller. A successful read of an authorised tag unlocks the PIN-entry stage; correct PIN entry within the retry budget grants access. Unauthorised reads and failed PIN attempts are logged.",
+    implementation: [
+      "Microcontroller firmware for RFID reader and keypad integration",
+      "Local store of authorised tag IDs and PIN hashes",
+      "Bounded PIN-retry policy with lockout on repeated failure",
+      "Event log of read attempts and PIN outcomes",
+    ],
+    decisions: [
+      {
+        decision: "Two independent factors required for access",
+        rationale: "Compromise of one factor (lost card or observed PIN) is not sufficient to gain access.",
+      },
+      {
+        decision: "Bounded retry with lockout",
+        rationale: "Mitigates brute-force PIN guessing without permanently denying legitimate users.",
+      },
+    ],
+    alternatives: [
+      {
+        option: "RFID-only access control",
+        why_not: "Vulnerable to card cloning and loss.",
+      },
+      {
+        option: "PIN-only access control",
+        why_not: "Vulnerable to shoulder-surfing and keypad observation.",
+      },
+    ],
+    tradeoffs: [
+      "Two-factor flow adds a small amount of friction to legitimate users",
+      "Local credential store simplifies the prototype but limits scale",
+    ],
+    failureScenarios: [
+      "Lost card - second factor still required, so access is not granted",
+      "Observed PIN - card is still required, so access is not granted",
+      "Repeated PIN failures - account locked out and event logged",
+    ],
+    reliability: [
+      "Fails closed: any subsystem fault denies access rather than granting it",
+      "Access attempts logged for audit, including failed PIN entries",
+    ],
+    outcome:
+      "Published as 'Multi-level authentication combining RFID and PIN-based access control' at IEEE ICMACC 2024.",
+    lessons: [
+      "Authentication strength comes from independence of factors, not from stacking similar ones",
+      "Failure mode matters: in access control, default-deny is the only safe choice",
+    ],
+    publicationUrl: LINKS.research,
+  },
+];
+
+// Backwards-compat alias used elsewhere in the codebase.
+export type CaseStudy = Project;
+export const CASE_STUDIES: Project[] = PROJECTS.filter((p) => p.featured);
+export const ADDITIONAL_PROJECTS: Project[] = PROJECTS.filter((p) => !p.featured);
+
+export const PROJECT_CATEGORIES: ProjectCategory[] = [
+  "Backend",
+  "Distributed Systems",
+  "Cloud",
+  "APIs",
+  "Security",
+  "Observability",
+  "Research",
 ];
 
 export const EXPERIENCE = [
   {
     role: "Analyst, Systems Engineering",
     org: "Goldman Sachs",
-    date: "May 2026 — Present",
+    date: "May 2026 - Present",
     place: "Bengaluru · On-site",
     scope:
-      "Software engineering on the Subledger Technology platform for Asset & Wealth Management — cloud platform, API infrastructure, and observability.",
+      "Software engineering on the Subledger Technology platform for Asset & Wealth Management - cloud platform, API infrastructure, and observability.",
     contributions: [
       "Contributed to a hybrid API gateway layer spanning on-prem and multi-region AWS",
       "Built AWS-native microservices using CDK (TypeScript), ECS Fargate, Aurora PostgreSQL, and Lambda",
@@ -280,9 +584,9 @@ export const EXPERIENCE = [
     stack: ["AWS", "CDK", "ECS Fargate", "Aurora", "Lambda", "Prometheus", "Grafana", "Java"],
   },
   {
-    role: "Software Engineer — Automation & Infrastructure",
+    role: "Software Engineer - Automation & Infrastructure",
     org: "Oracle",
-    date: "Aug 2024 — Apr 2026",
+    date: "Aug 2024 - Apr 2026",
     place: "Hyderabad",
     scope:
       "Engineering productivity, CI/CD, and platform reliability for enterprise services on Kubernetes.",
@@ -299,7 +603,7 @@ export const EXPERIENCE = [
   {
     role: "Project Intern",
     org: "Oracle",
-    date: "Jan 2024 — Jul 2024",
+    date: "Jan 2024 - Jul 2024",
     place: "Hyderabad",
     scope: "Test automation contributions on enterprise pipelines.",
     contributions: [
@@ -309,9 +613,9 @@ export const EXPERIENCE = [
     stack: ["Cypress", "JavaScript", "GitLab CI"],
   },
   {
-    role: "Web Developer — Intern",
+    role: "Web Developer - Intern",
     org: "Oasis Infobyte",
-    date: "Jul 2023 — Aug 2023",
+    date: "Jul 2023 - Aug 2023",
     place: "Remote",
     scope: "Front-end implementation of responsive marketing pages.",
     contributions: [
@@ -329,7 +633,7 @@ export const PRINCIPLES = [
   },
   {
     title: "Observability is part of the system design",
-    body: "Metrics, logs, and traces are decided alongside the API and the data model — not added after the first incident.",
+    body: "Metrics, logs, and traces are decided alongside the API and the data model - not added after the first incident.",
   },
   {
     title: "Automate repeatable engineering work",
@@ -337,7 +641,7 @@ export const PRINCIPLES = [
   },
   {
     title: "Make technical trade-offs explicit",
-    body: "Every design choice rules something out. Writing down what — and why — keeps the team honest later.",
+    body: "Every design choice rules something out. Writing down what - and why - keeps the team honest later.",
   },
   {
     title: "Build systems that are understandable and maintainable",
@@ -402,3 +706,13 @@ export const EARLIER_PROJECTS = [
   { label: "Website Blocker (Python)", href: "" },
   { label: "PCB Design & Fabrication (KiCad)", href: "" },
 ];
+
+// Map slug to typed route path for type-safe <Link to=...>
+export const PROJECT_ROUTE: Record<string, string> = {
+  "api-infrastructure": "/work/api-infrastructure",
+  "observability": "/work/observability",
+  "kafka-kubernetes": "/work/kafka-kubernetes",
+  "authentication-system": "/work/authentication-system",
+  "realtime-monitoring": "/work/realtime-monitoring",
+  "rfid-authentication-research": "/work/rfid-authentication-research",
+};

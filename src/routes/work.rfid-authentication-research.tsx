@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CaseStudyLayout, SimpleArchitectureDiagram } from "@/components/CaseStudyLayout";
-import { CASE_STUDIES } from "@/content/portfolio";
+import { PROJECTS } from "@/content/portfolio";
 
-const study = CASE_STUDIES.find((c) => c.slug === "api-infrastructure")!;
-const url = "https://asritha.dev/work/api-infrastructure";
+const study = PROJECTS.find((c) => c.slug === "rfid-authentication-research")!;
+const url = "https://asritha.dev/work/rfid-authentication-research";
 
-export const Route = createFileRoute("/work/api-infrastructure")({
+export const Route = createFileRoute("/work/rfid-authentication-research")({
   head: () => ({
     meta: [
       { title: `${study.title} - Asritha Nibhanupudi` },
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/work/api-infrastructure")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Article",
+          "@type": "ScholarlyArticle",
           headline: study.title,
           author: { "@type": "Person", name: "Asritha Nibhanupudi" },
           description: study.blurb,
@@ -39,9 +39,9 @@ function Page() {
       study={study}
       diagram={
         <SimpleArchitectureDiagram
-          title="Client → Edge → Routed upstream"
-          desc="Clients reach a regional edge that authenticates, shapes, and routes requests to either an on-prem service path or an AWS service path based on policy and health."
-          nodes={["Client", "Regional Edge", "Router / Policy", "On-prem · AWS"]}
+          title="RFID + PIN → Controller → Access decision"
+          desc="An RFID read unlocks the PIN-entry stage; correct PIN within the retry budget grants access. Any subsystem fault denies access."
+          nodes={["RFID reader", "Keypad (PIN)", "Microcontroller", "Access / Log"]}
         />
       }
     />

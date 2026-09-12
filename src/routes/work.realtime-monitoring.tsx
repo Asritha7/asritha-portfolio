@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CaseStudyLayout, SimpleArchitectureDiagram } from "@/components/CaseStudyLayout";
-import { CASE_STUDIES } from "@/content/portfolio";
+import { PROJECTS } from "@/content/portfolio";
 
-const study = CASE_STUDIES.find((c) => c.slug === "api-infrastructure")!;
-const url = "https://asritha.dev/work/api-infrastructure";
+const study = PROJECTS.find((c) => c.slug === "realtime-monitoring")!;
+const url = "https://asritha.dev/work/realtime-monitoring";
 
-export const Route = createFileRoute("/work/api-infrastructure")({
+export const Route = createFileRoute("/work/realtime-monitoring")({
   head: () => ({
     meta: [
       { title: `${study.title} - Asritha Nibhanupudi` },
@@ -39,9 +39,9 @@ function Page() {
       study={study}
       diagram={
         <SimpleArchitectureDiagram
-          title="Client → Edge → Routed upstream"
-          desc="Clients reach a regional edge that authenticates, shapes, and routes requests to either an on-prem service path or an AWS service path based on policy and health."
-          nodes={["Client", "Regional Edge", "Router / Policy", "On-prem · AWS"]}
+          title="Producer → Kafka → Consumer (retry · DLQ)"
+          desc="Producers publish to a partitioned topic; consumers process at-least-once, retry transient failures with backoff, and route poison messages to a dead-letter topic."
+          nodes={["Producer", "Kafka topic", "Consumer group", "Retry · DLQ"]}
         />
       }
     />

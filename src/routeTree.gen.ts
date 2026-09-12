@@ -11,9 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkIndexRouteImport } from './routes/work.index'
+import { Route as WorkRfidAuthenticationResearchRouteImport } from './routes/work.rfid-authentication-research'
+import { Route as WorkRealtimeMonitoringRouteImport } from './routes/work.realtime-monitoring'
 import { Route as WorkObservabilityRouteImport } from './routes/work.observability'
 import { Route as WorkKafkaKubernetesRouteImport } from './routes/work.kafka-kubernetes'
+import { Route as WorkAuthenticationSystemRouteImport } from './routes/work.authentication-system'
 import { Route as WorkApiInfrastructureRouteImport } from './routes/work.api-infrastructure'
+import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -23,6 +28,22 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkIndexRoute = WorkIndexRouteImport.update({
+  id: '/work/',
+  path: '/work/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRfidAuthenticationResearchRoute =
+  WorkRfidAuthenticationResearchRouteImport.update({
+    id: '/work/rfid-authentication-research',
+    path: '/work/rfid-authentication-research',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkRealtimeMonitoringRoute = WorkRealtimeMonitoringRouteImport.update({
+  id: '/work/realtime-monitoring',
+  path: '/work/realtime-monitoring',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkObservabilityRoute = WorkObservabilityRouteImport.update({
@@ -35,9 +56,20 @@ const WorkKafkaKubernetesRoute = WorkKafkaKubernetesRouteImport.update({
   path: '/work/kafka-kubernetes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkAuthenticationSystemRoute =
+  WorkAuthenticationSystemRouteImport.update({
+    id: '/work/authentication-system',
+    path: '/work/authentication-system',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkApiInfrastructureRoute = WorkApiInfrastructureRouteImport.update({
   id: '/work/api-infrastructure',
   path: '/work/api-infrastructure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
+  id: '/api/public/contact',
+  path: '/api/public/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -45,23 +77,38 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work/api-infrastructure': typeof WorkApiInfrastructureRoute
+  '/work/authentication-system': typeof WorkAuthenticationSystemRoute
   '/work/kafka-kubernetes': typeof WorkKafkaKubernetesRoute
   '/work/observability': typeof WorkObservabilityRoute
+  '/work/realtime-monitoring': typeof WorkRealtimeMonitoringRoute
+  '/work/rfid-authentication-research': typeof WorkRfidAuthenticationResearchRoute
+  '/work/': typeof WorkIndexRoute
+  '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work/api-infrastructure': typeof WorkApiInfrastructureRoute
+  '/work/authentication-system': typeof WorkAuthenticationSystemRoute
   '/work/kafka-kubernetes': typeof WorkKafkaKubernetesRoute
   '/work/observability': typeof WorkObservabilityRoute
+  '/work/realtime-monitoring': typeof WorkRealtimeMonitoringRoute
+  '/work/rfid-authentication-research': typeof WorkRfidAuthenticationResearchRoute
+  '/work': typeof WorkIndexRoute
+  '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work/api-infrastructure': typeof WorkApiInfrastructureRoute
+  '/work/authentication-system': typeof WorkAuthenticationSystemRoute
   '/work/kafka-kubernetes': typeof WorkKafkaKubernetesRoute
   '/work/observability': typeof WorkObservabilityRoute
+  '/work/realtime-monitoring': typeof WorkRealtimeMonitoringRoute
+  '/work/rfid-authentication-research': typeof WorkRfidAuthenticationResearchRoute
+  '/work/': typeof WorkIndexRoute
+  '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -69,30 +116,50 @@ export interface FileRouteTypes {
     | '/'
     | '/sitemap.xml'
     | '/work/api-infrastructure'
+    | '/work/authentication-system'
     | '/work/kafka-kubernetes'
     | '/work/observability'
+    | '/work/realtime-monitoring'
+    | '/work/rfid-authentication-research'
+    | '/work/'
+    | '/api/public/contact'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/sitemap.xml'
     | '/work/api-infrastructure'
+    | '/work/authentication-system'
     | '/work/kafka-kubernetes'
     | '/work/observability'
+    | '/work/realtime-monitoring'
+    | '/work/rfid-authentication-research'
+    | '/work'
+    | '/api/public/contact'
   id:
     | '__root__'
     | '/'
     | '/sitemap.xml'
     | '/work/api-infrastructure'
+    | '/work/authentication-system'
     | '/work/kafka-kubernetes'
     | '/work/observability'
+    | '/work/realtime-monitoring'
+    | '/work/rfid-authentication-research'
+    | '/work/'
+    | '/api/public/contact'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WorkApiInfrastructureRoute: typeof WorkApiInfrastructureRoute
+  WorkAuthenticationSystemRoute: typeof WorkAuthenticationSystemRoute
   WorkKafkaKubernetesRoute: typeof WorkKafkaKubernetesRoute
   WorkObservabilityRoute: typeof WorkObservabilityRoute
+  WorkRealtimeMonitoringRoute: typeof WorkRealtimeMonitoringRoute
+  WorkRfidAuthenticationResearchRoute: typeof WorkRfidAuthenticationResearchRoute
+  WorkIndexRoute: typeof WorkIndexRoute
+  ApiPublicContactRoute: typeof ApiPublicContactRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -111,6 +178,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/': {
+      id: '/work/'
+      path: '/work'
+      fullPath: '/work/'
+      preLoaderRoute: typeof WorkIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/rfid-authentication-research': {
+      id: '/work/rfid-authentication-research'
+      path: '/work/rfid-authentication-research'
+      fullPath: '/work/rfid-authentication-research'
+      preLoaderRoute: typeof WorkRfidAuthenticationResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/realtime-monitoring': {
+      id: '/work/realtime-monitoring'
+      path: '/work/realtime-monitoring'
+      fullPath: '/work/realtime-monitoring'
+      preLoaderRoute: typeof WorkRealtimeMonitoringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work/observability': {
       id: '/work/observability'
       path: '/work/observability'
@@ -125,11 +213,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkKafkaKubernetesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/authentication-system': {
+      id: '/work/authentication-system'
+      path: '/work/authentication-system'
+      fullPath: '/work/authentication-system'
+      preLoaderRoute: typeof WorkAuthenticationSystemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work/api-infrastructure': {
       id: '/work/api-infrastructure'
       path: '/work/api-infrastructure'
       fullPath: '/work/api-infrastructure'
       preLoaderRoute: typeof WorkApiInfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/contact': {
+      id: '/api/public/contact'
+      path: '/api/public/contact'
+      fullPath: '/api/public/contact'
+      preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -139,8 +241,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WorkApiInfrastructureRoute: WorkApiInfrastructureRoute,
+  WorkAuthenticationSystemRoute: WorkAuthenticationSystemRoute,
   WorkKafkaKubernetesRoute: WorkKafkaKubernetesRoute,
   WorkObservabilityRoute: WorkObservabilityRoute,
+  WorkRealtimeMonitoringRoute: WorkRealtimeMonitoringRoute,
+  WorkRfidAuthenticationResearchRoute: WorkRfidAuthenticationResearchRoute,
+  WorkIndexRoute: WorkIndexRoute,
+  ApiPublicContactRoute: ApiPublicContactRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

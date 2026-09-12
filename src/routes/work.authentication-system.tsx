@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CaseStudyLayout, SimpleArchitectureDiagram } from "@/components/CaseStudyLayout";
-import { CASE_STUDIES } from "@/content/portfolio";
+import { PROJECTS } from "@/content/portfolio";
 
-const study = CASE_STUDIES.find((c) => c.slug === "api-infrastructure")!;
-const url = "https://asritha.dev/work/api-infrastructure";
+const study = PROJECTS.find((c) => c.slug === "authentication-system")!;
+const url = "https://asritha.dev/work/authentication-system";
 
-export const Route = createFileRoute("/work/api-infrastructure")({
+export const Route = createFileRoute("/work/authentication-system")({
   head: () => ({
     meta: [
       { title: `${study.title} - Asritha Nibhanupudi` },
@@ -39,9 +39,9 @@ function Page() {
       study={study}
       diagram={
         <SimpleArchitectureDiagram
-          title="Client → Edge → Routed upstream"
-          desc="Clients reach a regional edge that authenticates, shapes, and routes requests to either an on-prem service path or an AWS service path based on policy and health."
-          nodes={["Client", "Regional Edge", "Router / Policy", "On-prem · AWS"]}
+          title="Client → Keycloak (OIDC) → Service (JWT + RBAC)"
+          desc="Clients perform an OIDC flow against Keycloak; services validate the resulting JWT and enforce role claims on protected routes."
+          nodes={["Client", "Keycloak (OIDC)", "Service · JWT validate", "RBAC check"]}
         />
       }
     />

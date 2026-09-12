@@ -10,9 +10,8 @@ export function CaseStudyLayout({ study, diagram }: { study: CaseStudy; diagram?
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
             Asritha Nibhanupudi
           </Link>
-          <Link to="/" hash="work" className="mono-label hover:!text-terra">
-            ← Back to work
-          </Link>
+          <BackToWorkLink label="← Back to work" />
+
         </div>
       </header>
 
@@ -102,14 +101,27 @@ export function CaseStudyLayout({ study, diagram }: { study: CaseStudy; diagram?
         </Section>
 
         <div className="mt-16 border-t border-hairline pt-8">
-          <Link to="/" hash="work" className="mono-label hover:!text-terra">
-            ← Back to all work
-          </Link>
+          <BackToWorkLink label="← Back to all work" />
         </div>
       </main>
     </div>
   );
 }
+
+function BackToWorkLink({ label }: { label: string }) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      e.preventDefault();
+      window.history.back();
+    }
+  };
+  return (
+    <a href="/#work" onClick={handleClick} className="mono-label hover:!text-terra">
+      {label}
+    </a>
+  );
+}
+
 
 function Section({ heading, children }: { heading: string; children: ReactNode }) {
   return (
