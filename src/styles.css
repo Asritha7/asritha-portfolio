@@ -10,6 +10,8 @@
   --radius-lg: 4px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-dark-background: var(--dark-background);
+  --color-dark-foreground: var(--dark-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--foreground);
   --color-popover: var(--card);
@@ -32,6 +34,7 @@
   --color-warm-fill: var(--warm-fill);
   --color-warm-fill-2: var(--warm-fill-2);
   --color-hairline: var(--hairline);
+  --color-stroke: var(--border-contrast);
   --color-text-primary: var(--foreground);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
@@ -47,11 +50,14 @@
 :root {
   --background: #FBF3EA;
   --foreground: #241E19;
+  --dark-background: #1F1B17;
+  --dark-foreground: #F8F0E8;
   --card: #FFFAF2;
   --panel: #FFFAF2;
   --warm-fill: #F1E6D6;
   --warm-fill-2: #EFE3D4;
   --hairline: #ECE0D2;
+  --border-contrast: #D9CABA;
   --text-secondary: #5F564D;
   --text-muted: #8A7F74;
   --accent-terra: #C75A37;
