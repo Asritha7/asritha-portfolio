@@ -1,6 +1,6 @@
 # Asritha Nibhanupudi - Portfolio
 
-Personal software engineering portfolio for **Asritha Nibhanupudi**, live at **[asritha.dev](https://asritha.dev)**.
+Personal software engineering portfolio, live at **[asritha.dev](https://asritha.dev)**.
 
 Built as a fast, accessible, SSR-rendered site that showcases professional case studies, engineering notes, published research, and public projects - with a light / amber / dark theme system and an editorial cream + terracotta visual identity.
 

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { HistoryBackLink } from "@/components/HistoryBackLink";
 import { ENGINEERING_NOTES, SITE } from "@/content/portfolio";
 
 const TITLE = "Engineering Notes - Asritha Nibhanupudi";
@@ -29,9 +30,7 @@ function NotesIndex() {
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
             {SITE.name}
           </Link>
-          <Link to="/" className="mono-label hover:!text-terra">
-            ← Home
-          </Link>
+          <HistoryBackLink href="/" label="← Home" />
         </div>
       </header>
 
@@ -182,9 +181,7 @@ function NotesIndex() {
         </ul>
 
         <div className="mt-16 border-t border-hairline pt-8">
-          <Link to="/" className="mono-label hover:!text-terra">
-            ← Back home
-          </Link>
+          <HistoryBackLink href="/" label="← Back home" />
         </div>
       </main>
     </div>

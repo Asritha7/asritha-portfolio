@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { HistoryBackLink } from "@/components/HistoryBackLink";
 import { PROJECTS, SITE, CONFIDENTIALITY_NOTICE, LINKS } from "@/content/portfolio";
 import { track } from "@/lib/analytics";
 
@@ -28,7 +29,7 @@ function ResearchPage() {
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
             {SITE.name}
           </Link>
-          <Link to="/work" className="mono-label hover:!text-terra">← Back to work</Link>
+          <HistoryBackLink href="/work" label="← Back to work" />
         </div>
       </header>
 
@@ -149,7 +150,12 @@ function ResearchPage() {
         </Section>
 
         <div className="mt-16 border-t border-hairline pt-8">
-          <Link to="/work" className="mono-label hover:!text-terra">← Back to all work</Link>
+          <Link
+            to="/work"
+            className="mono-label hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+          >
+            ← Back to all work
+          </Link>
         </div>
       </main>
     </div>
