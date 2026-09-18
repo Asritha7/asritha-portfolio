@@ -9,7 +9,7 @@ Built as a fast, accessible, SSR-rendered site that showcases professional case 
 ## Tech Stack
 
 - **Framework:** [TanStack Start v1](https://tanstack.com/start) (React 19, SSR)
-- **Build tool:** Vite 7
+- **Build tool:** Vite 8
 - **Styling:** Tailwind CSS v4 (native CSS `@import`, theme tokens in `src/styles.css`)
 - **Routing:** TanStack Router (file-based, under `src/routes/`)
 - **Data:** TanStack Query
@@ -60,16 +60,17 @@ src/
 Requires [Bun](https://bun.sh).
 
 ```bash
-bun install
+bun install --frozen-lockfile
 bun dev          # http://localhost:8080
 bun run build    # production build
 bun run preview  # preview the production build
 bun run lint
+bunx tsc --noEmit
 ```
 
 ## Environment Variables
 
-Secrets such as the Resend API key are managed through the Lovable Cloud dashboard and are not committed to this repository. For local development, create a `.env` file at the project root (do **not** commit it) and add any required keys there. The contact form uses the configured Resend sender and recipient addresses.
+The contact route requires both `LOVABLE_API_KEY` and `RESEND_API_KEY` and calls the Lovable Resend connector gateway. Secrets are managed through the Lovable Cloud dashboard and are not committed to this repository. For local development, create a `.env` file at the project root (do **not** commit it) using `.env.example` as a reference. Without valid connector credentials, the site can still be built and browsed locally, but the contact endpoint returns an unconfigured-service error. The contact form uses the configured Resend sender and recipient addresses.
 
 
 ## Deployment
@@ -79,7 +80,13 @@ The site is deployed to Cloudflare Workers via the [Lovable](https://lovable.dev
 - Production: **https://asritha.dev**
 - Lovable URL: `asritha-nibhanupudi-portfolio.lovable.app`
 
-Source code is synced to GitHub at **https://github.com/Asritha7/asritha-nibhanupudi-portfolio**.
+### Repository workflow
+
+- **Public showcase:** [asritha-portfolio](https://github.com/Asritha7/asritha-portfolio), with curated historical milestones and focused maintenance commits.
+- **Private editing source:** `Asritha7/asritha-nibhanupudi-portfolio`, connected to Lovable.
+- Make website edits in Lovable or the private source, validate them, and copy the reviewed file changes into the public repository as ordinary commits. The repositories have separate histories: do not merge their branches or force-push either history.
+- Publishing the website is a separate Lovable **Publish → Update** step. Pushing the public showcase alone does not deploy the site.
+- GitHub Actions checks the build and TypeScript on pushes and pull requests in both repositories. It does not deploy or send contact-form emails.
 
 HTML responses send `Cache-Control: no-cache` so every refresh sees the latest deployment; hashed JS/CSS assets remain cacheable.
 
