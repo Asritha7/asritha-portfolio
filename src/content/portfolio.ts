@@ -17,9 +17,10 @@ export const LINKS = {
 
 export const HERO = {
   eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD",
-  headline: "I build reliable software systems across application, cloud, and platform layers.",
+  headline: "Java services and",
+  headlineAccent: "reliable cloud systems.",
   description:
-    "I work across service changes, integrations, deployment workflows, infrastructure, monitoring, and production troubleshooting.",
+    "Software engineer at Goldman Sachs, working on Java services, AWS infrastructure, and event-driven integrations.",
   primaryCta: { label: "View my work", href: "/work" },
   secondaryCta: { label: "Download résumé", href: "" }, // wired in component
 };
@@ -570,7 +571,7 @@ export const PROJECTS: Project[] = [
     cardContribution:
       "Developed reusable Cypress utilities and connected workflow automation to CI/CD execution and failure diagnostics.",
     cardResult:
-      "Expanded reusable coverage across 150+ workflows while making recurring failures easier to investigate.",
+      "Reusable coverage across 150+ workflows, with clearer diagnostics for recurring failures.",
     ownershipWording: "Developed and contributed to",
     summaryProblem: "Release validation depended on repetitive manual steps that hid regressions.",
     summaryRole: "Built reusable framework primitives and wired them into CI/CD execution.",
@@ -649,7 +650,7 @@ export const PROJECTS: Project[] = [
     cardContribution:
       "Automated selected Keycloak realm, client, and identity-flow configuration through REST APIs, scripts, and CI/CD validation.",
     cardResult:
-      "Configuration covered by the automation moved from manual per-environment setup to scripted, CI-validated setup, allowing mismatches to be detected earlier.",
+      "Selected realm and client configuration moved from manual setup to scripted, CI-validated setup.",
     ownershipWording: "Implemented and contributed to",
     summaryProblem: "Auth failures appeared intermittently as identity-provider config drifted between environments.",
     summaryRole: "Scripted realm and client setup and automated flow validation in CI.",
@@ -932,9 +933,9 @@ export const GS_PARENT: Project = {
   myContribution:
     "Contributing to Java service development, building AWS service infrastructure with CDK and CloudFormation, developing event-driven integrations, strengthening reliability and recovery, and extending monitoring and SLO-based alerting.",
   cardContribution:
-    "Java service development, AWS infrastructure with CDK and CloudFormation, event-driven integrations, reliability and multi-region recovery, observability, and zero-downtime migrations.",
+    "Contributing Java service changes, AWS infrastructure with CDK and CloudFormation, and event-driven integrations.",
   cardResult:
-    "Five sections covering what I contributed in each area, with scope and ownership stated for every one.",
+    "Version-controlled service infrastructure and rehearsed recovery paths for the services in my scope.",
   ownershipWording: "Contributed to",
   summaryProblem:
     "A subledger platform spanning on-prem and multi-region AWS needs changes to land safely across application, infrastructure, and operations.",

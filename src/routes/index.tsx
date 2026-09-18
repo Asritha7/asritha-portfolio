@@ -415,12 +415,9 @@ function Portfolio() {
           <div className="reveal">
             <p className="mono-label">{HERO.eyebrow}</p>
             <h1 id="hero-heading" className="font-serif-display mt-6 text-[clamp(36px,6.4vw,68px)]">
-              I build <em className="italic" style={{ color: "var(--accent-terra)" }}>reliable</em> software across services and infrastructure.
+              {HERO.headline}{" "}<em className="italic" style={{ color: "var(--accent-terra)" }}>{HERO.headlineAccent}</em>
             </h1>
             <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">{HERO.description}</p>
-            <p className="mt-4 max-w-[58ch] text-[16.5px] italic text-text-secondary">
-              I enjoy the moment when a failure stops looking random and starts becoming a system I can reason about.
-            </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <Link to="/work" className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
                 View my work →
@@ -552,10 +549,10 @@ function Portfolio() {
                             <span className="mono-label">0{i + 1} · {c.projectType} · {c.year}</span>
                           </div>
                           <h3 className="font-serif-display mt-3 text-[22px] md:text-[24px]">{c.title}</h3>
-                          <p className="mt-3 text-[15px] text-text-secondary">{contribution}</p>
                           {result ? (
-                            <p className="mt-2 text-[15px] text-text-secondary">{result}</p>
+                            <p className="mt-3 text-[16px] font-medium text-text-primary">{result}</p>
                           ) : null}
+                          <p className="mt-2 text-[15px] text-text-secondary">{contribution}</p>
                           {tags.length ? (
                             <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
                               {tags.map((t) => (

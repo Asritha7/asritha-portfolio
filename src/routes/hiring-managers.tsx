@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
-import { SITE, LINKS, HERO, CAPABILITIES, EXPERIENCE } from "@/content/portfolio";
+import { SITE, LINKS, HERO, CAPABILITIES, EXPERIENCE, CASE_STUDIES, PROJECT_ROUTE } from "@/content/portfolio";
 import { track } from "@/lib/analytics";
 import resumeAsset from "@/assets/resume.pdf.asset.json";
 
@@ -59,6 +59,46 @@ function HiringManagers() {
         <p className="mt-6 max-w-[64ch] text-[17px] text-text-secondary">
           {HERO.description}
         </p>
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <a
+            href={resume}
+            download
+            onClick={() => track("resume_downloaded")}
+            className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+          >
+            Download résumé
+          </a>
+          <a
+            href={LINKS.email}
+            onClick={() => track("contact_started")}
+            className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+          >
+            Email me
+          </a>
+        </div>
+
+        <section aria-labelledby="start-here-heading" className="mt-12">
+          <h2 id="start-here-heading" className="mono-label">Start here</h2>
+          <p className="mt-3 text-[15px] text-text-secondary">
+            Two case studies covering my current service and infrastructure work, and earlier automation delivery.
+          </p>
+          <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {CASE_STUDIES.slice(0, 2).map((study) => (
+              <li key={study.slug}>
+                <Link
+                  to={PROJECT_ROUTE[study.slug]}
+                  onClick={() => track("case_study_opened", { slug: study.slug })}
+                  className="group block h-full rounded-[3px] border border-hairline bg-panel p-5 transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                >
+                  <span className="mono-label">{study.year} · {study.projectType}</span>
+                  <h3 className="font-serif-display mt-3 text-[22px]">{study.title}</h3>
+                  <p className="mt-3 text-[15px] text-text-secondary">{study.cardResult}</p>
+                  <span className="mono-label mt-4 inline-block group-hover:!text-terra">Read case study →</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section className="mt-12">
           <h2 className="mono-label">Current role</h2>
@@ -111,27 +151,10 @@ function HiringManagers() {
         </section>
 
         <section className="mt-12">
-          <h2 className="mono-label">Résumé and contact</h2>
+          <h2 className="mono-label">Profiles and research</h2>
           <p className="mt-4 max-w-[60ch] text-[17px] text-text-secondary">
-            If you are hiring for backend, cloud, platform, or distributed-systems roles, the fastest way to evaluate fit is to read the résumé or send a short note.
+            Explore my public projects, professional background, and published research.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <a
-              href={resume}
-              download
-              onClick={() => track("resume_downloaded")}
-              className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
-            >
-              Download résumé
-            </a>
-            <a
-              href={LINKS.email}
-              onClick={() => track("contact_started")}
-              className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
-            >
-              Email me
-            </a>
-          </div>
           <ul className="mt-6 flex flex-wrap gap-x-7 gap-y-3">
             {[
               { href: LINKS.github, label: "GitHub", event: "github_opened" as const },
