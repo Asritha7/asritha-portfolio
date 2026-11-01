@@ -1,3 +1,4 @@
+import { SkipLink } from "@/components/SkipLink";
 import { Link } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
@@ -7,30 +8,32 @@ import { track } from "@/lib/analytics";
 
 export function CaseStudyLayout({ study }: { study: Project }) {
   const coreTech = (study.technologies ?? study.tags ?? []).slice(0, 5);
-  const summaryProblem = study.summaryProblem || firstSentence(study.problem) || study.shortDescription;
+  const summaryProblem =
+    study.summaryProblem || firstSentence(study.problem) || study.shortDescription;
   const summaryRole = study.summaryRole || study.myContribution;
   const summaryResult = study.summaryResult || firstSentence(study.outcome);
   const summaryScope = study.scopeNote || study.ownershipWording;
 
   const hasTechDetails = Boolean(
     study.constraints?.length ||
-      study.alternatives?.length ||
-      study.edgeCases?.length ||
-      (study.technologies && study.technologies.length > 5) ||
-      study.challenges?.length ||
-      study.engineeringMoment ||
-      study.beforeState ||
-      study.afterState ||
-      study.verifiedMetrics?.some((m) => m.approvedForPublicUse) ||
-      study.confirmedMetrics?.length ||
-      study.ownership ||
-      study.learned ||
-      study.wouldImprove ||
-      study.lessons?.length,
+    study.alternatives?.length ||
+    study.edgeCases?.length ||
+    (study.technologies && study.technologies.length > 5) ||
+    study.challenges?.length ||
+    study.engineeringMoment ||
+    study.beforeState ||
+    study.afterState ||
+    study.verifiedMetrics?.some((m) => m.approvedForPublicUse) ||
+    study.confirmedMetrics?.length ||
+    study.ownership ||
+    study.learned ||
+    study.wouldImprove ||
+    study.lessons?.length,
   );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SkipLink />
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1024px] items-center justify-between px-6 py-4 md:px-10">
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
@@ -40,10 +43,26 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         </div>
       </header>
 
-      <main id="top" className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
-        <p className="mono-label">{study.projectType.toUpperCase()} · {study.year}</p>
+      <main id="top" tabIndex={-1} className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
+        <p className="mono-label">
+          {study.projectType.toUpperCase()} · {study.year}
+        </p>
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">{study.title}</h1>
-        <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">{study.shortDescription}</p>
+        <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">
+          {study.shortDescription}
+        </p>
+
+        {study.repositoryUrl ? (
+          <a
+            href={study.repositoryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("github_opened", { repo: study.slug })}
+            className="mono-label mt-6 inline-flex items-center gap-1 hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+          >
+            View GitHub ↗
+          </a>
+        ) : null}
 
         <div className="mt-8 max-w-[220px]">
           <ProjectCover variant={coverVariantForSlug(study.slug)} ratio="3/2" />
@@ -62,13 +81,9 @@ export function CaseStudyLayout({ study }: { study: Project }) {
         >
           <p className="mono-label !text-text-primary !text-[11px]">Summary</p>
           <dl className="mt-4 grid grid-cols-1 gap-4">
-            {summaryProblem ? (
-              <SummaryRow label="Problem">{summaryProblem}</SummaryRow>
-            ) : null}
+            {summaryProblem ? <SummaryRow label="Problem">{summaryProblem}</SummaryRow> : null}
             <SummaryRow label="My role">{summaryRole}</SummaryRow>
-            {summaryResult ? (
-              <SummaryRow label="Result">{summaryResult}</SummaryRow>
-            ) : null}
+            {summaryResult ? <SummaryRow label="Result">{summaryResult}</SummaryRow> : null}
             {coreTech.length ? (
               <div>
                 <dt className="mono-label !text-text-primary !text-[11px]">Core technologies</dt>
@@ -84,9 +99,7 @@ export function CaseStudyLayout({ study }: { study: Project }) {
                 </dd>
               </div>
             ) : null}
-            {summaryScope ? (
-              <SummaryRow label="Scope">{summaryScope}</SummaryRow>
-            ) : null}
+            {summaryScope ? <SummaryRow label="Scope">{summaryScope}</SummaryRow> : null}
           </dl>
 
           {hasTechDetails ? (
@@ -209,7 +222,9 @@ export function CaseStudyLayout({ study }: { study: Project }) {
                 </Section>
               ) : null}
 
-              {study.engineeringMoment ? <EngineeringMomentSection moment={study.engineeringMoment} /> : null}
+              {study.engineeringMoment ? (
+                <EngineeringMomentSection moment={study.engineeringMoment} />
+              ) : null}
 
               {study.beforeState || study.afterState ? (
                 <Section heading="Before and after">
@@ -237,7 +252,10 @@ export function CaseStudyLayout({ study }: { study: Project }) {
                   <Section heading="Verified metrics">
                     <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       {approved.map((m, i) => (
-                        <li key={i} className="rounded-[3px] border border-hairline bg-background p-4">
+                        <li
+                          key={i}
+                          className="rounded-[3px] border border-hairline bg-background p-4"
+                        >
                           <p className="mono-label !text-text-primary !text-[12px]">{m.label}</p>
                           <p className="mt-2 font-serif-display text-[22px]">{m.value}</p>
                         </li>
@@ -367,7 +385,11 @@ function OwnershipSection({ ownership }: { ownership: NonNullable<Project["owner
   );
 }
 
-function EngineeringMomentSection({ moment }: { moment: NonNullable<Project["engineeringMoment"]> }) {
+function EngineeringMomentSection({
+  moment,
+}: {
+  moment: NonNullable<Project["engineeringMoment"]>;
+}) {
   const blocks: Array<[string, string]> = [
     ["Symptom", moment.symptom],
     ["Initial assumption", moment.initialAssumption],
