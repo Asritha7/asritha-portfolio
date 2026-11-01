@@ -17,3 +17,4 @@ jobs:
       # TanStack generates routeTree.gen.ts during build; then type-check new routes.
       - run: bun run build
       - run: bunx tsc --noEmit
+      - run: bun run lint
