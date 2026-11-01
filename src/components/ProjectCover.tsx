@@ -183,12 +183,23 @@ function AwsCover() {
           stroke={INK}
           strokeWidth="1"
         />
-        <path d="M 32 99 H 48 M 36 95 H 44 M 36 103 H 44" stroke={INK} strokeWidth="0.7" opacity="0.6" />
+        <path
+          d="M 32 99 H 48 M 36 95 H 44 M 36 103 H 44"
+          stroke={INK}
+          strokeWidth="0.7"
+          opacity="0.6"
+        />
       </g>
 
       {/* connector from gateway into service tier */}
       <path d="M 56 99 H 82" stroke={INK} strokeWidth="0.9" opacity="0.55" />
-      <path d="M 78 96 L 84 99 L 78 102" fill="none" stroke={INK} strokeWidth="0.9" opacity="0.55" />
+      <path
+        d="M 78 96 L 84 99 L 78 102"
+        fill="none"
+        stroke={INK}
+        strokeWidth="0.9"
+        opacity="0.55"
+      />
 
       {/* ECS service tier: 3 services, each with 3 task circles */}
       {services.map((x, i) => (
@@ -217,7 +228,15 @@ function AwsCover() {
                 stroke={INK}
                 strokeWidth="0.7"
               />
-              <line x1={x - 4} y1={ty} x2={x + 14} y2={ty} stroke={INK} strokeWidth="0.6" opacity="0.45" />
+              <line
+                x1={x - 4}
+                y1={ty}
+                x2={x + 14}
+                y2={ty}
+                stroke={INK}
+                strokeWidth="0.6"
+                opacity="0.45"
+              />
             </g>
           ))}
         </g>
@@ -233,15 +252,53 @@ function AwsCover() {
 
       {/* connector to data tier */}
       <path d="M 232 99 H 256" stroke={INK} strokeWidth="0.9" opacity="0.55" />
-      <path d="M 252 96 L 258 99 L 252 102" fill="none" stroke={INK} strokeWidth="0.9" opacity="0.55" />
+      <path
+        d="M 252 96 L 258 99 L 252 102"
+        fill="none"
+        stroke={INK}
+        strokeWidth="0.9"
+        opacity="0.55"
+      />
 
       {/* Data layer (cylinder) */}
       <g>
         <ellipse cx="278" cy="78" rx="18" ry="5" fill={PANEL} stroke={INK} strokeWidth="0.9" />
-        <path d="M 260 78 V 118 Q 278 124 296 118 V 78" fill={PANEL} stroke={INK} strokeWidth="0.9" />
-        <ellipse cx="278" cy="78" rx="18" ry="5" fill="none" stroke={INK} strokeWidth="0.7" opacity="0.7" />
-        <ellipse cx="278" cy="92" rx="18" ry="5" fill="none" stroke={INK} strokeWidth="0.5" opacity="0.45" />
-        <ellipse cx="278" cy="106" rx="18" ry="5" fill="none" stroke={INK} strokeWidth="0.5" opacity="0.35" />
+        <path
+          d="M 260 78 V 118 Q 278 124 296 118 V 78"
+          fill={PANEL}
+          stroke={INK}
+          strokeWidth="0.9"
+        />
+        <ellipse
+          cx="278"
+          cy="78"
+          rx="18"
+          ry="5"
+          fill="none"
+          stroke={INK}
+          strokeWidth="0.7"
+          opacity="0.7"
+        />
+        <ellipse
+          cx="278"
+          cy="92"
+          rx="18"
+          ry="5"
+          fill="none"
+          stroke={INK}
+          strokeWidth="0.5"
+          opacity="0.45"
+        />
+        <ellipse
+          cx="278"
+          cy="106"
+          rx="18"
+          ry="5"
+          fill="none"
+          stroke={INK}
+          strokeWidth="0.5"
+          opacity="0.35"
+        />
       </g>
 
       {/* "My scope" highlight around the middle service */}
@@ -291,14 +348,44 @@ function AutomationCover() {
             stroke={HAIR}
             strokeWidth="0.8"
           />
-          <line x1={x - 6} y1={84} x2={x + 6} y2={84} stroke={INK} strokeWidth="0.6" opacity="0.5" />
-          <line x1={x - 6} y1={90} x2={x + 6} y2={90} stroke={INK} strokeWidth="0.6" opacity="0.5" />
-          <line x1={x - 6} y1={96} x2={x + 2} y2={96} stroke={INK} strokeWidth="0.6" opacity="0.5" />
+          <line
+            x1={x - 6}
+            y1={84}
+            x2={x + 6}
+            y2={84}
+            stroke={INK}
+            strokeWidth="0.6"
+            opacity="0.5"
+          />
+          <line
+            x1={x - 6}
+            y1={90}
+            x2={x + 6}
+            y2={90}
+            stroke={INK}
+            strokeWidth="0.6"
+            opacity="0.5"
+          />
+          <line
+            x1={x - 6}
+            y1={96}
+            x2={x + 2}
+            y2={96}
+            stroke={INK}
+            strokeWidth="0.6"
+            opacity="0.5"
+          />
         </g>
       ))}
       {/* branching validation states */}
       <path d="M 240 76 C 260 60, 275 50, 290 40" fill="none" stroke={ACCENT} strokeWidth="0.9" />
-      <path d="M 240 104 C 260 120, 275 130, 290 140" fill="none" stroke={INK} strokeWidth="0.9" opacity="0.45" />
+      <path
+        d="M 240 104 C 260 120, 275 130, 290 140"
+        fill="none"
+        stroke={INK}
+        strokeWidth="0.9"
+        opacity="0.45"
+      />
       <circle cx="292" cy="40" r="4" fill={ACCENT} />
       <circle cx="292" cy="140" r="4" fill="none" stroke={INK} strokeWidth="0.9" opacity="0.5" />
       {/* diagnostic output */}
@@ -317,7 +404,18 @@ function KeycloakCover() {
     <svg {...SVG_PROPS}>
       {/* config layers */}
       {[50, 64, 78].map((y, i) => (
-        <rect key={i} x="30" y={y} width="120" height="8" rx="1" fill={PANEL} stroke={HAIR} strokeWidth="0.6" opacity={1 - i * 0.12} />
+        <rect
+          key={i}
+          x="30"
+          y={y}
+          width="120"
+          height="8"
+          rx="1"
+          fill={PANEL}
+          stroke={HAIR}
+          strokeWidth="0.6"
+          opacity={1 - i * 0.12}
+        />
       ))}
       {/* mismatched identity nodes converging */}
       <g>
@@ -326,11 +424,41 @@ function KeycloakCover() {
         <circle cx="88" cy="118" r="6" fill={PANEL} stroke={INK} strokeWidth="0.8" />
         <circle cx="112" cy="134" r="6" fill={PANEL} stroke={INK} strokeWidth="0.8" />
         <circle cx="136" cy="122" r="6" fill={PANEL} stroke={INK} strokeWidth="0.8" />
-        <path d="M 40 120 Q 90 90 160 100" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.4" />
-        <path d="M 64 132 Q 110 100 160 100" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.4" />
-        <path d="M 88 118 Q 120 100 160 100" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.4" />
-        <path d="M 112 134 Q 140 110 160 100" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.4" />
-        <path d="M 136 122 Q 150 110 160 100" stroke={INK} strokeWidth="0.6" fill="none" opacity="0.4" />
+        <path
+          d="M 40 120 Q 90 90 160 100"
+          stroke={INK}
+          strokeWidth="0.6"
+          fill="none"
+          opacity="0.4"
+        />
+        <path
+          d="M 64 132 Q 110 100 160 100"
+          stroke={INK}
+          strokeWidth="0.6"
+          fill="none"
+          opacity="0.4"
+        />
+        <path
+          d="M 88 118 Q 120 100 160 100"
+          stroke={INK}
+          strokeWidth="0.6"
+          fill="none"
+          opacity="0.4"
+        />
+        <path
+          d="M 112 134 Q 140 110 160 100"
+          stroke={INK}
+          strokeWidth="0.6"
+          fill="none"
+          opacity="0.4"
+        />
+        <path
+          d="M 136 122 Q 150 110 160 100"
+          stroke={INK}
+          strokeWidth="0.6"
+          fill="none"
+          opacity="0.4"
+        />
       </g>
       {/* key motif on the right */}
       <g transform="translate(190 70)">
@@ -341,7 +469,17 @@ function KeycloakCover() {
         <rect x="80" y="33" width="6" height="10" fill={ACCENT} />
       </g>
       {/* consistent target */}
-      <rect x="155" y="92" width="14" height="16" rx="2" fill={ACCENT} opacity="0.18" stroke={ACCENT} strokeWidth="0.8" />
+      <rect
+        x="155"
+        y="92"
+        width="14"
+        height="16"
+        rx="2"
+        fill={ACCENT}
+        opacity="0.18"
+        stroke={ACCENT}
+        strokeWidth="0.8"
+      />
     </svg>
   );
 }
@@ -351,12 +489,29 @@ function KafkaCover() {
   return (
     <svg {...SVG_PROPS}>
       {/* two phases divider */}
-      <line x1="160" y1="20" x2="160" y2="160" stroke={HAIR} strokeWidth="0.8" strokeDasharray="2 3" />
+      <line
+        x1="160"
+        y1="20"
+        x2="160"
+        y2="160"
+        stroke={HAIR}
+        strokeWidth="0.8"
+        strokeDasharray="2 3"
+      />
       {/* operator phase (left) - small control plane diamonds */}
       <g>
         {[40, 80, 120].map((x, i) => (
           <g key={i}>
-            <rect x={x - 12} y="42" width="24" height="24" rx="2" fill={PANEL} stroke={HAIR} strokeWidth="0.6" />
+            <rect
+              x={x - 12}
+              y="42"
+              width="24"
+              height="24"
+              rx="2"
+              fill={PANEL}
+              stroke={HAIR}
+              strokeWidth="0.6"
+            />
             <circle cx={x} cy="54" r="3" fill={ACCENT} opacity={i === 1 ? 1 : 0.4} />
           </g>
         ))}
@@ -365,7 +520,17 @@ function KafkaCover() {
       {/* broker phase (right) - cluster nodes */}
       <g>
         {[200, 240, 280].map((x) => (
-          <rect key={x} x={x - 14} y="42" width="28" height="60" rx="2" fill={PANEL} stroke={HAIR} strokeWidth="0.6" />
+          <rect
+            key={x}
+            x={x - 14}
+            y="42"
+            width="28"
+            height="60"
+            rx="2"
+            fill={PANEL}
+            stroke={HAIR}
+            strokeWidth="0.6"
+          />
         ))}
         {[200, 240, 280].map((x) => (
           <g key={`b-${x}`}>
@@ -418,7 +583,15 @@ function K8sCover() {
         );
       })}
       {/* isolation ring around failed pod */}
-      <circle cx="150" cy="90" r="26" fill="none" stroke={ACCENT} strokeWidth="0.8" strokeDasharray="3 2" />
+      <circle
+        cx="150"
+        cy="90"
+        r="26"
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth="0.8"
+        strokeDasharray="3 2"
+      />
       {/* config signals / events */}
       <g opacity="0.55" stroke={INK} strokeWidth="0.6">
         <line x1="20" y1="40" x2="60" y2="40" />
@@ -436,19 +609,49 @@ function RfidCover() {
     <svg {...SVG_PROPS}>
       {/* stage 1: RFID card with concentric waves */}
       <g transform="translate(50 50)">
-        <rect x="0" y="0" width="80" height="50" rx="4" fill={PANEL} stroke={INK} strokeWidth="0.8" />
+        <rect
+          x="0"
+          y="0"
+          width="80"
+          height="50"
+          rx="4"
+          fill={PANEL}
+          stroke={INK}
+          strokeWidth="0.8"
+        />
         <circle cx="20" cy="25" r="5" fill="none" stroke={ACCENT} strokeWidth="1.1" />
         <path d="M 30 18 A 12 12 0 0 1 30 32" fill="none" stroke={ACCENT} strokeWidth="1.1" />
-        <path d="M 36 14 A 18 18 0 0 1 36 36" fill="none" stroke={ACCENT} strokeWidth="0.9" opacity="0.6" />
+        <path
+          d="M 36 14 A 18 18 0 0 1 36 36"
+          fill="none"
+          stroke={ACCENT}
+          strokeWidth="0.9"
+          opacity="0.6"
+        />
         <line x1="48" y1="20" x2="72" y2="20" stroke={INK} strokeWidth="0.6" opacity="0.4" />
         <line x1="48" y1="28" x2="68" y2="28" stroke={INK} strokeWidth="0.6" opacity="0.4" />
         <line x1="48" y1="36" x2="72" y2="36" stroke={INK} strokeWidth="0.6" opacity="0.4" />
       </g>
       {/* arrow between stages */}
-      <path d="M 140 90 H 175 L 170 86 M 175 90 L 170 94" stroke={INK} strokeWidth="1" fill="none" opacity="0.6" />
+      <path
+        d="M 140 90 H 175 L 170 86 M 175 90 L 170 94"
+        stroke={INK}
+        strokeWidth="1"
+        fill="none"
+        opacity="0.6"
+      />
       {/* stage 2: keypad */}
       <g transform="translate(190 40)">
-        <rect x="0" y="0" width="70" height="90" rx="4" fill={PANEL} stroke={INK} strokeWidth="0.8" />
+        <rect
+          x="0"
+          y="0"
+          width="70"
+          height="90"
+          rx="4"
+          fill={PANEL}
+          stroke={INK}
+          strokeWidth="0.8"
+        />
         {[0, 1, 2].map((r) =>
           [0, 1, 2].map((c) => {
             const k = r * 3 + c;
@@ -481,14 +684,40 @@ function NoteCover({ accent: _accent }: { accent?: "keycloak" | "kafka" | "kuber
   return (
     <svg {...SVG_PROPS}>
       {/* notebook page */}
-      <rect x="40" y="24" width="160" height="132" rx="2" fill={PANEL} stroke={HAIR} strokeWidth="0.8" />
+      <rect
+        x="40"
+        y="24"
+        width="160"
+        height="132"
+        rx="2"
+        fill={PANEL}
+        stroke={HAIR}
+        strokeWidth="0.8"
+      />
       {/* margin */}
       <line x1="58" y1="24" x2="58" y2="156" stroke={ACCENT} strokeWidth="0.6" opacity="0.7" />
       {/* checklist lines */}
       {[44, 62, 80, 98, 116, 134].map((y, i) => (
         <g key={y}>
-          <rect x="66" y={y} width="6" height="6" rx="1" fill={i < 2 ? ACCENT : "none"} stroke={INK} strokeWidth="0.6" />
-          <line x1="78" y1={y + 3} x2={i % 2 === 0 ? 180 : 160} y2={y + 3} stroke={INK} strokeWidth="0.6" opacity="0.55" />
+          <rect
+            x="66"
+            y={y}
+            width="6"
+            height="6"
+            rx="1"
+            fill={i < 2 ? ACCENT : "none"}
+            stroke={INK}
+            strokeWidth="0.6"
+          />
+          <line
+            x1="78"
+            y1={y + 3}
+            x2={i % 2 === 0 ? 180 : 160}
+            y2={y + 3}
+            stroke={INK}
+            strokeWidth="0.6"
+            opacity="0.55"
+          />
         </g>
       ))}
       {/* decision tree sketch */}
