@@ -40,15 +40,11 @@ test.describe("ProjectCover - layout shift", () => {
     // Each cover must report an explicit aspect-ratio so the box is
     // reserved before its SVG paints (the primary CLS defense).
     for (let i = 0; i < count; i++) {
-      const ratio = await covers.nth(i).evaluate(
-        (el) => getComputedStyle(el).aspectRatio,
-      );
+      const ratio = await covers.nth(i).evaluate((el) => getComputedStyle(el).aspectRatio);
       expect(ratio, `cover #${i} aspect-ratio`).not.toBe("auto");
     }
 
-    const cls = await page.evaluate(
-      () => (window as unknown as { __cls: number }).__cls,
-    );
+    const cls = await page.evaluate(() => (window as unknown as { __cls: number }).__cls);
     // Good CLS per web.dev is < 0.1; covers alone should be ~0.
     expect(cls).toBeLessThan(0.05);
   });
@@ -57,9 +53,7 @@ test.describe("ProjectCover - layout shift", () => {
 test.describe("ProjectCover - reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
 
-  test("hover does not apply any transform and matches snapshot", async ({
-    page,
-  }, testInfo) => {
+  test("hover does not apply any transform and matches snapshot", async ({ page }, testInfo) => {
     await page.goto("/", { waitUntil: "networkidle" });
 
     const cover = page.locator(".project-cover").first();
