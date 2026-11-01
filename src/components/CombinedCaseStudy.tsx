@@ -1,3 +1,4 @@
+import { SkipLink } from "@/components/SkipLink";
 import { Link } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
@@ -11,15 +12,10 @@ import { CONFIDENTIALITY_NOTICE, firstSentence, type Project } from "@/content/p
  * ownership, lessons) sits inside a native <details> block so the page can be
  * reviewed in two minutes or read in full.
  */
-export function CombinedCaseStudy({
-  parent,
-  studies,
-}: {
-  parent: Project;
-  studies: Project[];
-}) {
+export function CombinedCaseStudy({ parent, studies }: { parent: Project; studies: Project[] }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SkipLink />
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1024px] items-center justify-between px-6 py-4 md:px-10">
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
@@ -29,10 +25,14 @@ export function CombinedCaseStudy({
         </div>
       </header>
 
-      <main id="top" className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
-        <p className="mono-label">{parent.projectType.toUpperCase()} · {parent.year}</p>
+      <main id="top" tabIndex={-1} className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
+        <p className="mono-label">
+          {parent.projectType.toUpperCase()} · {parent.year}
+        </p>
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">{parent.title}</h1>
-        <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">{parent.shortDescription}</p>
+        <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">
+          {parent.shortDescription}
+        </p>
 
         <div className="mt-8 max-w-[220px]">
           <ProjectCover variant={coverVariantForSlug(parent.slug)} ratio="3/2" />
@@ -82,7 +82,10 @@ export function CombinedCaseStudy({
         ) : null}
 
         {/* In-page contents so a reviewer can jump to one area */}
-        <nav aria-label="Sections" className="mt-12 rounded-[3px] border border-hairline bg-panel p-5 md:p-6">
+        <nav
+          aria-label="Sections"
+          className="mt-12 rounded-[3px] border border-hairline bg-panel p-5 md:p-6"
+        >
           <p className="mono-label !text-text-primary !text-[11px]">Areas of work</p>
           <ol className="mt-4 space-y-2">
             {studies.map((s, i) => (
@@ -117,22 +120,24 @@ function SubStudy({ study, index }: { study: Project; index: number }) {
 
   const hasDetails = Boolean(
     study.constraints?.length ||
-      study.approach?.length ||
-      study.alternatives?.length ||
-      study.edgeCases?.length ||
-      study.technologies?.length ||
-      study.challenges?.length ||
-      study.engineeringMoment ||
-      study.ownership ||
-      study.learned ||
-      study.wouldImprove,
+    study.approach?.length ||
+    study.alternatives?.length ||
+    study.edgeCases?.length ||
+    study.technologies?.length ||
+    study.challenges?.length ||
+    study.engineeringMoment ||
+    study.ownership ||
+    study.learned ||
+    study.wouldImprove,
   );
 
   return (
     <section id={study.slug} className="mt-16 scroll-mt-24 border-t border-hairline pt-10">
       <p className="mono-label">0{index}</p>
       <h2 className="font-serif-display mt-3 text-[clamp(24px,3vw,32px)]">{study.title}</h2>
-      <p className="mt-4 text-[17px] leading-relaxed text-text-secondary">{study.shortDescription}</p>
+      <p className="mt-4 text-[17px] leading-relaxed text-text-secondary">
+        {study.shortDescription}
+      </p>
 
       <dl className="mt-6 grid grid-cols-1 gap-4 rounded-[3px] border border-hairline bg-panel p-5">
         {problem ? <Row label="Problem">{problem}</Row> : null}
@@ -260,7 +265,10 @@ function SubStudy({ study, index }: { study: Project; index: number }) {
                   )
                     .filter(([, items]) => items && items.length > 0)
                     .map(([label, items]) => (
-                      <div key={label} className="rounded-[3px] border border-hairline bg-background p-4">
+                      <div
+                        key={label}
+                        className="rounded-[3px] border border-hairline bg-background p-4"
+                      >
                         <p className="mono-label !text-text-primary !text-[12px]">{label}</p>
                         <div className="mt-3">
                           <List items={items!} />
