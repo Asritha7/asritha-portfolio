@@ -17,8 +17,8 @@ export const LINKS = {
 
 export const HERO = {
   eyebrow: "SOFTWARE ENGINEER · BACKEND · CLOUD",
-  headline: "Java services and",
-  headlineAccent: "reliable cloud systems.",
+  headline: "I build reliable software across backend services and",
+  headlineAccent: "cloud systems.",
   description:
     "Software engineer at Goldman Sachs, working on Java services, AWS infrastructure, and event-driven integrations.",
   primaryCta: { label: "View my work", href: "/work" },

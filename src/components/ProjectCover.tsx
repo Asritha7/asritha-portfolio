@@ -14,6 +14,8 @@ export type CoverVariant =
   | "kafka-strimzi-upgrade"
   | "kubernetes-cicd-reliability"
   | "rfid-pin-authentication-research"
+  | "runreviq"
+  | "job-intake-service"
   | "note"
   | "note-keycloak"
   | "note-kafka"
@@ -61,6 +63,10 @@ const ALT: Record<CoverVariant, string> = {
     "Abstract illustration of a two-stage authentication flow combining an RFID card and a keypad pattern.",
   "rfid-authentication":
     "Abstract illustration of a two-stage RFID card and PIN keypad authentication flow.",
+  runreviq:
+    "Abstract illustration of reviewed document passages passing through a permission gate before being cited as evidence.",
+  "job-intake-service":
+    "Abstract illustration of jobs entering a durable queue with leased workers and a retry loop after a failure.",
   note: "Abstract editorial sketch of a notebook page with checklist marks and a small decision tree.",
   "note-keycloak":
     "Notebook-style sketch of identity nodes aligning with checklist marks and a small decision tree.",
@@ -127,6 +133,10 @@ function CoverArt({ variant }: { variant: CoverVariant }) {
     case "rfid-pin-authentication-research":
     case "rfid-authentication":
       return <RfidCover />;
+    case "runreviq":
+      return <RunreviqCover />;
+    case "job-intake-service":
+      return <JobIntakeCover />;
     case "note":
       return <NoteCover />;
     case "note-keycloak":
@@ -736,6 +746,103 @@ function NoteCover({ accent: _accent }: { accent?: "keycloak" | "kafka" | "kuber
   );
 }
 
+/* ---------- 7b. Independent engineering projects ---------- */
+function RunreviqCover() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* stacked reviewed documents */}
+      <g stroke={INK} strokeWidth="0.7" fill={PANEL}>
+        <rect x="36" y="40" width="86" height="104" rx="2" opacity="0.55" />
+        <rect x="44" y="32" width="86" height="104" rx="2" opacity="0.75" />
+        <rect x="52" y="24" width="86" height="104" rx="2" />
+      </g>
+      {/* passage lines on the top document */}
+      <g stroke={INK} strokeWidth="0.6" opacity="0.55">
+        <line x1="62" y1="42" x2="128" y2="42" />
+        <line x1="62" y1="52" x2="120" y2="52" />
+        <line x1="62" y1="62" x2="128" y2="62" />
+        <line x1="62" y1="86" x2="128" y2="86" />
+        <line x1="62" y1="96" x2="112" y2="96" />
+      </g>
+      {/* the cited passage, highlighted */}
+      <rect x="58" y="68" width="74" height="12" rx="1" fill={ACCENT} opacity="0.25" />
+      <line x1="62" y1="74" x2="128" y2="74" stroke={ACCENT} strokeWidth="0.9" />
+      {/* permission gate */}
+      <g transform="translate(168 60)" stroke={INK} strokeWidth="0.8" fill="none">
+        <line x1="0" y1="30" x2="26" y2="30" opacity="0.6" />
+        <rect x="26" y="12" width="34" height="36" rx="2" fill={PANEL} />
+        {/* keyhole */}
+        <circle cx="43" cy="26" r="4.5" stroke={ACCENT} />
+        <line x1="43" y1="30" x2="43" y2="38" stroke={ACCENT} />
+        <line x1="60" y1="30" x2="86" y2="30" opacity="0.6" />
+      </g>
+      {/* evidence citation card after the gate */}
+      <g stroke={INK} strokeWidth="0.7" fill={PANEL}>
+        <rect x="258" y="66" width="42" height="52" rx="2" />
+      </g>
+      <g stroke={INK} strokeWidth="0.6" opacity="0.55">
+        <line x1="264" y1="78" x2="294" y2="78" />
+        <line x1="264" y1="86" x2="290" y2="86" />
+        <line x1="264" y1="94" x2="294" y2="94" />
+      </g>
+      <circle cx="279" cy="106" r="4" fill={ACCENT} opacity="0.85" />
+      {/* review tick marks */}
+      <g stroke={ACCENT} strokeWidth="0.9" fill="none" opacity="0.8">
+        <path d="M60 112 l4 4 l7 -8" />
+        <path d="M60 124 l4 4 l7 -8" opacity="0.5" />
+      </g>
+    </svg>
+  );
+}
+
+function JobIntakeCover() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* intake arrow into durable store */}
+      <g stroke={INK} strokeWidth="0.7" fill="none" opacity="0.7">
+        <line x1="24" y1="56" x2="58" y2="56" />
+        <path d="M52 50 l8 6 l-8 6" />
+      </g>
+      {/* durable job store (database drum) */}
+      <g stroke={INK} strokeWidth="0.8" fill={PANEL}>
+        <ellipse cx="86" cy="46" rx="26" ry="9" />
+        <path d="M60 46 v44 a26 9 0 0 0 52 0 v-44" />
+        <path d="M60 68 a26 9 0 0 0 52 0" fill="none" opacity="0.6" />
+      </g>
+      {/* queued jobs */}
+      <g stroke={INK} strokeWidth="0.7" fill={PANEL}>
+        <rect x="140" y="38" width="30" height="16" rx="2" />
+        <rect x="176" y="38" width="30" height="16" rx="2" />
+        <rect x="212" y="38" width="30" height="16" rx="2" fill="none" strokeDasharray="3 3" />
+      </g>
+      <g stroke={INK} strokeWidth="0.6" opacity="0.6">
+        <line x1="146" y1="46" x2="164" y2="46" />
+        <line x1="182" y1="46" x2="200" y2="46" />
+      </g>
+      {/* lease link from store to queue */}
+      <line x1="112" y1="46" x2="140" y2="46" stroke={ACCENT} strokeWidth="0.8" />
+      {/* workers */}
+      <g stroke={INK} strokeWidth="0.7" fill={PANEL}>
+        <circle cx="155" cy="96" r="9" />
+        <circle cx="191" cy="96" r="9" />
+      </g>
+      <line x1="155" y1="54" x2="155" y2="87" stroke={INK} strokeWidth="0.6" opacity="0.6" />
+      <line x1="191" y1="54" x2="191" y2="87" stroke={INK} strokeWidth="0.6" opacity="0.6" />
+      <circle cx="191" cy="96" r="3.5" fill={ACCENT} stroke="none" />
+      {/* retry loop after a failed attempt */}
+      <g stroke={ACCENT} strokeWidth="0.8" fill="none" opacity="0.85">
+        <path d="M242 46 h22 a10 10 0 0 1 10 10 v18 a10 10 0 0 1 -10 10 h-30" />
+        <path d="M228 78 l6 6 l6 -6" />
+      </g>
+      {/* idempotency key mark */}
+      <g stroke={INK} strokeWidth="0.6" opacity="0.45">
+        <line x1="30" y1="120" x2="80" y2="120" />
+        <line x1="30" y1="128" x2="66" y2="128" />
+      </g>
+    </svg>
+  );
+}
+
 /* ---------- 8. Public / learning ---------- */
 function PublicCover() {
   return (
@@ -764,6 +871,8 @@ export function coverVariantForSlug(slug: string): CoverVariant {
     case "kafka-strimzi-upgrade":
     case "kubernetes-cicd-reliability":
     case "rfid-pin-authentication-research":
+    case "runreviq":
+    case "job-intake-service":
       return slug;
     case "goldman-sachs-platform-engineering":
     case "java-application-service-engineering":
