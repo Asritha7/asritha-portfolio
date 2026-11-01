@@ -16,7 +16,6 @@ import {
   PRINCIPLES,
   CAPABILITIES,
   RESEARCH,
-  PUBLIC_REPOS,
   TESTIMONIALS,
 } from "@/content/portfolio";
 import { track } from "@/lib/analytics";
@@ -664,71 +663,88 @@ function Portfolio() {
           </div>
         </section>
 
-        {/* Additional Engineering Work - non-featured professional work only.
-            Published Research is intentionally excluded so RFID appears only
-            once on the homepage, in its dedicated section. */}
-        {ADDITIONAL_PROJECTS.length > 0 ? (
-          <section
-            id="additional-work"
-            aria-labelledby="additional-heading"
-            className="border-t border-hairline py-20"
-          >
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
-              <div className="reveal">
-                <span className="mono-label">01b - Earlier Professional Work</span>
-                <h2
-                  id="additional-heading"
-                  className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
-                >
-                  Earlier Professional{" "}
-                  <em className="italic" style={{ color: "var(--accent-terra)" }}>
-                    Work
-                  </em>
-                  .
-                </h2>
-                <p className="mt-3 text-[15px] text-text-secondary">
-                  Earlier automation, identity, and platform work that supports my current profile.
-                  Each links to a write-up.
-                </p>
-              </div>
-              <ul className="reveal grid grid-cols-1 gap-4">
-                {ADDITIONAL_PROJECTS.map((c) => (
-                  <li key={c.slug}>
-                    <Link
-                      to={PROJECT_ROUTE[c.slug]}
-                      onClick={() => track("case_study_opened", { slug: c.slug })}
-                      className="group block overflow-hidden rounded-[3px] border border-hairline bg-panel transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
-                    >
-                      <div className="flex flex-col gap-0 sm:flex-row sm:items-stretch">
-                        <ProjectCover
-                          variant={coverVariantForSlug(c.slug)}
-                          ratio="3/2"
-                          rounded={false}
-                          className="border-0 border-b border-hairline sm:w-[120px] sm:flex-none sm:border-b-0 sm:border-r"
-                        />
-                        <div className="p-5 md:p-6 flex-1">
-                          <div className="flex items-baseline justify-between gap-4">
-                            <span className="mono-label">{c.projectType.toUpperCase()}</span>
-                            <span className="mono-label">{c.year}</span>
-                          </div>
-                          <h3 className="font-serif-display mt-2 text-[19px] md:text-[20px]">
-                            {c.title}
-                          </h3>
-                          <p className="mt-2 text-[14.5px] text-text-secondary">
-                            {firstSentence(c.problem) || c.shortDescription}
-                          </p>
-                          <span className="mono-label mt-3 inline-flex items-center gap-1 group-hover:!text-terra">
-                            {projectCtaLabel(c)} →
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+        {/* Independent Engineering Projects - public repos with case studies */}
+        <section
+          id="independent-work"
+          aria-labelledby="independent-heading"
+          className="border-t border-hairline py-20"
+        >
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+            <div className="reveal">
+              <span className="mono-label">02 - Independent Engineering Projects</span>
+              <h2
+                id="independent-heading"
+                className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
+              >
+                Independent Engineering{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  Projects
+                </em>
+                .
+              </h2>
+              <p className="mt-3 text-[15px] text-text-secondary">
+                Software I've built independently to explore backend architecture, reliability, data
+                integrity, and real-world engineering trade-offs.
+              </p>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track("github_opened")}
+                className="mono-label mt-4 inline-flex items-center gap-1 hover:!text-terra"
+              >
+                View full GitHub profile ↗
+              </a>
             </div>
-          </section>
-        ) : null}
+            <ul className="reveal grid grid-cols-1 gap-5 md:grid-cols-2">
+              {INDEPENDENT_PROJECTS.map((p) => (
+                <li
+                  key={p.slug}
+                  className="overflow-hidden rounded-[3px] border border-hairline bg-panel"
+                >
+                  <ProjectCover
+                    variant={coverVariantForSlug(p.slug)}
+                    ratio="3/2"
+                    rounded={false}
+                    className="border-0 border-b border-hairline"
+                  />
+                  <div className="p-5 md:p-6">
+                    <span className="mono-label">Independent Project · {p.year}</span>
+                    <h3 className="font-serif-display mt-2 text-[19px] md:text-[20px]">
+                      {p.title}
+                    </h3>
+                    <p className="mt-2 text-[14.5px] text-text-secondary">{p.shortDescription}</p>
+                    <ul className="mono-label mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
+                      {p.tags.slice(0, 5).map((t) => (
+                        <li key={t} className="!text-[11px]">
+                          · {t}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
+                      <Link
+                        to={PROJECT_ROUTE[p.slug]}
+                        onClick={() => track("case_study_opened", { slug: p.slug })}
+                        className="mono-label inline-flex items-center gap-1 hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                      >
+                        Read case study →
+                      </Link>
+                      <a
+                        href={p.repositoryUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => track("github_opened", { repo: p.slug })}
+                        className="mono-label inline-flex items-center gap-1 hover:!text-terra"
+                      >
+                        View repository ↗
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
         {/* Experience */}
         <section
@@ -738,7 +754,7 @@ function Portfolio() {
         >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">02 - Experience</span>
+              <span className="mono-label">03 - Experience</span>
               <h2 id="exp-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
                 Professional{" "}
                 <em className="italic" style={{ color: "var(--accent-terra)" }}>
@@ -806,6 +822,72 @@ function Portfolio() {
           </div>
         </section>
 
+        {/* Additional Engineering Work - non-featured professional work only.
+            Published Research is intentionally excluded so RFID appears only
+            once on the homepage, in its dedicated section. */}
+        {ADDITIONAL_PROJECTS.length > 0 ? (
+          <section
+            id="additional-work"
+            aria-labelledby="additional-heading"
+            className="border-t border-hairline py-20"
+          >
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+              <div className="reveal">
+                <span className="mono-label">04 - Earlier Professional Work</span>
+                <h2
+                  id="additional-heading"
+                  className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
+                >
+                  Earlier Professional{" "}
+                  <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                    Work
+                  </em>
+                  .
+                </h2>
+                <p className="mt-3 text-[15px] text-text-secondary">
+                  Earlier automation, identity, and platform work that supports my current profile.
+                  Each links to a write-up.
+                </p>
+              </div>
+              <ul className="reveal grid grid-cols-1 gap-4">
+                {ADDITIONAL_PROJECTS.map((c) => (
+                  <li key={c.slug}>
+                    <Link
+                      to={PROJECT_ROUTE[c.slug]}
+                      onClick={() => track("case_study_opened", { slug: c.slug })}
+                      className="group block overflow-hidden rounded-[3px] border border-hairline bg-panel transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                    >
+                      <div className="flex flex-col gap-0 sm:flex-row sm:items-stretch">
+                        <ProjectCover
+                          variant={coverVariantForSlug(c.slug)}
+                          ratio="3/2"
+                          rounded={false}
+                          className="border-0 border-b border-hairline sm:w-[120px] sm:flex-none sm:border-b-0 sm:border-r"
+                        />
+                        <div className="p-5 md:p-6 flex-1">
+                          <div className="flex items-baseline justify-between gap-4">
+                            <span className="mono-label">{c.projectType.toUpperCase()}</span>
+                            <span className="mono-label">{c.year}</span>
+                          </div>
+                          <h3 className="font-serif-display mt-2 text-[19px] md:text-[20px]">
+                            {c.title}
+                          </h3>
+                          <p className="mt-2 text-[14.5px] text-text-secondary">
+                            {firstSentence(c.problem) || c.shortDescription}
+                          </p>
+                          <span className="mono-label mt-3 inline-flex items-center gap-1 group-hover:!text-terra">
+                            {projectCtaLabel(c)} →
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
+
         {/* Principles */}
         <section
           id="principles"
@@ -814,7 +896,7 @@ function Portfolio() {
         >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">03 - Principles</span>
+              <span className="mono-label">05 - Principles</span>
               <h2
                 id="principles-heading"
                 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
@@ -848,7 +930,7 @@ function Portfolio() {
         >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">04 - Capabilities</span>
+              <span className="mono-label">06 - Capabilities</span>
               <h2 id="cap-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
                 Technical{" "}
                 <em className="italic" style={{ color: "var(--accent-terra)" }}>
@@ -877,101 +959,11 @@ function Portfolio() {
           </div>
         </section>
 
-        {/* Public Projects - real GitHub repos only */}
-        <section
-          id="public-work"
-          aria-labelledby="public-heading"
-          className="border-t border-hairline py-20"
-        >
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
-            <div className="reveal">
-              <span className="mono-label">05 - Public engineering projects</span>
-              <h2
-                id="public-heading"
-                className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
-              >
-                Public Engineering{" "}
-                <em className="italic" style={{ color: "var(--accent-terra)" }}>
-                  Projects
-                </em>
-                .
-              </h2>
-              <p className="mt-3 text-[15px] text-text-secondary">
-                Independent Java, distributed-systems and evidence-retrieval projects, alongside
-                earlier learning work.
-              </p>
-              <a
-                href={LINKS.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => track("github_opened")}
-                className="mono-label mt-4 inline-flex items-center gap-1 hover:!text-terra"
-              >
-                View full GitHub profile ↗
-              </a>
-            </div>
-            <ul className="reveal grid grid-cols-1 gap-4">
-              {PUBLIC_REPOS.map((r) => (
-                <li
-                  key={r.name}
-                  className="overflow-hidden rounded-[3px] border border-hairline bg-panel"
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr]">
-                    <ProjectCover
-                      variant="public"
-                      ratio="3/2"
-                      rounded={false}
-                      className="border-0 sm:border-r sm:border-hairline"
-                    />
-                    <div className="p-5 md:p-6">
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                        <h3 className="font-serif-display text-[18px] md:text-[20px]">{r.name}</h3>
-                        <span className="mono-label !text-[11px]">{r.type}</span>
-                      </div>
-                      <p className="mt-2 text-[15px] text-text-secondary">{r.description}</p>
-                      <ul className="mono-label mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
-                        {r.tech.map((t) => (
-                          <li key={t} className="!text-[11px]">
-                            · {t}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
-                        {INDEPENDENT_PROJECTS.filter((project) =>
-                          r.href.endsWith(`/${project.slug}`),
-                        ).map((project) => (
-                          <Link
-                            key={project.slug}
-                            to={PROJECT_ROUTE[project.slug]}
-                            onClick={() => track("case_study_opened", { slug: project.slug })}
-                            className="mono-label inline-flex items-center gap-1 hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
-                          >
-                            Read case study →
-                          </Link>
-                        ))}
-                        <a
-                          href={r.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => track("github_opened", { repo: r.name })}
-                          className="mono-label inline-flex items-center gap-1 hover:!text-terra"
-                        >
-                          View repository ↗
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
         {/* Research */}
         <section aria-labelledby="research-heading" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">06 - Research</span>
+              <span className="mono-label">07 - Research</span>
               <h2
                 id="research-heading"
                 className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
