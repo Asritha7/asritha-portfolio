@@ -1,3 +1,4 @@
+import { SkipLink } from "@/components/SkipLink";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
 import { PROJECTS, SITE, CONFIDENTIALITY_NOTICE, LINKS } from "@/content/portfolio";
@@ -9,6 +10,7 @@ const url = "https://asritha.dev/work/rfid-pin-authentication-research";
 export const Route = createFileRoute("/work/rfid-pin-authentication-research")({
   head: () => ({
     meta: [
+      { name: "twitter:card", content: "summary" },
       { title: `${study.title} - Asritha Nibhanupudi` },
       { name: "description", content: study.shortDescription },
       { property: "og:type", content: "article" },
@@ -24,6 +26,7 @@ export const Route = createFileRoute("/work/rfid-pin-authentication-research")({
 function ResearchPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SkipLink />
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1024px] items-center justify-between px-6 py-4 md:px-10">
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
@@ -33,14 +36,21 @@ function ResearchPage() {
         </div>
       </header>
 
-      <main id="top" className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
+      <main id="top" tabIndex={-1} className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
         <p className="mono-label">PUBLISHED RESEARCH · {study.year}</p>
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">{study.title}</h1>
-        <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">{study.shortDescription}</p>
+        <p className="mt-6 max-w-[60ch] text-[19px] text-text-secondary">
+          {study.shortDescription}
+        </p>
 
         <ul className="mono-label mt-6 flex flex-wrap gap-x-3 gap-y-2">
           {study.tags.map((t) => (
-            <li key={t} className="rounded-[3px] border border-hairline bg-panel px-2.5 py-1 !text-[11px]">{t}</li>
+            <li
+              key={t}
+              className="rounded-[3px] border border-hairline bg-panel px-2.5 py-1 !text-[11px]"
+            >
+              {t}
+            </li>
           ))}
         </ul>
 
@@ -61,9 +71,9 @@ function ResearchPage() {
         <Section heading="Motivation">
           <p>
             We wanted to explore whether combining two independent authentication factors -
-            possession of an RFID card and knowledge of a PIN - could meaningfully raise the bar
-            for unauthorised access while remaining practical to build on embedded hardware
-            (a microcontroller, an RFID reader, and a keypad) rather than requiring a networked
+            possession of an RFID card and knowledge of a PIN - could meaningfully raise the bar for
+            unauthorised access while remaining practical to build on embedded hardware (a
+            microcontroller, an RFID reader, and a keypad) rather than requiring a networked
             access-control backend.
           </p>
         </Section>
@@ -81,46 +91,50 @@ function ResearchPage() {
 
         <Section heading="Hardware and software components">
           <ul className="space-y-2">
-            <Bullet>Microcontroller acting as the controller for both authentication factors</Bullet>
+            <Bullet>
+              Microcontroller acting as the controller for both authentication factors
+            </Bullet>
             <Bullet>RFID reader module for the first-factor identity check</Bullet>
             <Bullet>Matrix keypad for second-factor PIN entry</Bullet>
             <Bullet>Status indicator (LED / display) for the access decision</Bullet>
-            <Bullet>Firmware implementing the flow, the allow-list, and the fail-closed behaviour</Bullet>
+            <Bullet>
+              Firmware implementing the flow, the allow-list, and the fail-closed behaviour
+            </Bullet>
           </ul>
         </Section>
 
         <Section heading="My contribution">
           <p className="mono-label !text-text-primary !text-[12px]">Co-authored</p>
           <p className="mt-3">
-            Contributed to system design, hardware-software integration, and experimental
-            validation of the combined RFID + PIN scheme, and co-authored the resulting paper.
+            Contributed to system design, hardware-software integration, and experimental validation
+            of the combined RFID + PIN scheme, and co-authored the resulting paper.
           </p>
         </Section>
 
         <Section heading="Experimental setup">
           <p>
-            The combined scheme was assembled on a standalone microcontroller-based prototype
-            wired to the RFID reader and keypad. We exercised each layer independently and then
-            end-to-end: presenting valid and invalid cards, entering correct and incorrect PINs
-            for each card, and observing how the system handled subsystem-level faults.
+            The combined scheme was assembled on a standalone microcontroller-based prototype wired
+            to the RFID reader and keypad. We exercised each layer independently and then
+            end-to-end: presenting valid and invalid cards, entering correct and incorrect PINs for
+            each card, and observing how the system handled subsystem-level faults.
           </p>
         </Section>
 
         <Section heading="Findings">
           <ul className="space-y-2">
             <Bullet>
-              Combining an independent possession factor (RFID) with an independent knowledge
-              factor (PIN) is meaningfully stronger than either factor alone, because the
-              attacker now has to defeat two unrelated mechanisms.
+              Combining an independent possession factor (RFID) with an independent knowledge factor
+              (PIN) is meaningfully stronger than either factor alone, because the attacker now has
+              to defeat two unrelated mechanisms.
             </Bullet>
             <Bullet>
-              The combined flow was practical to implement on embedded hardware without a
-              networked backend, which makes the design suitable for the standalone
-              access-control scenarios we targeted.
+              The combined flow was practical to implement on embedded hardware without a networked
+              backend, which makes the design suitable for the standalone access-control scenarios
+              we targeted.
             </Bullet>
             <Bullet>
-              Designing the system to fail closed on any subsystem fault is just as important
-              as the cryptographic or procedural strength of either individual factor.
+              Designing the system to fail closed on any subsystem fault is just as important as the
+              cryptographic or procedural strength of either individual factor.
             </Bullet>
           </ul>
         </Section>
@@ -128,9 +142,18 @@ function ResearchPage() {
         <Section heading="Limitations">
           <ul className="space-y-2">
             <Bullet>This is a research prototype, not a production access-control product.</Bullet>
-            <Bullet>The allow-list is stored locally on the device, which limits scalability across many doors.</Bullet>
-            <Bullet>The threat model does not include physically tamper-resistant enclosures or networked revocation.</Bullet>
-            <Bullet>PIN entropy and lockout behaviour would need to be hardened before any real deployment.</Bullet>
+            <Bullet>
+              The allow-list is stored locally on the device, which limits scalability across many
+              doors.
+            </Bullet>
+            <Bullet>
+              The threat model does not include physically tamper-resistant enclosures or networked
+              revocation.
+            </Bullet>
+            <Bullet>
+              PIN entropy and lockout behaviour would need to be hardened before any real
+              deployment.
+            </Bullet>
           </ul>
         </Section>
 
@@ -145,7 +168,8 @@ function ResearchPage() {
             View paper on IEEE Xplore ↗
           </a>
           <p className="mt-2 text-[14.5px] text-text-secondary">
-            Published as 'Multi-level authentication combining RFID and PIN-based access control' at IEEE ICMACC 2024.
+            Published as 'Multi-level authentication combining RFID and PIN-based access control' at
+            IEEE ICMACC 2024.
           </p>
         </Section>
 
@@ -174,7 +198,10 @@ function Section({ heading, children }: { heading: string; children: React.React
 function Bullet({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex gap-3">
-      <span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--accent-terra)" }} />
+      <span
+        className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+        style={{ background: "var(--accent-terra)" }}
+      />
       <span>{children}</span>
     </li>
   );
