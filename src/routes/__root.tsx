@@ -35,7 +35,10 @@ function NotFoundComponent() {
         <p className="mono-label">404 · NOT FOUND</p>
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">
           This page took an unexpected{" "}
-          <em className="italic" style={{ color: "var(--accent-terra)" }}>route</em>.
+          <em className="italic" style={{ color: "var(--accent-terra)" }}>
+            route
+          </em>
+          .
         </h1>
         <p className="mt-6 max-w-[55ch] text-[18px] text-text-secondary">
           The link may be outdated, or the page may have moved.
@@ -43,7 +46,7 @@ function NotFoundComponent() {
         <div className="mt-10 flex flex-wrap gap-3">
           <Link
             to="/"
-            className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+            className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-primary-foreground transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
           >
             Return home
           </Link>
@@ -59,7 +62,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -69,10 +72,25 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
         <h1 className="font-serif-display text-2xl">This page didn't load</h1>
-        <p className="mt-2 text-sm text-text-secondary">Something went wrong. Try again or head home.</p>
+        <p className="mt-2 text-sm text-text-secondary">
+          Something went wrong. Try again or head home.
+        </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button onClick={() => { router.invalidate(); reset(); }} className="rounded-[3px] bg-terra px-4 py-2 text-sm text-panel hover:bg-terra-dark">Try again</button>
-          <a href="/" className="rounded-[3px] border border-hairline px-4 py-2 text-sm hover:bg-warm-fill">Go home</a>
+          <button
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+            className="rounded-[3px] bg-terra px-4 py-2 text-sm text-primary-foreground hover:bg-terra-dark"
+          >
+            Try again
+          </button>
+          <a
+            href="/"
+            className="rounded-[3px] border border-hairline px-4 py-2 text-sm hover:bg-warm-fill"
+          >
+            Go home
+          </a>
         </div>
       </div>
     </div>
@@ -137,7 +155,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
   }),
-
 
   shellComponent: RootShell,
   component: RootComponent,
