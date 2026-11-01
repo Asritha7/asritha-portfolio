@@ -1,0 +1,27 @@
+name: Published portfolio smoke check
+on:
+  pull_request:
+    paths:
+      - 'scripts/check_live_site.py'
+      - '.github/workflows/live-site-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check live HTTPS pages and sitemap
+        run: python3 scripts/check_live_site.py
+      - name: Upload read-only report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-portfolio-smoke
+          path: live-site-smoke-report.json
+          if-no-files-found: warn
+          retention-days: 7
