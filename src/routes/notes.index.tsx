@@ -1,3 +1,4 @@
+import { SkipLink } from "@/components/SkipLink";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
 import { ProjectCover } from "@/components/ProjectCover";
@@ -10,6 +11,26 @@ import {
 } from "@/content/portfolio";
 
 export const Route = createFileRoute("/notes/")({
+  head: () => ({
+    meta: [
+      { title: "Engineering Notes - Asritha Nibhanupudi" },
+      {
+        name: "description",
+        content:
+          "Practical engineering notes on Keycloak configuration drift, Kafka and Strimzi upgrade validation, and investigating Kubernetes deployment failures.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:title", content: "Engineering Notes - Asritha Nibhanupudi" },
+      {
+        property: "og:description",
+        content:
+          "Practical engineering notes on Keycloak configuration drift, Kafka and Strimzi upgrade validation, and investigating Kubernetes deployment failures.",
+      },
+      { property: "og:url", content: "https://asritha.dev/notes" },
+      { name: "twitter:card", content: "summary" },
+    ],
+    links: [{ rel: "canonical", href: "https://asritha.dev/notes" }],
+  }),
   component: NotesIndex,
 });
 
@@ -23,6 +44,7 @@ function coverFor(slug: string) {
 function NotesIndex() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SkipLink />
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1024px] items-center justify-between px-6 py-4 md:px-10">
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
@@ -32,10 +54,14 @@ function NotesIndex() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[920px] px-6 py-16 md:px-10 md:py-24">
+      <main id="top" tabIndex={-1} className="mx-auto max-w-[920px] px-6 py-16 md:px-10 md:py-24">
         <p className="mono-label">ENGINEERING NOTES</p>
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">
-          Practical engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>notes</em>.
+          Practical engineering{" "}
+          <em className="italic" style={{ color: "var(--accent-terra)" }}>
+            notes
+          </em>
+          .
         </h1>
         <p className="mt-6 max-w-[64ch] text-[17px] text-text-secondary">
           Short technical references drawn from production work. Each note links to its own page.
@@ -64,12 +90,18 @@ function NotesIndex() {
                         <span className="mono-label">ENGINEERING NOTE</span>
                         <span className="mono-label">{minutes} min read</span>
                       </div>
-                      <h2 className="font-serif-display mt-2 text-[20px] md:text-[22px]">{n.title}</h2>
-                      <p className="mt-2 max-w-[60ch] text-[14.5px] text-text-secondary">{n.summary}</p>
+                      <h2 className="font-serif-display mt-2 text-[20px] md:text-[22px]">
+                        {n.title}
+                      </h2>
+                      <p className="mt-2 max-w-[60ch] text-[14.5px] text-text-secondary">
+                        {n.summary}
+                      </p>
                       {tags.length ? (
                         <ul className="mono-label mt-3 flex flex-wrap gap-x-3 gap-y-2">
                           {tags.slice(0, 3).map((t) => (
-                            <li key={t} className="!text-[11px]">· {t}</li>
+                            <li key={t} className="!text-[11px]">
+                              · {t}
+                            </li>
                           ))}
                         </ul>
                       ) : null}
