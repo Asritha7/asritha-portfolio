@@ -14,6 +14,7 @@ import {
   RESEARCH_SLUG,
   PROJECT_CATEGORIES,
   PROJECT_ROUTE,
+  PUBLIC_REPOS,
   projectCtaLabel,
   type ProjectCategory,
   SITE,
@@ -65,11 +66,17 @@ export const Route = createFileRoute("/work/")({
 });
 
 const GROUPS = [
-  { label: "Featured Professional Work", slugs: CASE_STUDIES.map((p) => p.slug) },
+  {
+    label: "Professional Engineering Work",
+    slugs: [...CASE_STUDIES, ...ADDITIONAL_PROJECTS].map((p) => p.slug),
+  },
   { label: "Independent Engineering Projects", slugs: INDEPENDENT_PROJECTS.map((p) => p.slug) },
-  { label: "Earlier Professional Work", slugs: ADDITIONAL_PROJECTS.map((p) => p.slug) },
-  { label: "Research", slugs: [RESEARCH_SLUG] },
+  { label: "Published Research", slugs: [RESEARCH_SLUG] },
 ];
+
+// Earlier learning projects have no case-study routes; they link to GitHub
+// directly and appear only under the "All" filter.
+const LEARNING_REPOS = PUBLIC_REPOS.filter((r) => r.type.startsWith("Learning project"));
 
 function WorkIndex() {
   const { category } = Route.useSearch();
@@ -190,6 +197,38 @@ function WorkIndex() {
 
         {filtered.length === 0 ? (
           <p className="mt-10 text-text-secondary">No projects in this category yet.</p>
+        ) : null}
+
+        {current === "All" && LEARNING_REPOS.length > 0 ? (
+          <section aria-labelledby="learning-heading" className="mt-14">
+            <h2 id="learning-heading" className="mono-label">
+              EARLIER LEARNING PROJECTS
+            </h2>
+            <p className="mt-3 max-w-[60ch] text-[14px] text-text-secondary">
+              Earlier experiments and learning projects that helped me explore programming, data
+              analysis, and practical implementation.
+            </p>
+            <ul className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+              {LEARNING_REPOS.map((r) => (
+                <li key={r.name} className="rounded-[3px] border border-hairline bg-panel p-5">
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h3 className="font-serif-display text-[17px]">{r.name}</h3>
+                    <span className="mono-label !text-[11px]">{r.type}</span>
+                  </div>
+                  <p className="mt-2 text-[14px] text-text-secondary">{r.description}</p>
+                  <a
+                    href={r.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track("github_opened", { repo: r.name })}
+                    className="mono-label mt-3 inline-flex items-center gap-1 hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                  >
+                    View repository ↗
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
         ) : null}
       </main>
     </div>
