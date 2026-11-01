@@ -745,12 +745,12 @@ function Portfolio() {
         <section id="public-work" aria-labelledby="public-heading" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
-              <span className="mono-label">05 - Earlier public projects</span>
+              <span className="mono-label">05 - Public engineering projects</span>
               <h2 id="public-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Earlier Public <em className="italic" style={{ color: "var(--accent-terra)" }}>Projects</em>.
+                Public Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Projects</em>.
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Earlier learning projects and technical experiments available publicly on GitHub.
+                Independent Java, distributed-systems and evidence-retrieval projects, alongside earlier learning work.
               </p>
               <a
                 href={LINKS.github}

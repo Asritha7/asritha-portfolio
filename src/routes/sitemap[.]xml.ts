@@ -10,6 +10,8 @@ const entries = [
   { path: "/hiring-managers", changefreq: "monthly", priority: "0.7" },
 
   { path: "/work/goldman-sachs-platform-engineering", changefreq: "monthly", priority: "0.9" },
+  { path: "/work/runreviq", changefreq: "monthly", priority: "0.8" },
+  { path: "/work/job-intake-service", changefreq: "monthly", priority: "0.8" },
   { path: "/work/automation-framework", changefreq: "monthly", priority: "0.8" },
   { path: "/work/keycloak-identity-flow", changefreq: "monthly", priority: "0.8" },
   { path: "/work/kafka-strimzi-upgrade", changefreq: "monthly", priority: "0.7" },

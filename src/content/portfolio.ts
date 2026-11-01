@@ -904,6 +904,132 @@ export const PROJECTS: Project[] = [
   },
 ];
 
+// Independently built public prototypes. Separate from employer work and research.
+export const INDEPENDENT_PROJECTS: Project[] = [
+  {
+    slug: "runreviq",
+    title: "Runreviq — Governed Operational Evidence",
+    projectType: "Engineering Implementation",
+    year: "2026",
+    shortDescription:
+      "An access-controlled local workspace for finding applicable runbook passages, reviewing source revisions, and evaluating retrieval quality without presenting unverified guidance as fact.",
+    myContribution:
+      "Designed and implemented the personal prototype: PostgreSQL evidence controls, documented review and publication workflows, deterministic retrieval, regression evaluation, and a staged Java backend migration.",
+    cardContribution:
+      "Built an authorized runbook-evidence workflow with version-aware selection, review controls, and exact passage citations.",
+    cardResult:
+      "Reproducible retrieval experiments expose unresolved relevance misses; Java migration and final acceptance remain in progress.",
+    summaryProblem:
+      "Keyword matches can surface the wrong runbook version or evidence the requester should not see.",
+    summaryRole: "Independent implementation of the governance and retrieval prototype.",
+    summaryResult:
+      "Implemented reviewable, permission-aware evidence retrieval with explicit limits and repeatable evaluations.",
+    scopeNote:
+      "Personal local prototype using fictional data. Python is the working runtime; Java migration is not yet a completed production cutover.",
+    problem:
+      "Operational instructions vary by service, software version, environment, approval state and access rights. Returning an attractive match is unsafe if its applicability or authorization is uncertain.",
+    constraints: [
+      "Authorization must be enforced before passages are exposed",
+      "Unreviewed and superseded instructions must not silently become current guidance",
+      "Evaluations must report false positives and missed evidence, not only successful matches",
+      "No semantic contradiction detector or generated AI answer should be claimed before implementation",
+    ],
+    approach: [
+      "Modelled approved revisions, role-based evidence access, document applicability and source fingerprints",
+      "Built independent review, publication and withdrawal workflows for the runbook corpus",
+      "Implemented exact-passage references and conservative structured conflict handling",
+      "Used external incident questions and controlled retrieval experiments to diagnose lexical misses",
+      "Developed Java service adapters and parity checks as part of a staged migration from the working Python prototype",
+    ],
+    decision: {
+      decision: "Make authorization and document applicability hard gates before ranking passages.",
+      why: "Ranking alone cannot make a forbidden or wrong-version instruction safe.",
+      tradeoff: "Conservative filters can withhold relevant evidence, so relevance evaluation is required alongside access-control checks.",
+    },
+    edgeCases: [
+      "Authorized but superseded runbook revisions",
+      "Missing incident context that changes applicability",
+      "Conflicting manually normalized instructions",
+      "Relevant passages missed by lexical retrieval",
+      "An unrelated procedure admitted by an experimental relaxed lexical rule",
+    ],
+    technologies: ["Python", "FastAPI", "Java", "Spring Boot", "PostgreSQL", "OIDC"],
+    outcome:
+      "A local, reviewable evidence-retrieval prototype with documented authorization controls and benchmark failure cases; the semantic retrieval and Java runtime cutover are not complete.",
+    learned:
+      "A strong evaluation includes negative controls, exact expected passages and proof that access restrictions remain intact.",
+    wouldImprove:
+      "Add carefully guarded semantic retrieval and independent holdouts before considering AI-generated explanations.",
+    repositoryUrl: "https://github.com/Asritha7/runreviq",
+    confidential: false,
+    featured: false,
+    categories: ["Backend", "Security", "Distributed Systems"],
+    tags: ["Java", "Python", "PostgreSQL", "RLS", "OIDC", "Evidence evaluation"],
+  },
+  {
+    slug: "job-intake-service",
+    title: "Job Intake Service — Durable Asynchronous Processing",
+    projectType: "Engineering Implementation",
+    year: "2026",
+    shortDescription:
+      "A Java and PostgreSQL reference service demonstrating transactional idempotency, bounded intake, crash-recoverable workers, and opt-in connection pooling.",
+    myContribution:
+      "Built a personal Java job-processing service and its reliability experiments, from the HTTP acceptance and PostgreSQL transactions through leased worker recovery, failure-injection checks and bounded connection-pool experiments.",
+    cardContribution:
+      "Implemented durable idempotent intake, leased execution, retry handling, and stale-worker fencing.",
+    cardResult:
+      "Database-backed multi-instance regressions and CI experiments verify capacity, recovery and opt-in pool behavior under controlled conditions.",
+    summaryProblem:
+      "An HTTP timeout can hide a successful commit, while a crashed worker can leave accepted work unfinished.",
+    summaryRole: "Independent backend implementation and repeatable correctness experiments.",
+    summaryResult:
+      "A local service with durable acceptance, deterministic work execution, worker recovery and documented operational constraints.",
+    scopeNote:
+      "Personal local reference implementation. The worker hashes text as SHA-256 and does not execute arbitrary tasks or guarantee exactly-once external effects.",
+    problem:
+      "Clients must be able to retry ambiguous submissions without duplicate jobs. Workers can crash, compete for work or lose their leases while the database remains the source of truth.",
+    constraints: [
+      "Duplicate requests must return the original job identifier",
+      "Conflicting idempotency-key reuse must be rejected",
+      "Concurrent API instances must honor one database-wide capacity",
+      "A stale worker must never overwrite a newer execution attempt",
+      "No production throughput claim should be inferred from short CI benchmarks",
+    ],
+    approach: [
+      "Used PostgreSQL transactions, a unique idempotency key and a configuration-row lock for atomic acceptance",
+      "Implemented lease ownership, retry scheduling, stale-token fencing and durable worker state",
+      "Added bounded HTTP handlers, readiness and liveness endpoints, process-local metrics and checksum-verified migrations",
+      "Measured JDBC setup and lock contention through isolated CI instrumentation and direct-store comparisons",
+      "Added explicitly enabled HikariCP pooling, multi-instance correctness tests and backend-failure recovery checks",
+    ],
+    decision: {
+      decision: "Keep a simple serialized PostgreSQL admission transaction and make connection pooling opt-in.",
+      why: "Correctness across simultaneous API instances is more important than an unverified throughput improvement.",
+      tradeoff: "A shared lock limits concurrent submissions and each API replica needs its own database-connection budget.",
+    },
+    edgeCases: [
+      "Client retries after commit acknowledgement is lost",
+      "Twenty simultaneous requests with one idempotency key",
+      "A worker crashes after claiming a job",
+      "A stale lease owner tries to complete newer work",
+      "Pool exhaustion or terminated PostgreSQL connection",
+      "Capacity is full but the original key must remain replayable",
+    ],
+    technologies: ["Java 21", "PostgreSQL", "JDBC", "HikariCP", "HTTP", "GitHub Actions"],
+    outcome:
+      "A local job-processing reference with passing PostgreSQL, worker, pooled-API, independent-JVM and recovery regression suites. It is not a deployed multi-tenant job platform.",
+    learned:
+      "Connection setup and database locking both have measurable costs; isolated performance tests need failure invariants and clear methodology.",
+    wouldImprove:
+      "Separate active capacity from retention and add real downstream idempotency before introducing more complex job types.",
+    repositoryUrl: "https://github.com/Asritha7/job-intake-service",
+    confidential: false,
+    featured: false,
+    categories: ["Backend", "Distributed Systems", "APIs"],
+    tags: ["Java", "PostgreSQL", "Idempotency", "Concurrency", "HikariCP", "CI"],
+  },
+];
+
 // Backwards-compat aliases.
 export type CaseStudy = Project;
 
@@ -968,6 +1094,7 @@ export const CASE_STUDIES: Project[] = [
 // and the published research.
 export const VISIBLE_PROJECTS: Project[] = [
   ...CASE_STUDIES,
+  ...INDEPENDENT_PROJECTS,
   PROJECTS.find((p) => p.slug === "kafka-strimzi-upgrade")!,
   PROJECTS.find((p) => p.slug === "kubernetes-cicd-reliability")!,
   PROJECTS.find((p) => p.slug === RESEARCH_SLUG)!,
@@ -1099,6 +1226,22 @@ export const RESEARCH = {
 };
 
 export const PUBLIC_REPOS = [
+  {
+    name: "Runreviq",
+    href: "https://github.com/Asritha7/runreviq",
+    type: "Independent engineering · local prototype",
+    description:
+      "Access-controlled runbook evidence with reviewed revisions, applicability filters, exact citations and repeatable retrieval evaluations. Working Python runtime; Java migration in progress.",
+    tech: ["Python", "Java", "PostgreSQL", "OIDC"],
+  },
+  {
+    name: "Job Intake Service",
+    href: "https://github.com/Asritha7/job-intake-service",
+    type: "Independent engineering · local reference",
+    description:
+      "Durable Java job acceptance with PostgreSQL idempotency, leased workers, restart recovery, and bounded opt-in JDBC pooling verified in isolated CI.",
+    tech: ["Java 21", "PostgreSQL", "JDBC", "HikariCP"],
+  },
   {
     name: "SONAR-RockVsMine-Prediction-ML-Python",
     href: "https://github.com/Asritha7/SONAR-RockVsMine-Prediction-ML-Python",
@@ -1364,6 +1507,8 @@ export const TESTIMONIALS: Testimonial[] = [];
 // Map slug to typed route path for type-safe <Link to=...>
 export const PROJECT_ROUTE: Record<string, string> = {
   "goldman-sachs-platform-engineering": "/work/goldman-sachs-platform-engineering",
+  "runreviq": "/work/runreviq",
+  "job-intake-service": "/work/job-intake-service",
   // The 2026 Goldman Sachs work now lives in the combined case study above.
   "java-application-service-engineering": "/work/goldman-sachs-platform-engineering",
   "aws-microservices-cdk-ecs": "/work/goldman-sachs-platform-engineering",

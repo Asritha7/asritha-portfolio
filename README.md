@@ -82,6 +82,9 @@ The site is deployed to Cloudflare Workers via the [Lovable](https://lovable.dev
 
 ### Repository workflow
 
+For a detailed safe update and publish sequence, including private-source first, separate public-showcase sync, route/SEO validation and the manual Lovable publish step, see [Lovable–GitHub coordination](docs/lovable-github-sync.md).
+
+
 - **Public showcase:** [asritha-portfolio](https://github.com/Asritha7/asritha-portfolio), with curated historical milestones and focused maintenance commits.
 - **Private editing source:** `Asritha7/asritha-nibhanupudi-portfolio`, connected to Lovable.
 - Make website edits in Lovable or the private source, validate them, and copy the reviewed file changes into the public repository as ordinary commits. The repositories have separate histories: do not merge their branches or force-push either history.

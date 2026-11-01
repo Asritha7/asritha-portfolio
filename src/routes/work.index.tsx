@@ -8,6 +8,7 @@ import { HistoryBackLink } from "@/components/HistoryBackLink";
 import {
   VISIBLE_PROJECTS,
   CASE_STUDIES,
+  INDEPENDENT_PROJECTS,
   ADDITIONAL_PROJECTS,
   RESEARCH_SLUG,
   PROJECT_CATEGORIES,
@@ -62,6 +63,7 @@ export const Route = createFileRoute("/work/")({
 
 const GROUPS = [
   { label: "Featured Professional Work", slugs: CASE_STUDIES.map((p) => p.slug) },
+  { label: "Independent Engineering Projects", slugs: INDEPENDENT_PROJECTS.map((p) => p.slug) },
   { label: "Earlier Professional Work", slugs: ADDITIONAL_PROJECTS.map((p) => p.slug) },
   { label: "Research", slugs: [RESEARCH_SLUG] },
 ];
