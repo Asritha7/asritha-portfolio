@@ -1,9 +1,10 @@
 name: Published portfolio smoke check
 on:
   pull_request:
-    paths:
-      - 'scripts/check_live_site.py'
-      - '.github/workflows/live-site-smoke.yml'
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 5 * * 1'
   workflow_dispatch:
 
 permissions:
