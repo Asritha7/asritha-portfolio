@@ -14,5 +14,6 @@ jobs:
         with:
           bun-version: '1.4.2'
       - run: bun install --frozen-lockfile
-      - run: bunx tsc --noEmit
+      # TanStack generates routeTree.gen.ts during build; then type-check new routes.
       - run: bun run build
+      - run: bunx tsc --noEmit
