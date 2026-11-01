@@ -12,6 +12,7 @@ export const Route = createFileRoute("/notes/kafka-strimzi-upgrade-checklist")({
     const desc = n?.summary ?? "Engineering note.";
     return {
       meta: [
+        { name: "twitter:card", content: "summary" },
         { title },
         { name: "description", content: desc },
         { property: "og:type", content: "article" },
