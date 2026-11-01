@@ -8,6 +8,7 @@ const url = "https://asritha.dev/work/keycloak-identity-flow";
 export const Route = createFileRoute("/work/keycloak-identity-flow")({
   head: () => ({
     meta: [
+      { name: "twitter:card", content: "summary" },
       { title: `${study.title} - Asritha Nibhanupudi` },
       { name: "description", content: study.shortDescription },
       { property: "og:type", content: "article" },
