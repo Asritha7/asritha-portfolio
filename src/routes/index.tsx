@@ -7,6 +7,7 @@ import {
   LINKS,
   HERO,
   CASE_STUDIES,
+  INDEPENDENT_PROJECTS,
   ADDITIONAL_PROJECTS,
   PROJECT_ROUTE,
   projectCtaLabel,
@@ -20,7 +21,6 @@ import {
 } from "@/content/portfolio";
 import { track } from "@/lib/analytics";
 import { ProjectCover, coverVariantForSlug } from "@/components/ProjectCover";
-
 
 const portrait = "/portrait.jpg";
 const resume = resumeAsset.url;
@@ -36,6 +36,7 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
+      { property: "og:type", content: "website" },
       { property: "og:url", content: URL },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
@@ -63,8 +64,6 @@ const nav = [
   { id: "hiring", label: "Hiring managers", route: "/hiring-managers" as const },
   { id: "contact", label: "Contact" },
 ];
-
-
 
 type ThemeMode = "light" | "amber" | "dark";
 const THEME_ORDER: ThemeMode[] = ["light", "amber", "dark"];
@@ -124,7 +123,9 @@ function useReveal() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      document.querySelectorAll<HTMLElement>(".reveal").forEach((el) => el.classList.add("reveal-in"));
+      document
+        .querySelectorAll<HTMLElement>(".reveal")
+        .forEach((el) => el.classList.add("reveal-in"));
       return;
     }
     const els = document.querySelectorAll<HTMLElement>(".reveal");
@@ -143,7 +144,6 @@ function useReveal() {
     return () => io.disconnect();
   }, []);
 }
-
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState<string>(() => {
@@ -232,7 +232,10 @@ function Portfolio() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
   const nearBottom = useNearBottom();
-  const sectionIds = useMemo(() => nav.filter((n) => !("route" in n && n.route)).map((n) => n.id), []);
+  const sectionIds = useMemo(
+    () => nav.filter((n) => !("route" in n && n.route)).map((n) => n.id),
+    [],
+  );
   const activeSection = useActiveSection(sectionIds);
 
   useEffect(() => {
@@ -297,28 +300,44 @@ function Portfolio() {
 
   return (
     <div className="min-h-screen overflow-x-clip bg-background text-foreground">
-
       {/* skip link */}
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-[3px] focus:bg-terra focus:px-3 focus:py-2 focus:text-panel">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-[3px] focus:bg-terra focus:px-3 focus:py-2 focus:text-primary-foreground"
+      >
         Skip to content
       </a>
 
       <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-[46px]">
-          <a href="#top" onClick={(e) => { e.preventDefault(); scrollToSection("top"); }} className="mono-label !font-bold !text-text-primary !text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra rounded-[3px]">
+          <a
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("top");
+            }}
+            className="mono-label !font-bold !text-text-primary !text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra rounded-[3px]"
+          >
             {SITE.name}
           </a>
           <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
             {nav.map((n) =>
               "route" in n && n.route ? (
-                <Link key={n.id} to={n.route} className="mono-label transition-colors hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra">
+                <Link
+                  key={n.id}
+                  to={n.route}
+                  className="mono-label transition-colors hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra"
+                >
                   {n.label}
                 </Link>
               ) : (
                 <a
                   key={n.id}
                   href={`#${n.id}`}
-                  onClick={(e) => { e.preventDefault(); scrollToSection(n.id); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(n.id);
+                  }}
                   aria-current={activeSection === n.id ? "true" : undefined}
                   data-active={activeSection === n.id ? "true" : undefined}
                   className="mono-label transition-colors hover:!text-terra focus-visible:!text-terra rounded-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-terra data-[active=true]:!text-terra data-[active=true]:underline data-[active=true]:underline-offset-[6px] data-[active=true]:decoration-2"
@@ -328,7 +347,6 @@ function Portfolio() {
               ),
             )}
 
-
             <button
               type="button"
               onClick={cycleTheme}
@@ -336,18 +354,30 @@ function Portfolio() {
               aria-label={`Theme: ${theme}. Click to switch to ${THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length]}.`}
               title={`Theme: ${theme}`}
             >
-              {theme === "light" ? <Sun size={18} /> : theme === "amber" ? <Sunset size={18} /> : <Moon size={18} />}
+              {theme === "light" ? (
+                <Sun size={18} />
+              ) : theme === "amber" ? (
+                <Sunset size={18} />
+              ) : (
+                <Moon size={18} />
+              )}
             </button>
           </nav>
           <div className="flex items-center gap-2 md:hidden">
             <button
               type="button"
               onClick={cycleTheme}
-                className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary transition-colors hover:text-terra hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+              className="flex h-9 w-9 items-center justify-center rounded-[3px] border border-hairline bg-panel text-text-primary transition-colors hover:text-terra hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
               aria-label={`Theme: ${theme}. Click to switch to ${THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length]}.`}
               title={`Theme: ${theme}`}
             >
-              {theme === "light" ? <Sun size={18} /> : theme === "amber" ? <Sunset size={18} /> : <Moon size={18} />}
+              {theme === "light" ? (
+                <Sun size={18} />
+              ) : theme === "amber" ? (
+                <Sunset size={18} />
+              ) : (
+                <Moon size={18} />
+              )}
             </button>
             <button
               ref={menuButtonRef}
@@ -384,14 +414,23 @@ function Portfolio() {
             <div className="grid grid-cols-2 gap-3">
               {nav.map((n) =>
                 "route" in n && n.route ? (
-                  <Link key={n.id} to={n.route} onClick={() => setMenuOpen(false)} className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 hover:!text-terra hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+                  <Link
+                    key={n.id}
+                    to={n.route}
+                    onClick={() => setMenuOpen(false)}
+                    className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 hover:!text-terra hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                  >
                     {n.label}
                   </Link>
                 ) : (
                   <a
                     key={n.id}
                     href={`#${n.id}`}
-                    onClick={(e) => { e.preventDefault(); setMenuOpen(false); window.setTimeout(() => scrollToSection(n.id), 10); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMenuOpen(false);
+                      window.setTimeout(() => scrollToSection(n.id), 10);
+                    }}
                     aria-current={activeSection === n.id ? "true" : undefined}
                     data-active={activeSection === n.id ? "true" : undefined}
                     className="mono-label rounded-[3px] border border-hairline bg-panel px-3 py-2 hover:!text-terra hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra data-[active=true]:!text-terra data-[active=true]:border-terra"
@@ -399,10 +438,8 @@ function Portfolio() {
                     {n.label}
                   </a>
                 ),
-
               )}
             </div>
-
           </nav>
         ) : null}
       </header>
@@ -411,18 +448,32 @@ function Portfolio() {
         <a id="top" />
 
         {/* Hero */}
-        <section aria-labelledby="hero-heading" className="grid grid-cols-1 items-center gap-12 pt-16 pb-20 md:grid-cols-[1fr_360px] md:gap-16 md:pt-24 md:pb-28">
+        <section
+          aria-labelledby="hero-heading"
+          className="grid grid-cols-1 items-center gap-12 pt-16 pb-20 md:grid-cols-[1fr_360px] md:gap-16 md:pt-24 md:pb-28"
+        >
           <div className="reveal">
             <p className="mono-label">{HERO.eyebrow}</p>
             <h1 id="hero-heading" className="font-serif-display mt-6 text-[clamp(36px,6.4vw,68px)]">
-              {HERO.headline}{" "}<em className="italic" style={{ color: "var(--accent-terra)" }}>{HERO.headlineAccent}</em>
+              {HERO.headline}{" "}
+              <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                {HERO.headlineAccent}
+              </em>
             </h1>
             <p className="mt-8 max-w-[58ch] text-[19px] text-text-secondary">{HERO.description}</p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <Link to="/work" className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+              <Link
+                to="/work"
+                className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-primary-foreground transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+              >
                 View my work →
               </Link>
-              <a href={resume} download onClick={() => track("resume_downloaded")} className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+              <a
+                href={resume}
+                download
+                onClick={() => track("resume_downloaded")}
+                className="rounded-[3px] border border-hairline bg-panel px-5 py-3 text-[15px] font-medium transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+              >
                 Download résumé
               </a>
             </div>
@@ -455,7 +506,6 @@ function Portfolio() {
                 </li>
               ))}
             </ul>
-
           </div>
           <aside className="reveal">
             <div className="mx-auto w-full max-w-[360px] overflow-hidden rounded-[3px] border border-hairline bg-warm-fill md:max-w-[300px]">
@@ -475,10 +525,26 @@ function Portfolio() {
         {/* Tech marquee - visual only; screen readers get the single semantic list below */}
         {(() => {
           const MARQUEE = [
-            "Java", "TypeScript", "Python", "REST APIs", "PostgreSQL",
-            "AWS", "CDK", "ECS Fargate", "Lambda", "Kubernetes", "Docker",
-            "Kafka / MSK", "EventBridge", "SQS", "Debezium",
-            "GitLab CI/CD", "Prometheus", "Grafana", "CloudWatch", "SLOs",
+            "Java",
+            "TypeScript",
+            "Python",
+            "REST APIs",
+            "PostgreSQL",
+            "AWS",
+            "CDK",
+            "ECS Fargate",
+            "Lambda",
+            "Kubernetes",
+            "Docker",
+            "Kafka / MSK",
+            "EventBridge",
+            "SQS",
+            "Debezium",
+            "GitLab CI/CD",
+            "Prometheus",
+            "Grafana",
+            "CloudWatch",
+            "SLOs",
           ];
           return (
             <>
@@ -511,19 +577,27 @@ function Portfolio() {
           );
         })()}
 
-
         {/* Featured Engineering Work */}
-        <section id="work" aria-labelledby="work-heading" className="border-t border-hairline py-20">
+        <section
+          id="work"
+          aria-labelledby="work-heading"
+          className="border-t border-hairline py-20"
+        >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
               <span className="mono-label">01 - Featured Engineering Work</span>
               <h2 id="work-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Featured Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
+                Featured Engineering{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  Work
+                </em>
+                .
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Current work across Java services, AWS cloud infrastructure, event-driven systems, reliability, and observability - with clear context on what I personally contributed.
+                Current work across Java services, AWS cloud infrastructure, event-driven systems,
+                reliability, and observability - with clear context on what I personally
+                contributed.
               </p>
-
             </div>
             <ul className="reveal grid grid-cols-1 gap-5">
               {CASE_STUDIES.map((c, i) => {
@@ -546,17 +620,25 @@ function Portfolio() {
                         />
                         <div className="p-6 md:p-7 flex-1">
                           <div className="flex items-baseline justify-between gap-4">
-                            <span className="mono-label">0{i + 1} · {c.projectType} · {c.year}</span>
+                            <span className="mono-label">
+                              0{i + 1} · {c.projectType} · {c.year}
+                            </span>
                           </div>
-                          <h3 className="font-serif-display mt-3 text-[22px] md:text-[24px]">{c.title}</h3>
+                          <h3 className="font-serif-display mt-3 text-[22px] md:text-[24px]">
+                            {c.title}
+                          </h3>
                           {result ? (
-                            <p className="mt-3 text-[16px] font-medium text-text-primary">{result}</p>
+                            <p className="mt-3 text-[16px] font-medium text-text-primary">
+                              {result}
+                            </p>
                           ) : null}
                           <p className="mt-2 text-[15px] text-text-secondary">{contribution}</p>
                           {tags.length ? (
                             <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
                               {tags.map((t) => (
-                                <li key={t} className="!text-[11px]">· {t}</li>
+                                <li key={t} className="!text-[11px]">
+                                  · {t}
+                                </li>
                               ))}
                             </ul>
                           ) : null}
@@ -594,11 +676,19 @@ function Portfolio() {
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
               <div className="reveal">
                 <span className="mono-label">01b - Earlier Professional Work</span>
-                <h2 id="additional-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                  Earlier Professional <em className="italic" style={{ color: "var(--accent-terra)" }}>Work</em>.
+                <h2
+                  id="additional-heading"
+                  className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
+                >
+                  Earlier Professional{" "}
+                  <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                    Work
+                  </em>
+                  .
                 </h2>
                 <p className="mt-3 text-[15px] text-text-secondary">
-                  Earlier automation, identity, and platform work that supports my current profile. Each links to a write-up.
+                  Earlier automation, identity, and platform work that supports my current profile.
+                  Each links to a write-up.
                 </p>
               </div>
               <ul className="reveal grid grid-cols-1 gap-4">
@@ -621,7 +711,9 @@ function Portfolio() {
                             <span className="mono-label">{c.projectType.toUpperCase()}</span>
                             <span className="mono-label">{c.year}</span>
                           </div>
-                          <h3 className="font-serif-display mt-2 text-[19px] md:text-[20px]">{c.title}</h3>
+                          <h3 className="font-serif-display mt-2 text-[19px] md:text-[20px]">
+                            {c.title}
+                          </h3>
                           <p className="mt-2 text-[14.5px] text-text-secondary">
                             {firstSentence(c.problem) || c.shortDescription}
                           </p>
@@ -639,12 +731,20 @@ function Portfolio() {
         ) : null}
 
         {/* Experience */}
-        <section id="experience" aria-labelledby="exp-heading" className="border-t border-hairline py-20">
+        <section
+          id="experience"
+          aria-labelledby="exp-heading"
+          className="border-t border-hairline py-20"
+        >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
               <span className="mono-label">02 - Experience</span>
               <h2 id="exp-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Professional <em className="italic" style={{ color: "var(--accent-terra)" }}>timeline</em>.
+                Professional{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  timeline
+                </em>
+                .
               </h2>
               <p className="mt-3 text-[14px] text-text-secondary">
                 Shortened for scanning. Full details on the résumé.
@@ -652,9 +752,17 @@ function Portfolio() {
             </div>
             <ol className="relative">
               {EXPERIENCE.map((e, i) => (
-                <li key={i} className="reveal relative border-l border-hairline pb-12 pl-8 last:pb-0">
-                  <span className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full" style={{ background: "var(--accent-terra)" }} />
-                  <p className="mono-label">{e.date} · {e.place}</p>
+                <li
+                  key={i}
+                  className="reveal relative border-l border-hairline pb-12 pl-8 last:pb-0"
+                >
+                  <span
+                    className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full"
+                    style={{ background: "var(--accent-terra)" }}
+                  />
+                  <p className="mono-label">
+                    {e.date} · {e.place}
+                  </p>
                   <h3 className="font-serif-display mt-2 text-[22px] md:text-[24px]">
                     {e.role} <span className="text-text-secondary"> - {e.org}</span>
                   </h3>
@@ -662,7 +770,10 @@ function Portfolio() {
                   <ul className="mt-4 space-y-2 text-[16px] text-text-secondary">
                     {e.contributions.slice(0, 2).map((c, j) => (
                       <li key={j} className="flex gap-3">
-                        <span className="mt-2.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--accent-terra)" }} />
+                        <span
+                          className="mt-2.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ background: "var(--accent-terra)" }}
+                        />
                         <span>{c}</span>
                       </li>
                     ))}
@@ -670,7 +781,9 @@ function Portfolio() {
                   {e.stack ? (
                     <ul className="mono-label mt-4 flex flex-wrap gap-x-3 gap-y-2">
                       {e.stack.slice(0, 4).map((s) => (
-                        <li key={s} className="!text-[11px]">· {s}</li>
+                        <li key={s} className="!text-[11px]">
+                          · {s}
+                        </li>
                       ))}
                     </ul>
                   ) : null}
@@ -693,19 +806,32 @@ function Portfolio() {
           </div>
         </section>
 
-
         {/* Principles */}
-        <section id="principles" aria-labelledby="principles-heading" className="border-t border-hairline py-20">
+        <section
+          id="principles"
+          aria-labelledby="principles-heading"
+          className="border-t border-hairline py-20"
+        >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
               <span className="mono-label">03 - Principles</span>
-              <h2 id="principles-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                How I <em className="italic" style={{ color: "var(--accent-terra)" }}>think</em>.
+              <h2
+                id="principles-heading"
+                className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
+              >
+                How I{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  think
+                </em>
+                .
               </h2>
             </div>
             <ul className="reveal grid grid-cols-1 gap-5 md:grid-cols-2">
               {PRINCIPLES.map((p) => (
-                <li key={p.title} className="rounded-[3px] border border-hairline bg-panel p-5 md:p-6">
+                <li
+                  key={p.title}
+                  className="rounded-[3px] border border-hairline bg-panel p-5 md:p-6"
+                >
                   <h3 className="font-serif-display text-[18px]">{p.title}</h3>
                   <p className="mt-2 text-[15.5px] text-text-secondary">{p.body}</p>
                 </li>
@@ -715,12 +841,20 @@ function Portfolio() {
         </section>
 
         {/* Capabilities */}
-        <section id="capabilities" aria-labelledby="cap-heading" className="border-t border-hairline py-20">
+        <section
+          id="capabilities"
+          aria-labelledby="cap-heading"
+          className="border-t border-hairline py-20"
+        >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
               <span className="mono-label">04 - Capabilities</span>
               <h2 id="cap-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Technical <em className="italic" style={{ color: "var(--accent-terra)" }}>capabilities</em>.
+                Technical{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  capabilities
+                </em>
+                .
               </h2>
             </div>
             <div className="reveal space-y-8">
@@ -729,7 +863,10 @@ function Portfolio() {
                   <p className="mono-label pt-1">{g.label}</p>
                   <ul className="flex flex-wrap gap-2">
                     {g.items.map((t) => (
-                      <li key={t} className="inline-flex items-center rounded-[3px] border border-hairline bg-panel px-3 py-1.5 text-[14px] leading-none text-text-primary">
+                      <li
+                        key={t}
+                        className="inline-flex items-center rounded-[3px] border border-hairline bg-panel px-3 py-1.5 text-[14px] leading-none text-text-primary"
+                      >
                         {t}
                       </li>
                     ))}
@@ -740,17 +877,28 @@ function Portfolio() {
           </div>
         </section>
 
-
         {/* Public Projects - real GitHub repos only */}
-        <section id="public-work" aria-labelledby="public-heading" className="border-t border-hairline py-20">
+        <section
+          id="public-work"
+          aria-labelledby="public-heading"
+          className="border-t border-hairline py-20"
+        >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
               <span className="mono-label">05 - Public engineering projects</span>
-              <h2 id="public-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Public Engineering <em className="italic" style={{ color: "var(--accent-terra)" }}>Projects</em>.
+              <h2
+                id="public-heading"
+                className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
+              >
+                Public Engineering{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  Projects
+                </em>
+                .
               </h2>
               <p className="mt-3 text-[15px] text-text-secondary">
-                Independent Java, distributed-systems and evidence-retrieval projects, alongside earlier learning work.
+                Independent Java, distributed-systems and evidence-retrieval projects, alongside
+                earlier learning work.
               </p>
               <a
                 href={LINKS.github}
@@ -769,28 +917,49 @@ function Portfolio() {
                   className="overflow-hidden rounded-[3px] border border-hairline bg-panel"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr]">
-                  <ProjectCover variant="public" ratio="3/2" rounded={false} className="border-0 sm:border-r sm:border-hairline" />
-                  <div className="p-5 md:p-6">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <h3 className="font-serif-display text-[18px] md:text-[20px]">{r.name}</h3>
-                    <span className="mono-label !text-[11px]">{r.type}</span>
-                  </div>
-                  <p className="mt-2 text-[15px] text-text-secondary">{r.description}</p>
-                  <ul className="mono-label mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
-                    {r.tech.map((t) => (
-                      <li key={t} className="!text-[11px]">· {t}</li>
-                    ))}
-                  </ul>
-                  <a
-                    href={r.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => track("github_opened", { repo: r.name })}
-                    className="mono-label mt-4 inline-flex items-center gap-1 hover:!text-terra"
-                  >
-                    View repository ↗
-                  </a>
-                  </div>
+                    <ProjectCover
+                      variant="public"
+                      ratio="3/2"
+                      rounded={false}
+                      className="border-0 sm:border-r sm:border-hairline"
+                    />
+                    <div className="p-5 md:p-6">
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 className="font-serif-display text-[18px] md:text-[20px]">{r.name}</h3>
+                        <span className="mono-label !text-[11px]">{r.type}</span>
+                      </div>
+                      <p className="mt-2 text-[15px] text-text-secondary">{r.description}</p>
+                      <ul className="mono-label mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
+                        {r.tech.map((t) => (
+                          <li key={t} className="!text-[11px]">
+                            · {t}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
+                        {INDEPENDENT_PROJECTS.filter((project) =>
+                          r.href.endsWith(`/${project.slug}`),
+                        ).map((project) => (
+                          <Link
+                            key={project.slug}
+                            to={PROJECT_ROUTE[project.slug]}
+                            onClick={() => track("case_study_opened", { slug: project.slug })}
+                            className="mono-label inline-flex items-center gap-1 hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+                          >
+                            Read case study →
+                          </Link>
+                        ))}
+                        <a
+                          href={r.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => track("github_opened", { repo: r.name })}
+                          className="mono-label inline-flex items-center gap-1 hover:!text-terra"
+                        >
+                          View repository ↗
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </li>
               ))}
@@ -798,20 +967,30 @@ function Portfolio() {
           </div>
         </section>
 
-
         {/* Research */}
         <section aria-labelledby="research-heading" className="border-t border-hairline py-20">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
             <div className="reveal">
               <span className="mono-label">06 - Research</span>
-              <h2 id="research-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                Published <em className="italic" style={{ color: "var(--accent-terra)" }}>research</em>.
+              <h2
+                id="research-heading"
+                className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
+              >
+                Published{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  research
+                </em>
+                .
               </h2>
             </div>
             <div className="reveal space-y-4">
               <div className="rounded-[3px] border border-hairline bg-panel p-6 md:p-7">
-                <p className="mono-label">{RESEARCH.venue} · {RESEARCH.note}</p>
-                <h3 className="font-serif-display mt-3 text-[22px] leading-snug">{RESEARCH.title}</h3>
+                <p className="mono-label">
+                  {RESEARCH.venue} · {RESEARCH.note}
+                </p>
+                <h3 className="font-serif-display mt-3 text-[22px] leading-snug">
+                  {RESEARCH.title}
+                </h3>
                 <p className="mt-3 text-[15px] text-text-secondary">{RESEARCH.summary}</p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Link
@@ -833,51 +1012,79 @@ function Portfolio() {
                 </div>
               </div>
             </div>
-
           </div>
         </section>
 
         {TESTIMONIALS.length > 0 ? (
-          <section aria-labelledby="testimonials-heading" className="border-t border-hairline py-20">
+          <section
+            aria-labelledby="testimonials-heading"
+            className="border-t border-hairline py-20"
+          >
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[220px_1fr] md:gap-16">
               <div className="reveal">
                 <span className="mono-label">07 - Words</span>
-                <h2 id="testimonials-heading" className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]">
-                  What people have <em className="italic" style={{ color: "var(--accent-terra)" }}>said</em>.
+                <h2
+                  id="testimonials-heading"
+                  className="font-serif-display mt-4 text-[clamp(26px,3vw,32px)]"
+                >
+                  What people have{" "}
+                  <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                    said
+                  </em>
+                  .
                 </h2>
               </div>
               <ul className="reveal grid grid-cols-1 gap-4">
                 {TESTIMONIALS.filter((t) => t.permissionConfirmed).map((t, i) => (
                   <li key={i} className="rounded-[3px] border border-hairline bg-panel p-6">
                     <p className="font-serif-display text-[18px] leading-snug">"{t.quote}"</p>
-                    <p className="mono-label mt-4">{t.name} · {t.relationship}</p>
+                    <p className="mono-label mt-4">
+                      {t.name} · {t.relationship}
+                    </p>
                   </li>
                 ))}
               </ul>
             </div>
           </section>
         ) : null}
-
-
       </main>
 
       {/* Contact + footer */}
       <div className="bg-dark-background text-dark-foreground">
-        <section id="contact" aria-labelledby="contact-heading" className="mx-auto max-w-[1280px] px-6 py-24 md:px-[46px] md:py-28">
+        <section
+          id="contact"
+          aria-labelledby="contact-heading"
+          className="mx-auto max-w-[1280px] px-6 py-24 md:px-[46px] md:py-28"
+        >
           <div className="reveal grid grid-cols-1 gap-14 md:grid-cols-[1fr_1fr] md:gap-20">
             <div>
               <span className="mono-label !text-dark-foreground/60">07 - Contact</span>
-              <h2 id="contact-heading" className="font-serif-display mt-6 text-[clamp(38px,5.6vw,60px)]">
-                Let's talk about <em className="italic" style={{ color: "var(--accent-terra)" }}>software</em>.
+              <h2
+                id="contact-heading"
+                className="font-serif-display mt-6 text-[clamp(38px,5.6vw,60px)]"
+              >
+                Let's talk about{" "}
+                <em className="italic" style={{ color: "var(--accent-terra)" }}>
+                  software
+                </em>
+                .
               </h2>
               <p className="mt-6 max-w-[42ch] text-[17px] text-dark-foreground/70">
-                Open to engineering conversations, collaborations, and interesting software problems. Reach out about a project, a role, or anything you're building.
+                Open to engineering conversations, collaborations, and interesting software
+                problems. Reach out about a project, a role, or anything you're building.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <a href={LINKS.email} className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
+                <a
+                  href={LINKS.email}
+                  className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10"
+                >
                   Email directly
                 </a>
-                <a href={resume} download className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10">
+                <a
+                  href={resume}
+                  download
+                  className="rounded-[3px] border border-dark-foreground/30 px-4 py-2.5 text-[14px] font-medium text-dark-foreground transition-colors hover:bg-dark-foreground/10"
+                >
                   Résumé
                 </a>
               </div>
@@ -888,7 +1095,9 @@ function Portfolio() {
 
         <footer className="border-t border-dark-foreground/10">
           <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4 px-6 pt-8 pb-24 sm:py-8 md:px-[46px]">
-            <p className="mono-label !text-dark-foreground/60">© 2026 {SITE.name.toUpperCase()} · {SITE.location.toUpperCase()}</p>
+            <p className="mono-label !text-dark-foreground/60">
+              © 2026 {SITE.name.toUpperCase()} · {SITE.location.toUpperCase()}
+            </p>
             <ul className="flex flex-wrap gap-x-7 gap-y-2">
               {[
                 { href: LINKS.github, label: "GitHub" },
@@ -897,7 +1106,12 @@ function Portfolio() {
                 { href: LINKS.research, label: "Research" },
               ].map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} target={l.href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer" className="mono-label inline-flex items-center gap-1 !text-dark-foreground/70 transition-colors hover:!text-dark-foreground">
+                  <a
+                    href={l.href}
+                    target={l.href.startsWith("mailto") ? undefined : "_blank"}
+                    rel="noopener noreferrer"
+                    className="mono-label inline-flex items-center gap-1 !text-dark-foreground/70 transition-colors hover:!text-dark-foreground"
+                  >
                     {l.label} ↗
                   </a>
                 </li>
@@ -933,6 +1147,8 @@ function ContactForm() {
   const [message, setMessage] = useState("");
   const [website, setWebsite] = useState(""); // honeypot
   const [state, setState] = useState<FormState>("idle");
+  const submitting = useRef(false);
+  const [formError, setFormError] = useState("");
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
 
   const validate = () => {
@@ -947,13 +1163,20 @@ function ContactForm() {
     if (!m) next.message = "Please enter a message.";
     else if (m.length > 2000) next.message = "Message is too long.";
     setErrors(next);
+    const firstInvalid = Object.keys(next)[0];
+    if (firstInvalid)
+      document
+        .getElementById(firstInvalid === "message" ? "cf-msg" : `cf-${firstInvalid}`)
+        ?.focus();
     return Object.keys(next).length === 0;
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (website) return; // honeypot tripped - silently drop
+    if (submitting.current || website) return; // silently drop spam and duplicate submissions
     if (!validate()) return;
+    submitting.current = true;
+    setFormError("");
     setState("submitting");
     try {
       const res = await fetch("/api/public/contact", {
@@ -966,22 +1189,33 @@ function ContactForm() {
           website,
         }),
       });
-      if (!res.ok) throw new Error("send failed");
+      if (!res.ok) {
+        if (res.status === 400 || res.status === 413 || res.status === 415) {
+          setFormError("Please check your name, email, and message, then try again.");
+        }
+        throw new Error("send failed");
+      }
       setState("success");
       setName("");
       setEmail("");
       setMessage("");
     } catch {
       setState("error");
+    } finally {
+      submitting.current = false;
     }
   };
-
 
   const fieldClass =
     "w-full rounded-[3px] border border-dark-foreground/25 bg-dark-foreground/[0.04] px-4 py-3 text-[15px] text-dark-foreground placeholder:text-dark-foreground/40 outline-none transition-colors focus:border-[var(--accent-terra)] focus:bg-dark-foreground/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-terra)]";
 
   return (
-    <form onSubmit={onSubmit} noValidate className="rounded-[3px] border border-dark-foreground/15 bg-dark-foreground/[0.03] p-6 md:p-8">
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      aria-busy={state === "submitting"}
+      className="rounded-[3px] border border-dark-foreground/15 bg-dark-foreground/[0.03] p-6 md:p-8"
+    >
       <p className="mono-label !text-dark-foreground/60">Send a message</p>
 
       {/* honeypot - removed from sight, keyboard tab order, and the accessibility tree */}
@@ -1001,7 +1235,9 @@ function ContactForm() {
 
       <div className="mt-6 space-y-4">
         <div>
-          <label htmlFor="cf-name" className="mono-label !text-dark-foreground/60 !text-[11px]">Name</label>
+          <label htmlFor="cf-name" className="mono-label !text-dark-foreground/60 !text-[11px]">
+            Name
+          </label>
           <input
             id="cf-name"
             required
@@ -1013,10 +1249,16 @@ function ContactForm() {
             className={`${fieldClass} mt-2`}
             placeholder="Your name"
           />
-          {errors.name ? <p id="cf-name-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">{errors.name}</p> : null}
+          {errors.name ? (
+            <p id="cf-name-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">
+              {errors.name}
+            </p>
+          ) : null}
         </div>
         <div>
-          <label htmlFor="cf-email" className="mono-label !text-dark-foreground/60 !text-[11px]">Email</label>
+          <label htmlFor="cf-email" className="mono-label !text-dark-foreground/60 !text-[11px]">
+            Email
+          </label>
           <input
             id="cf-email"
             type="email"
@@ -1029,10 +1271,16 @@ function ContactForm() {
             className={`${fieldClass} mt-2`}
             placeholder="you@domain.com"
           />
-          {errors.email ? <p id="cf-email-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">{errors.email}</p> : null}
+          {errors.email ? (
+            <p id="cf-email-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">
+              {errors.email}
+            </p>
+          ) : null}
         </div>
         <div>
-          <label htmlFor="cf-msg" className="mono-label !text-dark-foreground/60 !text-[11px]">Message</label>
+          <label htmlFor="cf-msg" className="mono-label !text-dark-foreground/60 !text-[11px]">
+            Message
+          </label>
           <textarea
             id="cf-msg"
             required
@@ -1045,27 +1293,36 @@ function ContactForm() {
             className={`${fieldClass} mt-2 resize-y`}
             placeholder="What are you working on?"
           />
-          {errors.message ? <p id="cf-msg-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">{errors.message}</p> : null}
+          {errors.message ? (
+            <p id="cf-msg-err" className="mt-1.5 text-[13px] text-[var(--accent-terra)]">
+              {errors.message}
+            </p>
+          ) : null}
         </div>
       </div>
 
       <button
         type="submit"
         disabled={state === "submitting"}
-        className="mt-6 w-full rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-terra)]"
+        className="mt-6 w-full rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-primary-foreground transition-colors hover:bg-terra-dark disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-terra)]"
       >
         {state === "submitting" ? "Sending…" : "Send message →"}
       </button>
 
       {state === "success" ? (
-        <p role="status" className="mono-label mt-4 !text-[var(--accent-terra)]">Thank you! Your message has been sent.</p>
+        <p role="status" className="mono-label mt-4 !text-[var(--accent-terra)]">
+          Thank you! Your message has been sent.
+        </p>
       ) : null}
       {state === "error" ? (
         <p role="alert" className="mono-label mt-4 !text-[var(--accent-terra)]">
-          Something went wrong. Email me directly at <a href={LINKS.email} className="underline">{SITE.email}</a>.
+          {formError || "Something went wrong."} Email me directly at{" "}
+          <a href={LINKS.email} className="underline">
+            {SITE.email}
+          </a>
+          .
         </p>
       ) : null}
     </form>
   );
 }
-
