@@ -8,6 +8,7 @@ const url = "https://asritha.dev/work/kubernetes-cicd-reliability";
 export const Route = createFileRoute("/work/kubernetes-cicd-reliability")({
   head: () => ({
     meta: [
+      { name: "twitter:card", content: "summary" },
       { title: `${study.title} - Asritha Nibhanupudi` },
       { name: "description", content: study.shortDescription },
       { property: "og:type", content: "article" },

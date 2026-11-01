@@ -25,14 +25,10 @@ export const HERO = {
   secondaryCta: { label: "Download résumé", href: "" }, // wired in component
 };
 
-
 export const CONFIDENTIALITY_NOTICE =
   "This case study is a sanitized explanation of my contribution. Internal names, architecture details, and business information have been omitted or generalized.";
 
-export type ProjectType =
-  | "Professional Work"
-  | "Engineering Implementation"
-  | "Published Research";
+export type ProjectType = "Professional Work" | "Engineering Implementation" | "Published Research";
 
 export type ProjectCategory =
   | "Backend"
@@ -45,12 +41,12 @@ export type ProjectCategory =
   | "Research";
 
 export type OwnershipBreakdown = {
-  team?: string[];          // wider system context / what the wider team or system did
-  implemented?: string[];   // components I personally implemented
+  team?: string[]; // wider system context / what the wider team or system did
+  implemented?: string[]; // components I personally implemented
   contributedTo?: string[]; // what I contributed to
-  integrated?: string[];    // components I integrated
-  investigated?: string[];  // what I investigated
-  validated?: string[];     // components I validated
+  integrated?: string[]; // components I integrated
+  investigated?: string[]; // what I investigated
+  validated?: string[]; // components I validated
 };
 
 // Private - never rendered. Used to track claim provenance internally.
@@ -102,22 +98,22 @@ export type Project = {
   summaryRole?: string;
   summaryResult?: string;
   constraints?: string[];
-  approach?: string[];          // "Technical approach"
+  approach?: string[]; // "Technical approach"
   decision?: { decision: string; why: string; tradeoff: string };
   alternatives?: string[];
-  edgeCases?: string[];         // failure cases or edge cases
+  edgeCases?: string[]; // failure cases or edge cases
   technologies?: string[];
   challenges?: string[];
-  outcome?: string;             // qualitative when no verified metric
+  outcome?: string; // qualitative when no verified metric
   beforeState?: string;
   afterState?: string;
   verifiedMetrics?: VerifiedMetric[];
-  confirmedMetrics?: string[];  // legacy
+  confirmedMetrics?: string[]; // legacy
   engineeringMoment?: EngineeringMoment;
-  learned?: string;             // "What I learned"
-  wouldImprove?: string;        // "What I would improve"
+  learned?: string; // "What I learned"
+  wouldImprove?: string; // "What I would improve"
   ownership?: OwnershipBreakdown;
-  lessons?: string[];           // short bullet lessons (legacy)
+  lessons?: string[]; // short bullet lessons (legacy)
 
   // links
   publicationUrl?: string;
@@ -151,9 +147,12 @@ export const PROJECTS: Project[] = [
     cardResult:
       "Changes move through GitLab merge-request review with build and integration checks before deployment.",
     ownershipWording: "Contributed to",
-    summaryProblem: "Service changes had to land safely in a platform with many integration points.",
-    summaryRole: "Developing Java application, configuration, and integration changes within a defined service scope.",
-    summaryResult: "Changes ship through reviewed merge requests with build and integration validation.",
+    summaryProblem:
+      "Service changes had to land safely in a platform with many integration points.",
+    summaryRole:
+      "Developing Java application, configuration, and integration changes within a defined service scope.",
+    summaryResult:
+      "Changes ship through reviewed merge requests with build and integration validation.",
     scopeNote:
       "This case study covers my contribution to defined services rather than ownership of the wider platform.",
     professionalContext:
@@ -201,13 +200,18 @@ export const PROJECTS: Project[] = [
     wouldImprove:
       "I would push more contract-level checks into the pipeline so a change that breaks a consumer fails in review rather than in a shared environment.",
     ownership: {
-      team: ["The wider platform, its architecture, and its release process are owned by the broader team"],
+      team: [
+        "The wider platform, its architecture, and its release process are owned by the broader team",
+      ],
       implemented: [
         "Java application and configuration changes within my service scope",
         "Build and dependency updates for the services I worked on",
         "Tests covering integration behaviour for those services",
       ],
-      contributedTo: ["Service integration design within my scope", "Merge-request review of related changes"],
+      contributedTo: [
+        "Service integration design within my scope",
+        "Merge-request review of related changes",
+      ],
       investigated: ["Build, dependency, and integration failures on the services I worked on"],
       validated: ["Service behaviour through pipeline builds and integration tests"],
     },
@@ -230,9 +234,12 @@ export const PROJECTS: Project[] = [
     cardResult:
       "Routing, authentication, database access, and event wiring live in version-controlled infrastructure definitions rather than console configuration.",
     ownershipWording: "Contributed to",
-    summaryProblem: "New services needed a repeatable AWS deployment and event-integration pattern.",
-    summaryRole: "Building service infrastructure and event-driven integrations within a defined scope.",
-    summaryResult: "Deployment and event wiring moved into version-controlled infrastructure definitions.",
+    summaryProblem:
+      "New services needed a repeatable AWS deployment and event-integration pattern.",
+    summaryRole:
+      "Building service infrastructure and event-driven integrations within a defined scope.",
+    summaryResult:
+      "Deployment and event wiring moved into version-controlled infrastructure definitions.",
     scopeNote:
       "This case study covers my contribution to a defined service and infrastructure scope rather than ownership of the wider platform.",
     professionalContext:
@@ -298,18 +305,24 @@ export const PROJECTS: Project[] = [
     wouldImprove:
       "I would invest more in a shared construct library so a new service can adopt the platform defaults for networking, routing, and event wiring in a few lines.",
     ownership: {
-      team: ["The wider platform spanning on-prem and multi-region AWS is owned by the broader team"],
+      team: [
+        "The wider platform spanning on-prem and multi-region AWS is owned by the broader team",
+      ],
       implemented: [
         "Service infrastructure-as-code in CDK within my scope",
         "Containerised services on ECS Fargate backed by Aurora PostgreSQL within my scope",
         "Lambda handlers and queue consumers for asynchronous edges within my scope",
       ],
-      contributedTo: ["Conventions for routing and authentication expressed as infrastructure code"],
+      contributedTo: [
+        "Conventions for routing and authentication expressed as infrastructure code",
+      ],
       integrated: [
         "Kafka/MSK topics, Debezium change data capture, EventBridge rules, SQS queues and dead-letter queues, and S3, from the service side",
         "The hybrid API gateway layer spanning on-prem and multi-region AWS, from the service side",
       ],
-      investigated: ["Event replay, duplicate delivery, and Lambda cold-start behaviour within my scope"],
+      investigated: [
+        "Event replay, duplicate delivery, and Lambda cold-start behaviour within my scope",
+      ],
       validated: ["Service and event-flow behaviour through integration tests gated in CI"],
     },
     confidential: true,
@@ -332,7 +345,8 @@ export const PROJECTS: Project[] = [
       "Recovery behaviour is exercised deliberately with AWS FIS rather than discovered during an incident.",
     ownershipWording: "Contributed to",
     summaryProblem: "Recovery behaviour was assumed rather than exercised.",
-    summaryRole: "Contributing to deployment and scaling configuration and running recovery exercises.",
+    summaryRole:
+      "Contributing to deployment and scaling configuration and running recovery exercises.",
     summaryResult: "Failover and rollback paths are rehearsed and their behaviour recorded.",
     scopeNote:
       "This case study covers my contribution to reliability work on defined services rather than ownership of the platform's resilience strategy.",
@@ -415,9 +429,11 @@ export const PROJECTS: Project[] = [
     cardResult:
       "Alerts are tied to service-level objectives, so a page reflects user-visible impact rather than an isolated resource metric.",
     ownershipWording: "Contributed to",
-    summaryProblem: "Alerts fired on resource metrics that did not always mean user-visible impact.",
+    summaryProblem:
+      "Alerts fired on resource metrics that did not always mean user-visible impact.",
     summaryRole: "Building metrics, dashboards, and SLO-based alerting for services in my scope.",
-    summaryResult: "Monitoring reflects service-level objectives and supports faster troubleshooting.",
+    summaryResult:
+      "Monitoring reflects service-level objectives and supports faster troubleshooting.",
     scopeNote:
       "This case study covers monitoring work on defined services rather than ownership of the platform's observability stack.",
     professionalContext:
@@ -494,7 +510,8 @@ export const PROJECTS: Project[] = [
     cardResult:
       "Stack and schema changes were applied without taking services offline, with a rollback position at each stage.",
     ownershipWording: "Implemented and contributed to",
-    summaryProblem: "Stack and schema changes risked downtime or resource replacement on live services.",
+    summaryProblem:
+      "Stack and schema changes risked downtime or resource replacement on live services.",
     summaryRole: "Executed staged infrastructure and schema migrations on running services.",
     summaryResult: "Migrations completed without downtime, with a rollback position at each stage.",
     scopeNote:
@@ -559,7 +576,6 @@ export const PROJECTS: Project[] = [
     tags: ["CloudFormation", "Flyway", "Aurora PostgreSQL", "Zero downtime", "IaC"],
   },
   {
-
     slug: "automation-framework",
     title: "Automation Framework and Release Workflow",
     projectType: "Professional Work",
@@ -652,9 +668,11 @@ export const PROJECTS: Project[] = [
     cardResult:
       "Selected realm and client configuration moved from manual setup to scripted, CI-validated setup.",
     ownershipWording: "Implemented and contributed to",
-    summaryProblem: "Auth failures appeared intermittently as identity-provider config drifted between environments.",
+    summaryProblem:
+      "Auth failures appeared intermittently as identity-provider config drifted between environments.",
     summaryRole: "Scripted realm and client setup and automated flow validation in CI.",
-    summaryResult: "Covered configuration moved from manual per-environment setup to scripted, CI-validated setup.",
+    summaryResult:
+      "Covered configuration moved from manual per-environment setup to scripted, CI-validated setup.",
     professionalContext:
       "Enterprise services using Keycloak as the identity provider across multiple environments. Work focused on automation, configuration consistency, and failure prevention - not on building an independent authentication product.",
     problem:
@@ -700,7 +718,9 @@ export const PROJECTS: Project[] = [
     wouldImprove:
       "I would add an explicit environment-diff report that compares realm and client configuration across environments on every pipeline run, so drift surfaces visually rather than only via failing flows.",
     ownership: {
-      team: ["The identity-provider deployment and operational responsibility sat with the wider team"],
+      team: [
+        "The identity-provider deployment and operational responsibility sat with the wider team",
+      ],
       implemented: [
         "Scripted realm and client setup against the Keycloak Admin REST API",
         "Automated authentication-flow validation using REST APIs and Cypress",
@@ -725,8 +745,10 @@ export const PROJECTS: Project[] = [
       "Contributed to upgrade validation - verified producer and consumer behaviour, Kubernetes deployment changes, pod and service recovery, and message-flow stability across versions.",
     ownershipWording: "Contributed to",
     summaryProblem: "Kafka and Strimzi upgrades risked message-flow and operator-side regressions.",
-    summaryRole: "Contributed to upgrade validation across producer, consumer, and operator behaviour.",
-    summaryResult: "Rehearsals separated operator-side issues from broker issues, supporting safer rollouts.",
+    summaryRole:
+      "Contributed to upgrade validation across producer, consumer, and operator behaviour.",
+    summaryResult:
+      "Rehearsals separated operator-side issues from broker issues, supporting safer rollouts.",
     professionalContext:
       "Apache Kafka deployed via the Strimzi operator on Kubernetes. The wider team owned the Kafka architecture; this work focused on validation of upgrades, not ownership of the platform.",
     problem:
@@ -775,7 +797,9 @@ export const PROJECTS: Project[] = [
     wouldImprove:
       "I would automate the comparison of operator state and broker state before and after the upgrade into a single diff artifact attached to the pipeline run, instead of relying on kubectl inspection by hand.",
     ownership: {
-      team: ["The Kafka and Strimzi architecture and the upgrade itself were owned by the wider team"],
+      team: [
+        "The Kafka and Strimzi architecture and the upgrade itself were owned by the wider team",
+      ],
       contributedTo: [
         "Upgrade validation across versions",
         "Pre- and post-upgrade verification steps in CI/CD",
@@ -804,9 +828,12 @@ export const PROJECTS: Project[] = [
     myContribution:
       "Investigated deployment failures (pod startup, CrashLoopBackOff, configuration mismatches), pipeline-stage failures, and environment-specific issues; contributed deployment workflow improvements.",
     ownershipWording: "Investigated and contributed to",
-    summaryProblem: "Deployments failed intermittently across pod, config, and pipeline-stage causes.",
-    summaryRole: "Investigated failures from cluster events first and contributed workflow improvements.",
-    summaryResult: "Recurring failure modes were triaged consistently and addressed at their actual layer.",
+    summaryProblem:
+      "Deployments failed intermittently across pod, config, and pipeline-stage causes.",
+    summaryRole:
+      "Investigated failures from cluster events first and contributed workflow improvements.",
+    summaryResult:
+      "Recurring failure modes were triaged consistently and addressed at their actual layer.",
     professionalContext:
       "Enterprise services deployed on Kubernetes with GitLab CI pipelines. This work focused on deployment reliability and CI/CD diagnosis, not on owning a broader Kubernetes platform.",
     problem:
@@ -852,7 +879,9 @@ export const PROJECTS: Project[] = [
     wouldImprove:
       "I would automate a small post-failure diagnostic step in the pipeline that collects pod descriptions, recent events, and config map versions into a single artifact so engineers reviewing pipeline failures do not have to recreate that context by hand.",
     ownership: {
-      team: ["The broader Kubernetes platform and pipeline infrastructure was owned by the wider team"],
+      team: [
+        "The broader Kubernetes platform and pipeline infrastructure was owned by the wider team",
+      ],
       contributedTo: ["Deployment workflow improvements based on recurring patterns"],
       investigated: [
         "Pod startup failures and CrashLoopBackOff loops",
@@ -944,7 +973,8 @@ export const INDEPENDENT_PROJECTS: Project[] = [
     decision: {
       decision: "Make authorization and document applicability hard gates before ranking passages.",
       why: "Ranking alone cannot make a forbidden or wrong-version instruction safe.",
-      tradeoff: "Conservative filters can withhold relevant evidence, so relevance evaluation is required alongside access-control checks.",
+      tradeoff:
+        "Conservative filters can withhold relevant evidence, so relevance evaluation is required alongside access-control checks.",
     },
     edgeCases: [
       "Authorized but superseded runbook revisions",
@@ -1003,9 +1033,11 @@ export const INDEPENDENT_PROJECTS: Project[] = [
       "Added explicitly enabled HikariCP pooling, multi-instance correctness tests and backend-failure recovery checks",
     ],
     decision: {
-      decision: "Keep a simple serialized PostgreSQL admission transaction and make connection pooling opt-in.",
+      decision:
+        "Keep a simple serialized PostgreSQL admission transaction and make connection pooling opt-in.",
       why: "Correctness across simultaneous API instances is more important than an unverified throughput improvement.",
-      tradeoff: "A shared lock limits concurrent submissions and each API replica needs its own database-connection budget.",
+      tradeoff:
+        "A shared lock limits concurrent submissions and each API replica needs its own database-connection budget.",
     },
     edgeCases: [
       "Client retries after commit acknowledgement is lost",
@@ -1279,7 +1311,7 @@ export type EngineeringNote = {
   // optional structured content
   practicalSteps?: string[];
   checklists?: NoteChecklist[];
-  decisionFlow?: DecisionStep[];          // for the Kubernetes note
+  decisionFlow?: DecisionStep[]; // for the Kubernetes note
   subsections?: { heading: string; body: string }[]; // freeform extra sections
   limitations: string[];
   whenNotToApply: string;
@@ -1302,23 +1334,19 @@ export const ENGINEERING_NOTES: EngineeringNote[] = [
     subsections: [
       {
         heading: "Desired state versus existing state",
-        body:
-          "The general idea is to: read the desired configuration from a checked-in source, read the existing configuration from Keycloak, compare only the approved fields, create resources that are missing, update only intended differences, validate critical settings (such as redirect URIs and authentication settings), and return a clear failure message when validation fails. Each of these steps is described as a pattern; the exact implementation depends on the project.",
+        body: "The general idea is to: read the desired configuration from a checked-in source, read the existing configuration from Keycloak, compare only the approved fields, create resources that are missing, update only intended differences, validate critical settings (such as redirect URIs and authentication settings), and return a clear failure message when validation fails. Each of these steps is described as a pattern; the exact implementation depends on the project.",
       },
       {
         heading: "Idempotency",
-        body:
-          "Rerunning the workflow should not create duplicate clients, roles, flows, or identity-provider entries. The pattern is to look up resources by a stable identifier (for example client ID or alias), create them only when absent, and update only the approved subset of fields when they exist. This is an idempotency goal, not a guarantee - it holds only for the fields the workflow actually manages.",
+        body: "Rerunning the workflow should not create duplicate clients, roles, flows, or identity-provider entries. The pattern is to look up resources by a stable identifier (for example client ID or alias), create them only when absent, and update only the approved subset of fields when they exist. This is an idempotency goal, not a guarantee - it holds only for the fields the workflow actually manages.",
       },
       {
         heading: "Token expiry during longer workflows",
-        body:
-          "Administrative access tokens have a limited lifetime. Workflows that run for more than a few minutes (large realms, many clients, retries) can outlive the token they started with. A practical approach is to acquire the token close to where it is used, check for token-expiry errors from the Admin API, and reacquire the token instead of failing the whole run. Token acquisition should not be logged or echoed.",
+        body: "Administrative access tokens have a limited lifetime. Workflows that run for more than a few minutes (large realms, many clients, retries) can outlive the token they started with. A practical approach is to acquire the token close to where it is used, check for token-expiry errors from the Admin API, and reacquire the token instead of failing the whole run. Token acquisition should not be logged or echoed.",
       },
       {
         heading: "Secret management",
-        body:
-          "Client secrets, admin credentials, and identity-provider secrets should not be hardcoded in scripts, committed to source control, written to logs, or shipped in client-side configuration. They should be read from the environment or a secrets manager at the point of use, and the workflow should fail with a clear, non-revealing error when a required secret is missing.",
+        body: "Client secrets, admin credentials, and identity-provider secrets should not be hardcoded in scripts, committed to source control, written to logs, or shipped in client-side configuration. They should be read from the environment or a secrets manager at the point of use, and the workflow should fail with a clear, non-revealing error when a required secret is missing.",
       },
     ],
     practicalSteps: [
@@ -1332,8 +1360,7 @@ export const ENGINEERING_NOTES: EngineeringNote[] = [
     ],
     importantDecision: {
       title: "Reconcile only the fields the workflow owns",
-      body:
-        "It is tempting to push the entire Keycloak export through automation. In this workflow, scoping the reconciliation to a narrow set of approved fields was more useful: it kept the change surface small, made review easier, and avoided overwriting fields that other teams or operators set deliberately.",
+      body: "It is tempting to push the entire Keycloak export through automation. In this workflow, scoping the reconciliation to a narrow set of approved fields was more useful: it kept the change surface small, made review easier, and avoided overwriting fields that other teams or operators set deliberately.",
     },
     limitations: [
       "Configuration not represented in automation can still drift",
@@ -1411,8 +1438,7 @@ export const ENGINEERING_NOTES: EngineeringNote[] = [
     ],
     importantDecision: {
       title: "Treat operator and broker upgrades as separate validation phases",
-      body:
-        "Running the operator upgrade and the Kafka upgrade as a single combined check made it hard to attribute failures in these rehearsals. Separating them lengthened the rehearsal, but a regression in operator reconciliation no longer looked the same as a broker-side issue, which made each one easier to investigate.",
+      body: "Running the operator upgrade and the Kafka upgrade as a single combined check made it hard to attribute failures in these rehearsals. Separating them lengthened the rehearsal, but a regression in operator reconciliation no longer looked the same as a broker-side issue, which made each one easier to investigate.",
     },
     limitations: [
       "A checklist cannot prove that all production workloads, traffic patterns, schemas, or failure modes are safe",
@@ -1440,45 +1466,65 @@ export const ENGINEERING_NOTES: EngineeringNote[] = [
     approach:
       "Use cluster-level evidence first: events, pod description, current and previous container logs, and configuration comparison. Only inspect CI orchestration after the cluster picture is clear, so the pipeline log is read as confirmation rather than as the primary signal.",
     decisionFlow: [
-      { step: "Deployment failed", detail: "Start from cluster-level evidence rather than the CI log." },
-      { step: "Check Kubernetes events", detail: "Scheduling, image-pull, mounting, probe, or resource issues often appear here first." },
-      { step: "Describe the affected pod", detail: "Container state, restart count, conditions, events, image, mounted configuration, and probe settings." },
-      { step: "Check image, configuration, probe, resource, and scheduling errors", detail: "Map each event or condition to one of these categories before going further." },
-      { step: "Read current and previous container logs", detail: "Previous-container logs are essential after a restart - the current log may be empty or misleading." },
-      { step: "Compare environment-specific configuration", detail: "ConfigMaps, Secrets, image tags, environment variables, resource requests, manifests." },
-      { step: "Inspect CI orchestration", detail: "Only after the cluster-level evidence is understood, confirm the symptom matches the cause." },
+      {
+        step: "Deployment failed",
+        detail: "Start from cluster-level evidence rather than the CI log.",
+      },
+      {
+        step: "Check Kubernetes events",
+        detail:
+          "Scheduling, image-pull, mounting, probe, or resource issues often appear here first.",
+      },
+      {
+        step: "Describe the affected pod",
+        detail:
+          "Container state, restart count, conditions, events, image, mounted configuration, and probe settings.",
+      },
+      {
+        step: "Check image, configuration, probe, resource, and scheduling errors",
+        detail: "Map each event or condition to one of these categories before going further.",
+      },
+      {
+        step: "Read current and previous container logs",
+        detail:
+          "Previous-container logs are essential after a restart - the current log may be empty or misleading.",
+      },
+      {
+        step: "Compare environment-specific configuration",
+        detail:
+          "ConfigMaps, Secrets, image tags, environment variables, resource requests, manifests.",
+      },
+      {
+        step: "Inspect CI orchestration",
+        detail:
+          "Only after the cluster-level evidence is understood, confirm the symptom matches the cause.",
+      },
     ],
     subsections: [
       {
         heading: "Start with events",
-        body:
-          "Kubernetes events often identify scheduling, image-pull, volume-mounting, probe, or resource issues earlier than a generic pipeline failure message. They are a useful first stop because they describe what the cluster tried to do and where it stopped.",
+        body: "Kubernetes events often identify scheduling, image-pull, volume-mounting, probe, or resource issues earlier than a generic pipeline failure message. They are a useful first stop because they describe what the cluster tried to do and where it stopped.",
       },
       {
         heading: "Describe the pod",
-        body:
-          "A pod description surfaces container state, restart count, conditions, recent events, image information, mounted configuration, and readiness and liveness probe settings. Together these usually narrow the cause to a small number of categories.",
+        body: "A pod description surfaces container state, restart count, conditions, recent events, image information, mounted configuration, and readiness and liveness probe settings. Together these usually narrow the cause to a small number of categories.",
       },
       {
         heading: "Check logs (current and previous)",
-        body:
-          "Current container logs show what the running process is saying now. Previous-container logs show what the process said before the last restart. After a CrashLoopBackOff or OOMKill, the previous logs are usually the ones that explain the failure.",
+        body: "Current container logs show what the running process is saying now. Previous-container logs show what the process said before the last restart. After a CrashLoopBackOff or OOMKill, the previous logs are usually the ones that explain the failure.",
       },
       {
         heading: "Compare configuration",
-        body:
-          "Differences in ConfigMaps, Secrets, image tags, environment variables, resource requests, or deployment manifests can make an issue appear environment-specific. A structured comparison against a known-good environment often turns 'flaky in staging' into a specific configuration delta.",
+        body: "Differences in ConfigMaps, Secrets, image tags, environment variables, resource requests, or deployment manifests can make an issue appear environment-specific. A structured comparison against a known-good environment often turns 'flaky in staging' into a specific configuration delta.",
       },
       {
         heading: "Inspect CI after Kubernetes evidence",
-        body:
-          "Pipeline orchestration should be investigated after determining whether the cluster rejected, failed, or started the workload incorrectly. By that point the CI log usually confirms the cluster-side cause rather than introducing a new theory.",
+        body: "Pipeline orchestration should be investigated after determining whether the cluster rejected, failed, or started the workload incorrectly. By that point the CI log usually confirms the cluster-side cause rather than introducing a new theory.",
       },
     ],
     importantDecision: {
       title: "Cluster evidence first, pipeline log second",
-      body:
-        "Reading Kubernetes events and pod descriptions before opening the CI log added a few minutes at the start of an investigation but, in the failures I investigated, converged on the actual cause faster overall because it avoided spending time on pipeline theories that the cluster could already disprove.",
+      body: "Reading Kubernetes events and pod descriptions before opening the CI log added a few minutes at the start of an investigation but, in the failures I investigated, converged on the actual cause faster overall because it avoided spending time on pipeline theories that the cluster could already disprove.",
     },
     limitations: [
       "Some failures originate in external dependencies (registries, network, cloud provider) and need evidence from outside the cluster",
@@ -1493,11 +1539,10 @@ export const ENGINEERING_NOTES: EngineeringNote[] = [
   },
 ];
 
-
 // Testimonials - only render when manually approved.
 export type Testimonial = {
   quote: string;
-  name: string;            // person name or approved anonymous role
+  name: string; // person name or approved anonymous role
   relationship: string;
   permissionConfirmed: true;
 };
@@ -1507,7 +1552,7 @@ export const TESTIMONIALS: Testimonial[] = [];
 // Map slug to typed route path for type-safe <Link to=...>
 export const PROJECT_ROUTE: Record<string, string> = {
   "goldman-sachs-platform-engineering": "/work/goldman-sachs-platform-engineering",
-  "runreviq": "/work/runreviq",
+  runreviq: "/work/runreviq",
   "job-intake-service": "/work/job-intake-service",
   // The 2026 Goldman Sachs work now lives in the combined case study above.
   "java-application-service-engineering": "/work/goldman-sachs-platform-engineering",
@@ -1570,9 +1615,9 @@ export function noteReadingTimeMinutes(n: EngineeringNote): number {
     n.whenNotToApply,
     ...(n.limitations ?? []),
     ...(n.practicalSteps ?? []),
-    ...((n.checklists ?? []).flatMap((c) => [c.heading, ...c.items])),
-    ...((n.decisionFlow ?? []).flatMap((d) => [d.step, d.detail ?? ""])),
-    ...((n.subsections ?? []).flatMap((s) => [s.heading, s.body])),
+    ...(n.checklists ?? []).flatMap((c) => [c.heading, ...c.items]),
+    ...(n.decisionFlow ?? []).flatMap((d) => [d.step, d.detail ?? ""]),
+    ...(n.subsections ?? []).flatMap((s) => [s.heading, s.body]),
   ];
   const words = parts.join(" ").trim().split(/\s+/).filter(Boolean).length;
   return Math.max(2, Math.round(words / 220));

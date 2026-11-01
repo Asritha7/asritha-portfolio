@@ -1,3 +1,4 @@
+import { SkipLink } from "@/components/SkipLink";
 import { Link } from "@tanstack/react-router";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
 import { ProjectCover } from "@/components/ProjectCover";
@@ -26,6 +27,7 @@ export function NoteArticle({ note }: { note: EngineeringNote }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SkipLink />
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1024px] items-center justify-between px-6 py-4 md:px-10">
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
@@ -35,7 +37,7 @@ export function NoteArticle({ note }: { note: EngineeringNote }) {
         </div>
       </header>
 
-      <main id="top" className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
+      <main id="top" tabIndex={-1} className="mx-auto max-w-[820px] px-6 py-16 md:px-10 md:py-24">
         <p className="mono-label">ENGINEERING NOTE · {minutes} min read</p>
         <h1 className="font-serif-display mt-4 text-[clamp(30px,4.4vw,46px)]">{note.title}</h1>
         <p className="mt-6 max-w-[60ch] text-[18px] text-text-secondary">{note.summary}</p>
@@ -82,7 +84,8 @@ export function NoteArticle({ note }: { note: EngineeringNote }) {
           <div className="mt-6">
             <p className="mono-label !text-text-primary !text-[12px]">Decision flow</p>
             <p className="sr-only">
-              Ordered list of investigation steps, each followed by a short detail. Steps are read in order.
+              Ordered list of investigation steps, each followed by a short detail. Steps are read
+              in order.
             </p>
             <ol className="mt-3 space-y-3">
               {note.decisionFlow.map((d, i) => (
@@ -177,13 +180,11 @@ export function NoteArticle({ note }: { note: EngineeringNote }) {
                 to={NOTE_ROUTE[prev.slug]}
                 className="mono-label inline-flex flex-col rounded-[3px] border border-hairline bg-panel px-4 py-3 hover:bg-warm-fill hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
               >
-                <span className="!text-[10px] opacity-70">← Previous note</span>
+                <span className="!text-[10px]">← Previous note</span>
                 <span className="mt-1 text-[12px] normal-case">{prev.title}</span>
               </Link>
             ) : (
-              <span className="mono-label inline-block opacity-40 px-4 py-3 !text-[11px]">
-                - first note -
-              </span>
+              <span className="mono-label inline-block px-4 py-3 !text-[11px]">- first note -</span>
             )}
           </div>
           <div className="sm:text-center">
@@ -200,13 +201,11 @@ export function NoteArticle({ note }: { note: EngineeringNote }) {
                 to={NOTE_ROUTE[next.slug]}
                 className="mono-label inline-flex flex-col rounded-[3px] border border-hairline bg-panel px-4 py-3 hover:bg-warm-fill hover:!text-terra focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra sm:items-end"
               >
-                <span className="!text-[10px] opacity-70">Next note →</span>
+                <span className="!text-[10px]">Next note →</span>
                 <span className="mt-1 text-[12px] normal-case">{next.title}</span>
               </Link>
             ) : (
-              <span className="mono-label inline-block opacity-40 px-4 py-3 !text-[11px]">
-                - last note -
-              </span>
+              <span className="mono-label inline-block px-4 py-3 !text-[11px]">- last note -</span>
             )}
           </div>
         </nav>

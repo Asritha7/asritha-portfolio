@@ -8,6 +8,7 @@ const url = "https://asritha.dev/work/job-intake-service";
 export const Route = createFileRoute("/work/job-intake-service")({
   head: () => ({
     meta: [
+      { name: "twitter:card", content: "summary" },
       { title: `${study.title} - Asritha Nibhanupudi` },
       { name: "description", content: study.shortDescription },
       { property: "og:type", content: "article" },

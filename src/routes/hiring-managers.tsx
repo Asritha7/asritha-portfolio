@@ -1,6 +1,15 @@
+import { SkipLink } from "@/components/SkipLink";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HistoryBackLink } from "@/components/HistoryBackLink";
-import { SITE, LINKS, HERO, CAPABILITIES, EXPERIENCE, CASE_STUDIES, PROJECT_ROUTE } from "@/content/portfolio";
+import {
+  SITE,
+  LINKS,
+  HERO,
+  CAPABILITIES,
+  EXPERIENCE,
+  CASE_STUDIES,
+  PROJECT_ROUTE,
+} from "@/content/portfolio";
 import { track } from "@/lib/analytics";
 import resumeAsset from "@/assets/resume.pdf.asset.json";
 
@@ -39,6 +48,7 @@ export const Route = createFileRoute("/hiring-managers")({
 function HiringManagers() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SkipLink />
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1024px] items-center justify-between px-6 py-4 md:px-10">
           <Link to="/" className="mono-label !font-bold !text-text-primary !text-base">
@@ -48,7 +58,7 @@ function HiringManagers() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[920px] px-6 py-16 md:px-10 md:py-24">
+      <main id="top" tabIndex={-1} className="mx-auto max-w-[920px] px-6 py-16 md:px-10 md:py-24">
         <p className="mono-label">FOR HIRING MANAGERS</p>
         <h1 className="font-serif-display mt-4 text-[clamp(34px,5vw,52px)]">
           Asritha Nibhanupudi —{" "}
@@ -56,15 +66,13 @@ function HiringManagers() {
             Software Engineer
           </em>
         </h1>
-        <p className="mt-6 max-w-[64ch] text-[17px] text-text-secondary">
-          {HERO.description}
-        </p>
+        <p className="mt-6 max-w-[64ch] text-[17px] text-text-secondary">{HERO.description}</p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <a
             href={resume}
             download
             onClick={() => track("resume_downloaded")}
-            className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-panel transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
+            className="rounded-[3px] bg-terra px-5 py-3 text-[15px] font-medium text-primary-foreground transition-colors hover:bg-terra-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
           >
             Download résumé
           </a>
@@ -78,9 +86,12 @@ function HiringManagers() {
         </div>
 
         <section aria-labelledby="start-here-heading" className="mt-12">
-          <h2 id="start-here-heading" className="mono-label">Start here</h2>
+          <h2 id="start-here-heading" className="mono-label">
+            Start here
+          </h2>
           <p className="mt-3 text-[15px] text-text-secondary">
-            Two case studies covering my current service and infrastructure work, and earlier automation delivery.
+            Two case studies covering my current service and infrastructure work, and earlier
+            automation delivery.
           </p>
           <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {CASE_STUDIES.slice(0, 2).map((study) => (
@@ -90,10 +101,14 @@ function HiringManagers() {
                   onClick={() => track("case_study_opened", { slug: study.slug })}
                   className="group block h-full rounded-[3px] border border-hairline bg-panel p-5 transition-colors hover:bg-warm-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra"
                 >
-                  <span className="mono-label">{study.year} · {study.projectType}</span>
+                  <span className="mono-label">
+                    {study.year} · {study.projectType}
+                  </span>
                   <h3 className="font-serif-display mt-3 text-[22px]">{study.title}</h3>
                   <p className="mt-3 text-[15px] text-text-secondary">{study.cardResult}</p>
-                  <span className="mono-label mt-4 inline-block group-hover:!text-terra">Read case study →</span>
+                  <span className="mono-label mt-4 inline-block group-hover:!text-terra">
+                    Read case study →
+                  </span>
                 </Link>
               </li>
             ))}
@@ -109,12 +124,8 @@ function HiringManagers() {
               </span>
               <span className="mono-label">{currentRole.date}</span>
             </div>
-            <p className="mt-2 text-[15px] font-medium text-text-primary">
-              {currentRole.role}
-            </p>
-            <p className="mt-3 text-[15px] text-text-secondary">
-              {currentRole.scope}
-            </p>
+            <p className="mt-2 text-[15px] font-medium text-text-primary">{currentRole.role}</p>
+            <p className="mt-3 text-[15px] text-text-secondary">{currentRole.scope}</p>
             <ul className="mt-4 space-y-2">
               {[
                 "Java service development and integration changes",
@@ -137,14 +148,9 @@ function HiringManagers() {
           <h2 className="mono-label">Key technologies</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {CAPABILITIES.map((cap) => (
-              <li
-                key={cap.label}
-                className="rounded-[3px] border border-hairline bg-panel p-5"
-              >
+              <li key={cap.label} className="rounded-[3px] border border-hairline bg-panel p-5">
                 <h3 className="mono-label mb-2">{cap.label}</h3>
-                <p className="text-[14px] text-text-secondary">
-                  {cap.items.join(" · ")}
-                </p>
+                <p className="text-[14px] text-text-secondary">{cap.items.join(" · ")}</p>
               </li>
             ))}
           </ul>

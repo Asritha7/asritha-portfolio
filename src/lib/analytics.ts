@@ -22,10 +22,7 @@ declare global {
   }
 }
 
-export function track(
-  event: AnalyticsEvent,
-  props?: Record<string, string | number | boolean>,
-) {
+export function track(event: AnalyticsEvent, props?: Record<string, string | number | boolean>) {
   if (typeof window === "undefined") return;
   const fn = window.plausible;
   if (typeof fn !== "function") return;

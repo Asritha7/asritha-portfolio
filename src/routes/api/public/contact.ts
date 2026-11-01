@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { validateContactRequest } from "@/lib/contact-validation";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 const TO_EMAIL = "nibhanupudiasritha@gmail.com";
@@ -17,36 +18,19 @@ export const Route = createFileRoute("/api/public/contact")({
     handlers: {
       POST: async ({ request }) => {
         try {
+          const validation = await validateContactRequest(request);
+          if (!validation.ok) {
+            return Response.json({ error: validation.error }, { status: validation.status });
+          }
+          if (validation.spam) return Response.json({ ok: true });
+          const { name, email, message } = validation.data;
           const LOVABLE_API_KEY = process.env.LOVABLE_API_KEY;
           const RESEND_API_KEY = process.env.RESEND_API_KEY;
           if (!LOVABLE_API_KEY || !RESEND_API_KEY) {
-            return Response.json({ error: "Email service not configured" }, { status: 500 });
-          }
-
-          const body = (await request.json()) as {
-            name?: string;
-            email?: string;
-            message?: string;
-            website?: string;
-          };
-
-          // Honeypot
-          if (body.website && body.website.trim() !== "") {
-            return Response.json({ ok: true });
-          }
-
-          const name = (body.name ?? "").trim();
-          const email = (body.email ?? "").trim();
-          const message = (body.message ?? "").trim();
-
-          if (!name || name.length > 100) {
-            return Response.json({ error: "Invalid name" }, { status: 400 });
-          }
-          if (!email || email.length > 200 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            return Response.json({ error: "Invalid email" }, { status: 400 });
-          }
-          if (!message || message.length > 2000) {
-            return Response.json({ error: "Invalid message" }, { status: 400 });
+            return Response.json(
+              { error: "Unable to send right now. Please email directly." },
+              { status: 503 },
+            );
           }
 
           const subject = `Portfolio inquiry from ${name}`;
@@ -75,8 +59,9 @@ export const Route = createFileRoute("/api/public/contact")({
           });
 
           if (!res.ok) {
-            const text = await res.text();
-            console.error("Resend error", res.status, text);
+            // Provider response bodies may contain sensitive account or request details.
+            // Keep operational context without copying third-party payloads into logs.
+            console.error("Contact delivery failed with provider status", res.status);
             return Response.json({ error: "Failed to send" }, { status: 502 });
           }
 

@@ -1,32 +1,25 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Navigation: Back to all work + Home", () => {
-  test("'← Back to all work' on a case study lands at /work top", async ({ page }) => {
-    await page.goto("/");
-    // Scroll to experience/work area on home before navigating in
-    await page.evaluate(() => window.scrollTo(0, 1500));
-    await page.goto("/work/aws-microservices-cdk-ecs");
-    await expect(page).toHaveURL(/\/work\/aws-microservices-cdk-ecs$/);
+test.describe("Navigation: return to the originating page", () => {
+  test("case-study Back returns to the filtered work index", async ({ page }) => {
+    await page.goto("/work?category=backend", { waitUntil: "networkidle" });
+    await page.locator('a[href="/work/job-intake-service"]').click();
+    await expect(page).toHaveURL(/\/work\/job-intake-service$/);
 
-    const backLink = page.getByRole("link", { name: /back to all work/i }).first();
+    const backLink = page.getByRole("link", { name: /back to work/i }).first();
     await backLink.click();
 
-    await expect(page).toHaveURL(/\/work(\?|$|\/$)/);
-    const y = await page.evaluate(() => window.scrollY);
-    expect(y).toBeLessThan(120);
+    await expect(page).toHaveURL(/\/work\/?\?category=backend$/);
   });
 
-  test("'← Home' on /work always navigates to homepage top", async ({ page }) => {
-    await page.goto("/");
-    await page.evaluate(() => window.scrollTo(0, 2000));
-    await page.goto("/work");
+  test("work Back returns to the homepage", async ({ page }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    await page.getByRole("link", { name: "View my work" }).first().click();
 
-    const homeLink = page.getByRole("link", { name: /^←\s*home$/i });
+    const homeLink = page.getByRole("link", { name: /^←\s*back$/i });
     await homeLink.click();
 
     await expect(page).toHaveURL(/\/$/);
-    const y = await page.evaluate(() => window.scrollY);
-    expect(y).toBeLessThan(80);
   });
 });
 
@@ -35,7 +28,7 @@ test.describe("Hash deep links smooth-scroll to section", () => {
 
   for (const id of sections) {
     test(`deep link /#${id} scrolls section into view`, async ({ page }) => {
-      await page.goto(`/#${id}`);
+      await page.goto(`/#${id}`, { waitUntil: "networkidle" });
       const section = page.locator(`#${id}`);
       await expect(section).toBeVisible();
       // Allow smooth scroll to settle
@@ -49,7 +42,7 @@ test.describe("Hash deep links smooth-scroll to section", () => {
   }
 
   test("hash change after load smooth-scrolls", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "networkidle" });
     await page.evaluate(() => {
       window.location.hash = "contact";
     });
