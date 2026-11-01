@@ -1,9 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-test.skip(({ viewport }) => !viewport || viewport.width >= 768, "Mobile drawer is only visible at <768px widths");
+test.skip(
+  ({ viewport }) => !viewport || viewport.width >= 768,
+  "Mobile drawer is only visible at <768px widths",
+);
 
 test("mobile drawer: focus returns to menu button after close", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/", { waitUntil: "networkidle" });
   const menuButton = page.getByRole("button", { name: /open menu|menu/i }).first();
   await menuButton.click();
 
@@ -19,7 +22,7 @@ test("mobile drawer: focus returns to menu button after close", async ({ page })
 });
 
 test("mobile drawer: tapping a link closes the drawer", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/", { waitUntil: "networkidle" });
   const menuButton = page.getByRole("button", { name: /open menu|menu/i }).first();
   await menuButton.click();
   const drawer = page.locator("#mobile-nav");
